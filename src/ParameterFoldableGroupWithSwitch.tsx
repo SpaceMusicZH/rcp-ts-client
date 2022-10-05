@@ -4,7 +4,7 @@ import { BooleanParameter, GroupParameter, Parameter } from 'rabbitcontrol';
 import ParameterWidget from './ParameterWidget';
 import { TOGGLE_LABEL } from './WidgetConfig';
 import { ParameterSwitchC } from './ParameterSwitch';
-import { Accordion, AccordionItem, Button, FormGroup, FormLabel, FormLabel as label, Switch, Toggle } from 'carbon-components-react';
+import { Accordion, AccordionItem } from 'carbon-components-react';
 
 interface Props {
     style?: React.CSSProperties;
@@ -13,6 +13,7 @@ interface Props {
 interface State {
     isOpen: boolean;
     switchParameter?: BooleanParameter;
+    switchParameterOn: boolean;
 };
 
 export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedProps, State>
@@ -22,6 +23,7 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
     
         this.state = {
             isOpen: false,
+            switchParameterOn: false
         };
     } 
 
@@ -61,6 +63,37 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
                 );
             });
     }
+
+    componentDidUpdate(prevProps: Readonly<Props & InjectedProps>, prevState: Readonly<State>, snapshot?: any): void
+    {
+        const param = this.props.parameter;
+        if (this.state.switchParameter === undefined)
+        {
+            // iterate children - find a BooleanParameter with label "_onoff"
+            (param as GroupParameter).children.forEach(element =>
+            {
+                if (element instanceof BooleanParameter &&
+                    element.label === TOGGLE_LABEL)
+                {
+                    if (this.state.switchParameter != element)
+                    {
+                        this.setState({
+                            switchParameterOn: element.value,
+                            switchParameter: element
+                        });
+
+                        element.addValueChangeListener((p) =>
+                        {
+                            this.setState({
+                                switchParameterOn: (p as BooleanParameter).value
+                            });
+                            
+                        });
+                    }
+                }
+            });
+        }
+    }
     
     render()
     {
@@ -69,34 +102,6 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
         if (param && param.label !== undefined) {
             label = param.label;
         }
-
-        if (this.state.switchParameter === undefined)
-        {
-            // iterate children - find a BooleanParameter with label "_onoff"
-            (param as GroupParameter).children.forEach(element =>
-            {
-                if (element instanceof BooleanParameter
-                    && element.label === TOGGLE_LABEL)
-                {
-                    if (this.state.switchParameter != element)
-                    {
-                        this.setState({
-                            isOpen: element.value,
-                            switchParameter: element
-                        });
-
-                        element.addValueChangeListener((p) =>
-                        {
-                            this.setState({
-                                isOpen: (p as BooleanParameter).value
-                            });
-                            
-                        });
-                    }
-                }
-            });
-        }
-
 
         const { parameter, ...filteredProps } = this.props;
 
@@ -117,16 +122,27 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
                                 flexDirection: "row",
                                 justifyContent: "center"
                             }}>
-                                <FormLabel className="grouplabel bx--label">{label}</FormLabel>
-                                <div style={{flexGrow:100}}></div>
+                                <button className='bx--accordion__heading'
+                                    type='button'
+                                    onClick={this.handleToggle}
+                                >       
+                                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="bx--accordion__arrow">
+                                        <path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path>
+                                    </svg>
+                                    <div className='bx--accordion__title' dir='auto'>{label}</div>                                    
+                                </button>
+                                
                                 <ParameterSwitchC
                                     {...filteredProps}
                                     parameter={this.state.switchParameter}
                                     handleValue={this.handleToggleChange}
-                                    value={this.state.isOpen}
+                                    value={this.state.switchParameterOn}
                                     disabled={this.state.switchParameter === undefined}
                                     labelDisabled={true}
                                 />
+                                <div style={{
+                                    marginRight: 15
+                                }}></div>
                             </div>
                         }
                     >
@@ -136,6 +152,11 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
             </div>
         );
     }
+
+    private handleToggle = () => {
+        this.setState({ isOpen: !this.state.isOpen });
+    }
+
 
     private handleToggleChange = (state: boolean) => 
     {        
