@@ -1,4 +1,4 @@
-import { Switch, Toggle } from 'carbon-components-react';
+import Toggle from 'carbon-components-react/lib/components/Toggle';
 import * as React from 'react';
 import { parameterWrapped, InjectedProps } from './ElementWrapper';
 
@@ -39,14 +39,14 @@ export class ParameterSwitchC extends React.Component<Props & InjectedProps, Sta
             readOnly = param.readonly;        
         }
 
-        const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
+        const { onSubmitCb, handleValue, tabId, selectedTab, labelDisabled, ...filteredProps } = this.props;
 
         return (
             <Toggle
+                {...filteredProps}
                 id={param?.id.toString() || "toggle"}
                 labelA={this.props.labelDisabled === true ? "" : param ? param.label : ""}
-                labelB=""
-                {...filteredProps}
+                labelB=""                
                 toggled={value ? value : false}
                 onChange={this.handleChange}
                 disabled={readOnly === true || filteredProps.disabled === true}
