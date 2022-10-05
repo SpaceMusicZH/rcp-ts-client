@@ -30,6 +30,8 @@ interface Props {
     onSubmitCb: () => void;
     vertical?: boolean;
     className?: string;
+    selectedTab?: number;
+    tabId?: number;
 };
 
 interface State {
@@ -139,7 +141,9 @@ export default class ParameterWidget extends React.Component<Props, State> {
         if (parameter.userid === WIDGET_NOWIDGET_STR)
         {
             return (
-                <div style={{
+                <div
+                    className={parameter.userid ? parameter.userid : ""}
+                    style={{
                     display: "flex",
                     flexDirection: this.props.vertical ? "column" : "row",
                     justifyContent: "center",
@@ -424,7 +428,9 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     <ParameterTabsGroupC
                         {...filteredProps}
                         value={this.state.value}
-                        handleValue={this.handleValueChange}  
+                        handleValue={this.handleValueChange}
+                        tabId={this.props.tabId || 0}
+                        selectedTab={this.props.selectedTab || 0}
                     />
                 );
             }
@@ -437,7 +443,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 // ?
             }
             else if (parameter.widget instanceof CustomWidget
-                    || parameter.userid !== "")
+                    || parameter.userid)
             {
                 var is_tab_switcher = false;
                 var is_group_with_switch = false;
@@ -456,19 +462,19 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     is_horizontal_layout = parameter.userid === WIDGET_HORIZONTALLAYOUT_STR;
                 }
 
-                console.log("is_tab_switcher: " + is_tab_switcher);
+                // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);
                 
 
                 if (is_tab_switcher)
                 {
-                    console.log("is_tab_switcher!!");
-                    
                     // custom tab-widget - TabSwitcher
                     return (
                         <ParameterTabsSwitcherC
                             {...filteredProps}
                             value={this.state.value}
-                            handleValue={this.handleValueChange}  
+                            handleValue={this.handleValueChange}
+                            tabId={this.props.tabId || 0}
+                            selectedTab={this.props.selectedTab || 0}
                         />
                     );
                 }
@@ -525,15 +531,16 @@ export default class ParameterWidget extends React.Component<Props, State> {
         if (parameter.widget instanceof TabsWidget)
         {
             return (        
-                <div className={"parameter-wrapper " + this.props.className}>
+                <div className={"parameter-wrapper " + (this.props.className ? this.props.className : (parameter.userid ? parameter.userid : ""))}>
                     {this.renderValue(parameter)}
                 </div>
             );
         }
 
         // default framing
-        return (        
-            <div className={"parameter-wrapper " + this.props.className}>
+
+        return (
+            <div className={"parameter-wrapper " + (this.props.className ? this.props.className : (parameter.userid ? parameter.userid : ""))}>
                 {this.renderValue(parameter)}
             </div>
         );

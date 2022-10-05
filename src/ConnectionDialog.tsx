@@ -4,6 +4,7 @@ import { Parameter, Client, WebSocketClientTransporter, GroupParameter, TabsWidg
 import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
 import App from './App';
 import { Checkbox, Modal, NumberInput, TextInput } from 'carbon-components-react';
+import SMHeader from './SMHeader';
 
 
 type Props = {
@@ -64,7 +65,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
             if (Client.VERBOSE) console.log("autoconnect: " + host + ":" + portAsInt);
             this.doConnect(host, portAsInt);
-        }
+         }
     }
 
     updateClient = () => {
@@ -74,10 +75,12 @@ export default class ConnectionDialog extends React.Component<Props, State> {
     }
 
     createParameterWidget(parameter: Parameter)
-    {
-        return <ParameterWidget key={parameter.id}
-                                parameter={parameter} 
-                                onSubmitCb={this.updateClient}/>;
+    {        
+        return <ParameterWidget
+            className={parameter.userid ? parameter.userid : ""}
+            key={parameter.id}
+            parameter={parameter}
+            onSubmitCb={this.updateClient} />;
     }
 
     createWidgets(parameter: Parameter[])
@@ -134,6 +137,8 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         return (
             <section>
 
+                <SMHeader></SMHeader>
+
                 {
                     this.state.client ?
 
@@ -150,10 +155,6 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                     :
                         ""
                 }
-
-                <div className="bx--label serverid">
-                    {this.state.serverApplicationId !== "" ? `connected to: ${this.state.serverApplicationId} - ` : ""}{this.state.serverVersion !== "" ? `rcp: ${this.state.serverVersion}` : ""}
-                </div>
 
                 <Modal
                     className={"bp3-dark"}
