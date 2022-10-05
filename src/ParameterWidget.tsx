@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BangParameter, BooleanParameter, EnumParameter, GroupParameter, ImageParameter, NumberDefinition, NumberParameter, Parameter, RGBAParameter, RGBParameter, SliderWidget, ValueParameter, Vector3F32Parameter, NumberboxWidget, Vector3F32Definition, Vector3I32Parameter, Vector2I32Parameter, Vector2F32Parameter, Vector2F32Definition, Vector4F32Parameter, Vector4I32Parameter, Vector4F32Definition, Range, RangeParameter, TabsWidget, ListWidget, ListPageWidget, RadiobuttonWidget, CustomWidget } from 'rabbitcontrol';
+import { BangParameter, BooleanParameter, EnumParameter, GroupParameter, ImageParameter, NumberDefinition, NumberParameter, Parameter, RGBAParameter, RGBParameter, ValueParameter, Vector3F32Parameter, NumberboxWidget, Vector3F32Definition, Vector3I32Parameter, Vector2I32Parameter, Vector2F32Parameter, Vector2F32Definition, Vector4F32Parameter, Vector4I32Parameter, Vector4F32Definition, RangeParameter, TabsWidget, ListWidget, ListPageWidget, RadiobuttonWidget, CustomWidget } from 'rabbitcontrol';
 import { ParameterButtonC } from './ParameterButton';
 import { ParameterCheckboxC } from './ParameterCheckbox';
 import { ParameterColorInputC } from './ParameterColorInput';
@@ -76,7 +76,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
 
         if (param instanceof ValueParameter) {
 
-            param.addValueChangeListener((p) => 
+            param.addValueChangeListener((p: Parameter) => 
             {
                 if (p instanceof ValueParameter)
                 {
@@ -87,7 +87,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
             });
         }
 
-        param.addChangeListener((p) => {
+        param.addChangeListener((p: Parameter) => {
             this.setState({
                 label: p.label,
                 description: p.description,
