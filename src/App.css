@@ -47,26 +47,68 @@
 }
 
 
-/* carbon */
+/* Carbon Overrides */
+
+/* Tabs */
 .bx--tab-content {
   padding: 0px !important;
 }
-.bx--accordion__content {
-  padding-right: 0px !important;
-  padding-left: 0px !important;
-}
+
 .bx--tabs--scrollable__nav-link {
   width: auto !important;
 }
 
 .bx--tabs--scrollable__nav {
   flex: 1;
+  border-bottom: 1px solid var(--cds-ui-03,#535353);
 }
 
 .bx--tabs--scrollable__nav-item {
   flex: 1;
   flex-direction: column;
 }
+
+.bx--tabs--scrollable .bx--tabs--scrollable__nav-link:active, .bx--tabs--scrollable .bx--tabs--scrollable__nav-link:focus {
+  outline: none !important;
+}
+
+ul.bx--tabs--scrollable__nav {
+  border-bottom: 1px solid var(--cds-ui-03,#535353);
+}
+
+
+/* Indent items till we have the new style */
+
+.bx--label, .bx--slider-container, .bx--checkbox-wrapper {
+  margin-left: 15px;
+}
+
+
+
+/* Accordion */
+
+.bx--accordion__content {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.bx--accordion__item--active button.bx--accordion__heading {
+    border-bottom: 1px solid var(--cds-ui-03,#535353);
+}
+
+.bx--accordion__heading {
+    padding: 0.9rem 0;
+    height: 48px;
+}
+
+.bx--accordion__title {
+  font-weight: var(--cds-productive-heading-02-font-weight,600);
+}
+    
+
+
+
+
 
 /* hide parameter divider */
 .parameter-divider {
@@ -88,7 +130,7 @@
 }
 
 .parameter-wrapper {
-  margin-top: 1px;
+  margin-top: 0px;
 }
 
 
