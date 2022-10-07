@@ -21,9 +21,11 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_SWITCH_STR, TOGGLE_LABEL } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_SWITCH_STR, TOGGLE_LABEL, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
+import ParameterDropdown from './ParameterDropdown';
+import ParameterTrackSelector from './ParameterTrackSelector';
 
 interface Props {
     parameter: Parameter;
@@ -367,11 +369,19 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 else
                 {
                     return (
-                        <ParameterHTMLSelectC
-                            {...filteredProps}
+                        <ParameterDropdown
+                            parameter={this.props.parameter}
                             value={this.state.value}
                             handleValue={this.handleValueChange}
-                        />
+                            onSubmitCb={this.props.onSubmitCb}
+                        >
+                        </ParameterDropdown>
+                        
+                        // <ParameterHTMLSelectC
+                        //     {...filteredProps}
+                        //     value={this.state.value}
+                        //     handleValue={this.handleValueChange}
+                        // />
                     );
                 }
 
@@ -448,6 +458,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 var is_tab_switcher = false;
                 var is_group_with_switch = false;
                 var is_horizontal_layout = false;
+                var is_track_selector = false;
 
                 if (parameter.widget instanceof CustomWidget
                     && parameter.widget.uuid != undefined)
@@ -460,6 +471,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     is_tab_switcher = parameter.userid === WIDGET_TABSWITCHER_STR;
                     is_group_with_switch = parameter.userid === WIDGET_GROUPWITHSWITCH_STR;
                     is_horizontal_layout = parameter.userid === WIDGET_HORIZONTALLAYOUT_STR;
+                    is_track_selector = parameter.userid === WIDGET_TRACK_SELECTOR;
                 }
 
                 // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);
@@ -468,7 +480,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 if (is_tab_switcher)
                 {
                     // custom tab-widget - TabSwitcher
-                    return (
+                    return (                        
                         <ParameterTabsSwitcherC
                             {...filteredProps}
                             value={this.state.value}
@@ -498,6 +510,20 @@ export default class ParameterWidget extends React.Component<Props, State> {
                             value={this.state.value}
                             handleValue={this.handleValueChange}  
                         />                            
+                    );
+                }
+                else if (is_track_selector)
+                {
+                    return (
+                        <ParameterTrackSelector                            
+                            parameter={this.props.parameter}
+                            value={this.state.value}
+                            handleValue={this.handleValueChange}
+                            onSubmitCb={this.props.onSubmitCb}
+                            tabId={this.props.tabId}
+                            selectedTab={this.props.selectedTab}
+                        >
+                        </ParameterTrackSelector>
                     );
                 }
             }

@@ -27,7 +27,7 @@ export class ParameterHTMLSelectC extends React.Component<Props & InjectedProps,
     }
 
     render() {
-        const value = this.props.value as string || "";
+        const value = this.props.value as string || "";
         let readOnly:boolean|undefined;
         let entries:string[]|undefined;
         let multiSelect:boolean|undefined;
@@ -45,12 +45,11 @@ export class ParameterHTMLSelectC extends React.Component<Props & InjectedProps,
 
         return (
             <Dropdown
+                hideLabel={true}
                 id={param?.id.toString() || "dropdown"}
                 {...filteredProps}
-                titleText={param?.label}
                 onChange={this.handleChange}
                 disabled={readOnly === true}
-                className="test"
                 items={entries || []}
                 label="label"
                 selectedItem={value}
@@ -60,22 +59,22 @@ export class ParameterHTMLSelectC extends React.Component<Props & InjectedProps,
         );
     }
 
-    private renderOptions(sel: string, entries?: string[]) {
-        if (entries)
-        {
-            return entries.map( e => 
-            {               
-                return <option 
-                        {...e === sel ? "selected" : null} 
-                        key={e}
-                        value={e}>
-                            {e}
-                        </option>
-            });
-        }
+    // private renderOptions(sel: string, entries?: string[]) {
+    //     if (entries)
+    //     {
+    //         return entries.map((e) => 
+    //         {               
+    //             return <option 
+    //                 {e === sel ? "selected" : null} 
+    //                     key={e}
+    //                     value={e}>
+    //                         {e}
+    //                     </option>
+    //         });
+    //     }
 
-        return "";
-    }
+    //     return "";
+    // }
 };
 
 export const ParameterHTMLSelect = parameterWrapped()(ParameterHTMLSelectC);

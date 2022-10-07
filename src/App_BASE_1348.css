@@ -46,105 +46,27 @@
   flex-grow: 10;
 }
 
-.colorCircle {
-  min-height: 24px;
-  min-width: 24px;
-  max-height: 24px;
-  max-width: 24px;
-  border-radius: 50%;
-  margin-right: 1em;
-}
 
-.track-note-count {
-  margin-right: 16px;
-}
-
-.track-selector {
-  min-height: 48px;
-}
-
-.in-dropdown-button.bx--btn--secondary {
-  /* margin: 0 !important; */
-  /* width: 20px !important;
-  min-width: 20px !important;
-  max-width: 20px !important; */
-  /* flex-grow: 0; */
-  padding: 4px;
-  height: 100%;
-  min-height: 0;
-}
-
-
-/* Carbon Overrides */
-.bx--list-box__label,
-.cds--list-box__label {
-  width: 100%;
-}
-
-/* only set size for e.g.: track selector menu items? */
-/* .bx--list-box__menu-item {
-  min-height: 48px;
-} */
-
+/* carbon */
 .bx--tab-content {
   padding: 0px !important;
 }
-
+.bx--accordion__content {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
 .bx--tabs--scrollable__nav-link {
   width: auto !important;
 }
 
 .bx--tabs--scrollable__nav {
-  flex: 1000;
-  border-bottom: 1px solid var(--cds-ui-03,#535353);
+  flex: 1;
 }
 
 .bx--tabs--scrollable__nav-item {
   flex: 1;
   flex-direction: column;
 }
-
-.bx--tabs--scrollable .bx--tabs--scrollable__nav-link:active, .bx--tabs--scrollable .bx--tabs--scrollable__nav-link:focus {
-  outline: none !important;
-}
-
-ul.bx--tabs--scrollable__nav {
-  border-bottom: 1px solid var(--cds-ui-03,#535353);
-}
-
-
-/* Indent items till we have the new style */
-
-.bx--label, .bx--slider-container, .bx--checkbox-wrapper {
-  margin-left: 15px;
-}
-
-
-
-/* Accordion */
-
-.bx--accordion__content {
-  padding-right: 0px !important;
-  padding-left: 0px !important;
-}
-
-.bx--accordion__item--active button.bx--accordion__heading {
-    border-bottom: 1px solid var(--cds-ui-03,#535353);
-}
-
-.bx--accordion__heading {
-    padding: 0.9rem 0;
-    height: 48px;
-}
-
-.bx--accordion__title {
-  font-weight: var(--cds-productive-heading-02-font-weight,600);
-}
-    
-
-
-
-
 
 /* hide parameter divider */
 .parameter-divider {
@@ -166,7 +88,7 @@ ul.bx--tabs--scrollable__nav {
 }
 
 .parameter-wrapper {
-  margin-top: 0px;
+  margin-top: 1px;
 }
 
 

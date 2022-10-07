@@ -75,7 +75,12 @@
 }
 
 
+<<<<<<< HEAD
 /* Carbon Overrides */
+
+/* Tabs */
+=======
+/* carbon */
 .bx--list-box__label,
 .cds--list-box__label {
   width: 100%;
@@ -86,6 +91,7 @@
   min-height: 48px;
 } */
 
+>>>>>>> f4c4952397edfa07b17557055fe8a5b8a463e230
 .bx--tab-content {
   padding: 0px !important;
 }
@@ -95,8 +101,12 @@
 }
 
 .bx--tabs--scrollable__nav {
-  flex: 1000;
+<<<<<<< HEAD
+  flex: 1;
   border-bottom: 1px solid var(--cds-ui-03,#535353);
+=======
+  flex: 1000;
+>>>>>>> f4c4952397edfa07b17557055fe8a5b8a463e230
 }
 
 .bx--tabs--scrollable__nav-item {
