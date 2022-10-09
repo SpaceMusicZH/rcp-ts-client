@@ -1,5 +1,6 @@
 import React, { Component, useState, PropsWithChildren } from "react";
-import { Dropdown } from 'carbon-components-react'
+import { Dropdown, Button } from 'carbon-components-react'
+import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
 // import 'carbon-components-react/index.scss'
 
 const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb }) => {
@@ -19,6 +20,35 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
         }
     }
 
+    function onPreviousChild(event)
+    {
+        event.stopPropagation();
+        
+        var idx = parameter?.enumDefinition?.entries.indexOf(parameter?.value) - 1;
+        if (idx < 0)
+        {
+            idx = parameter?.enumDefinition?.entries.length - 1;
+        }
+
+        handleChange({
+            selectedItem: parameter?.enumDefinition?.entries[idx]
+        });
+    }
+    function onNextChild(event)
+    {
+        event.stopPropagation();
+
+        var idx = parameter?.enumDefinition?.entries.indexOf(parameter?.value) + 1;
+        if (idx >= parameter?.enumDefinition?.entries.length)
+        {
+            idx = 0;
+        }
+
+        handleChange({
+            selectedItem: parameter?.enumDefinition?.entries[idx]
+        });
+    }
+
     return (
         <Dropdown
             id={parameter?.id.toString() || "dropdown"}
@@ -36,6 +66,8 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
                     <div>{parameter?.label}</div>
                     <div style={{ flexGrow: 1 }} />
                     <div>{item}</div>
+                    <Button kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="next" onClick={onPreviousChild}></Button>
+                    <Button kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="previous" onClick={onNextChild}></Button>
                 </div>
             }
         >
