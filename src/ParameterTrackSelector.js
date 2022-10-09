@@ -2,13 +2,14 @@ import React, { Component, useState, PropsWithChildren, useEffect } from "react"
 import { Dropdown, Button } from 'carbon-components-react'
 import { COLOR_LABEL, COUNT_LABEL, SOLO_LABEL, MUTE_LABEL, LOCK_LABEL } from './WidgetConfig'; 
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
+import { ParameterToggleButtonC } from './ParameterToggleButton'
 
-const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSubmitCb, tabId, selectedTab }) => {
-
-    var childNames = [];
+const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSubmitCb, tabId, selectedTab }) =>
+{
     var groupChildren = [];
     var currentParam;
 
+     var[isOpen, setIsOpen] = useState(false);
     var [currentChild, setCurrentChild] = useState(0);
     var [lastSelected, setLastSelected] = useState(-1);
 
@@ -93,6 +94,12 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
     function handleChange(data)
     {
         setCurrentChild(groupChildren.indexOf(data.selectedItem));
+
+        if (isOpen === true)
+        {
+            setIsOpen(false);
+        }
+
         // if (handleValue) {
         //     handleValue(data.selectedItem);
         // }
@@ -147,21 +154,38 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
         return ("");
     }
 
+    function onSoloClicked(event, param)
+    {
+        event.stopPropagation();
+
+        if (param)
+        {
+            console.log("solo: " + (param.label || param._label || "no label"));
+        }
+    }
+    function onMuteClicked(event, param)
+    {
+        event.stopPropagation();
+
+        if (param)
+        {
+            console.log("mute: " + (param.label || param._label || "no label"));
+        }
+    }
+    function onLockClicked(event, param)
+    {
+        event.stopPropagation();
+
+        if (param)
+        {
+            console.log("lock: " + (param.label || param._label || "no label"));
+        }
+    }
+
     if (parameter)
     {
-        var current_name = "";
-        
         groupChildren = parameter.children            
             .sort((a, b) => ((a.order || 0) - (b.order || 0)));
-    
-        childNames = groupChildren
-            .map((param, index) => {
-                const l = param.label !== undefined ? param.label : "";
-                if (index === currentChild) {
-                    current_name = l
-                }
-                return l;
-            });
     }
 
     return (
@@ -176,13 +200,87 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
                 disabled={parameter?.readonly === true}
                 items={groupChildren}
                 selectedItem={groupChildren[currentChild]}
+                renderSelectedItem={(item) =>
+
+                    // isOpen === true                        
+                    //     ?
+
+                    //     <div style={{
+                    //         display: "flex",
+                    //         flexDirection: "row",
+                    //     }}
+                    //         onClick={() => {if (isOpen === true) setIsOpen(false)}}
+                    //     >
+                    //         <div>All Tracks</div>
+                    //         <div className="grow" />
+                    //         <div>{
+                    //             groupChildren.reduce((total, current) => {
+                    //                 var count_param = current.children.find((e) => e.label === COUNT_LABEL);
+                    //                 if (count_param !== undefined &&
+                    //                     count_param.value !== undefined)
+                    //                 {               
+                    //                     if (typeof (count_param.value) === "number")
+                    //                     {
+                    //                         return total + count_param.value;
+                    //                     }
+                    //                     else
+                    //                     {
+                    //                         var num = parseInt(count_param.value);
+                    //                         if (!Number.isNaN(num))
+                    //                         {
+                    //                             // parse ok - add
+                    //                             return total + num;                                                
+                    //                         }
+                                            
+                    //                         console.log("string is not a number: " + count_param.value);
+                    //                         // parsing not ok
+                    //                     }
+                    //                 }
+                    //                 return total;
+                    //             }, 0)
+                    //         }</div>
+                    //     </div>
+
+                    //     :
+
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "row",
+                        }}
+                            onClick={() => { if (isOpen !== true) setIsOpen(true) }}
+                        >
+                            <div className="colorCircle" style={{
+                                width: 20,
+                                borderRadius: "50%",
+                                backgroundColor: "#F7F383",
+                                marginRight: "1em"
+                            }}></div>
+                            <div>{item.label}</div>
+                            <div className="grow" />
+                            <div className="track-note-count">{noteCountParam?.value}</div>
+                            <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Solo"
+                                parameter={item.children.find((e) => e.label === SOLO_LABEL)}></ParameterToggleButtonC>
+                            <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Mute"
+                                parameter={item.children.find((e) => e.label === MUTE_LABEL)}></ParameterToggleButtonC>
+                            <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Lock"
+                                parameter={item.children.find((e) => e.label === LOCK_LABEL)}></ParameterToggleButtonC>
+                        </div>
+
+                }
                 itemToString={(item) => item?.label}
                 itemToElement={(item) => 
                     <div style={{
                         display: "flex",
                         flexDirection: "row",
                         minHeight: "48px"
-                    }}>
+                    }}                    
+                    >
                         <div className="colorCircle" style={{
                             backgroundColor: "#F7F383",
                         }}></div>                    
@@ -193,28 +291,18 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
                         <div className="track-note-count">{
                             item.children.find((e) => e.label === COUNT_LABEL)?.value?.toString()
                         }</div>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Solo</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Mute</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Lock</Button>
-                    </div>
-                }
-                renderSelectedItem={(item) =>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "row",
-                    }}>
-                        <div className="colorCircle" style={{
-                            width: 20,
-                            borderRadius: "50%",
-                            backgroundColor: "#F7F383",
-                            marginRight: "1em"
-                        }}></div>
-                        <div>{item.label}</div>
-                        <div className="grow"/>
-                        <div className="track-note-count">{ noteCountParam?.value }</div>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Solo</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Mute</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Lock</Button>
+                        <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Solo"
+                                parameter={item.children.find((e) => e.label === SOLO_LABEL)}></ParameterToggleButtonC>
+                            <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Mute"
+                                parameter={item.children.find((e) => e.label === MUTE_LABEL)}></ParameterToggleButtonC>
+                            <ParameterToggleButtonC
+                                onSubmitCb={onSubmitCb}
+                                label="Lock"
+                                parameter={item.children.find((e) => e.label === LOCK_LABEL)}></ParameterToggleButtonC>
                     </div>
                 }
             >
