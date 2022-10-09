@@ -46,6 +46,8 @@
   flex-grow: 10;
 }
 
+
+/* track selector */
 .colorCircle {
   min-height: 24px;
   min-width: 24px;
@@ -54,15 +56,57 @@
   border-radius: 50%;
   margin-right: 1em;
 }
-
 .track-note-count {
   margin-right: 16px;
 }
-
 .track-selector {
   min-height: 48px;
 }
 
+/* dropdown slider */
+.dropdown-slider {
+  min-height: 48px;
+}
+.dropdown-slider .bx--list-box__field {  
+  padding-right: 0px;
+}
+.dropdown-slider .bx--list-box__field .bx--list-box__menu-icon {
+  display: none;
+}
+.dropdown-slider .bx--list-box__menu .bx--list-box__menu-item {
+  min-height: 48px;
+}
+.dropdown-slider
+.bx--list-box__menu
+.bx--list-box__menu-item
+.bx--list-box__menu-item__option {
+  height: 48px;
+  min-height: 48px;
+  padding: 0px;
+  margin: 0px;
+}
+.dropdown-slider
+.bx--list-box__menu
+.bx--list-box__menu-item
+.bx--list-box__menu-item__option
+.bx--list-box__menu-item__selected-icon {
+  display: none;
+}
+.dropdown-slider
+.bx--list-box__menu
+.bx--list-box__menu-item
+.bx--list-box__menu-item__option
+.bx--form-item
+.bx--slider-container {
+  /* adjust slider width? */
+}
+
+.dropdown-slider-slider {
+  max-height: 48px;
+}
+
+
+/* dropdown */
 .in-dropdown-button.bx--btn--secondary {
   /* margin: 0 !important; */
   /* width: 20px !important;
@@ -73,6 +117,16 @@
   height: 100%;
   min-height: 0;
 }
+
+.in-dropdown-button.bx--btn {
+
+}
+
+.in-dropdown-button.bx--btn--sm {
+  padding: 4px;
+  min-height: 0;
+}
+
 
 
 /* carbon */

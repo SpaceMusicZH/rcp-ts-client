@@ -26,6 +26,7 @@ import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayou
 import { ParameterSwitchC } from './ParameterSwitch';
 import ParameterDropdown from './ParameterDropdown';
 import ParameterTrackSelector from './ParameterTrackSelector';
+import ParameterDropdownSlider from './ParameterDropdownSlider';
 
 interface Props {
     parameter: Parameter;
@@ -180,12 +181,19 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     if (numdef.minimum < numdef.maximum) {
 
                         return ( 
-                            <ParameterSliderC
-                                {...filteredProps}
+                            <ParameterDropdownSlider
+                                parameter={this.props.parameter}
                                 value={this.state.value}
                                 handleValue={this.handleValueChange}
-                                continuous={true}
-                            />
+                                onSubmitCb={this.props.onSubmitCb}
+                            >
+                            </ParameterDropdownSlider>
+                            // <ParameterSliderC
+                            //     {...filteredProps}
+                            //     value={this.state.value}
+                            //     handleValue={this.handleValueChange}
+                            //     continuous={true}
+                            // />
                         );
                     }
                     else
@@ -376,7 +384,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                             onSubmitCb={this.props.onSubmitCb}
                         >
                         </ParameterDropdown>
-                        
+
                         // <ParameterHTMLSelectC
                         //     {...filteredProps}
                         //     value={this.state.value}
