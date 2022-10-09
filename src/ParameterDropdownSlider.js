@@ -22,23 +22,17 @@ const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSu
     {
         event.stopPropagation();
 
-        // handleChange({
-        //     selectedItem: parameter?.enumDefinition?.entries[idx]
-        // });
+        handleChange({
+            value: parameter?.value - 0.01
+        });
     }
     function stepUp(event)
     {
         event.stopPropagation();
 
-        // var idx = parameter?.enumDefinition?.entries.indexOf(parameter?.value) + 1;
-        // if (idx >= parameter?.enumDefinition?.entries.length)
-        // {
-        //     idx = 0;
-        // }
-
-        // handleChange({
-        //     selectedItem: parameter?.enumDefinition?.entries[idx]
-        // });
+        handleChange({
+            value: parameter?.value + 0.01
+        });
     }
 
     function onSliderValueChanged(value)
@@ -47,7 +41,8 @@ const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSu
         // event.stopPropagation();
     }
 
-    const elm = { p: parameter, f: handleChange.bind(this) };
+    // NOTE: calling function from inner Slider looses _this
+    const elm = { p: parameter, f: handleChange.bind(ParameterDropdownSlider) };
 
     return (
         <Dropdown

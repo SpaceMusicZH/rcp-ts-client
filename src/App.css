@@ -99,6 +99,28 @@
 .bx--form-item
 .bx--slider-container {
   /* adjust slider width? */
+  min-height: 48px;
+}
+.dropdown-slider
+.bx--list-box__menu
+.bx--list-box__menu-item
+.bx--list-box__menu-item__option
+.bx--form-item
+.bx--label {
+  display: none;
+}
+
+.dropdown-slider
+.bx--list-box__menu
+.bx--list-box__menu-item
+.bx--list-box__menu-item__option
+.bx--form-item
+.bx--slider-container
+.bx--slider-text-input {
+  /* adjust slider width? */
+  min-height: 48px;
+  min-width: auto;
+  height: auto;
 }
 
 .dropdown-slider-slider {
