@@ -259,14 +259,20 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
                             <div className="grow" />
                             <div className="track-note-count">{noteCountParam?.value}</div>
                             <ParameterToggleButtonC
+                                className="in-dropdown-button"
+                                classNamePrefix="solo-btn"
                                 onSubmitCb={onSubmitCb}
                                 label="Solo"
                                 parameter={item.children.find((e) => e.label === SOLO_LABEL)}></ParameterToggleButtonC>
                             <ParameterToggleButtonC
+                                className="in-dropdown-button"
+                                classNamePrefix="mute-btn"
                                 onSubmitCb={onSubmitCb}
                                 label="Mute"
                                 parameter={item.children.find((e) => e.label === MUTE_LABEL)}></ParameterToggleButtonC>
                             <ParameterToggleButtonC
+                                className="in-dropdown-button"
+                                classNamePrefix="lock-btn"
                                 onSubmitCb={onSubmitCb}
                                 label="Lock"
                                 parameter={item.children.find((e) => e.label === LOCK_LABEL)}></ParameterToggleButtonC>
@@ -292,17 +298,23 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
                             item.children.find((e) => e.label === COUNT_LABEL)?.value?.toString()
                         }</div>
                         <ParameterToggleButtonC
-                                onSubmitCb={onSubmitCb}
-                                label="Solo"
-                                parameter={item.children.find((e) => e.label === SOLO_LABEL)}></ParameterToggleButtonC>
-                            <ParameterToggleButtonC
-                                onSubmitCb={onSubmitCb}
-                                label="Mute"
-                                parameter={item.children.find((e) => e.label === MUTE_LABEL)}></ParameterToggleButtonC>
-                            <ParameterToggleButtonC
-                                onSubmitCb={onSubmitCb}
-                                label="Lock"
-                                parameter={item.children.find((e) => e.label === LOCK_LABEL)}></ParameterToggleButtonC>
+                            className="in-dropdown-button"
+                            classNamePrefix="solo-btn"
+                            onSubmitCb={onSubmitCb}
+                            label="Solo"
+                            parameter={item.children.find((e) => e.label === SOLO_LABEL)}></ParameterToggleButtonC>
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="mute-btn"
+                            onSubmitCb={onSubmitCb}
+                            label="Mute"
+                            parameter={item.children.find((e) => e.label === MUTE_LABEL)}></ParameterToggleButtonC>
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="lock-btn"                            
+                            onSubmitCb={onSubmitCb}
+                            label="Lock"
+                            parameter={item.children.find((e) => e.label === LOCK_LABEL)}></ParameterToggleButtonC>
                     </div>
                 }
             >

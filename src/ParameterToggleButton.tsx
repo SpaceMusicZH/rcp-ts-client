@@ -6,6 +6,8 @@ import { Button } from 'carbon-components-react';
 interface Props {
     label?: string;
     parameter: BooleanParameter;
+    className?: string;
+    classNamePrefix?: string;
 };
 
 interface State {
@@ -61,14 +63,12 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
             console.log("no param");            
         }
 
-        const boolean_param = param as BooleanParameter || undefined;
-
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
             // {boolean_param !== undefined ? <div></div> : <div></div>}
             <Button
-                className="in-dropdown-button"
+                className={this.props.className + (this.props.classNamePrefix ? (" " + this.props.classNamePrefix + (this.props.parameter.value === true ? "-on" : "-off")) : "")}
                 size="sm"
                 kind={this.props.parameter?.value ? "primary" : "secondary"}
                 onClick={this.onClicked}

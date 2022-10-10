@@ -46,6 +46,45 @@
   flex-grow: 10;
 }
 
+.solo-btn-on {
+  background-color: #39B552;
+}
+.solo-btn-on:hover {
+  background-color: #39B552;
+}
+.solo-btn-off {
+  background-color: #2B2B2B;
+}
+.solo-btn-off:hover {
+  background-color: #2B2B2B;
+}
+
+.mute-btn-on {
+  background-color: #FC6B76;
+}
+.mute-btn-on:hover {
+  background-color: #FC6B76;
+}
+.mute-btn-off {
+  background-color: #2B2B2B;
+}
+.mute-btn-off:hover {
+  background-color: #2B2B2B;
+}
+
+.lock-btn-on {
+  background-color: #ECB717;
+}
+.lock-btn-on:hover {
+  background-color: #ECB717;
+}
+.lock-btn-off {
+  background-color: #2B2B2B;
+}
+.lock-btn-off:hover {
+  background-color: #2B2B2B;
+}
+
 
 /* track selector */
 .colorCircle {
@@ -141,7 +180,7 @@
 }
 
 .in-dropdown-button.bx--btn {
-
+  
 }
 
 .in-dropdown-button.bx--btn--sm {
