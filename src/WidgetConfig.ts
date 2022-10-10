@@ -8,10 +8,13 @@ export const WIDGET_SWITCH_STR = "widget_switch";
 export const WIDGET_CONTENT_SCROLLER = "content_scroller";
 export const WIDGET_TRACK_SELECTOR = "widget_trackselector"
 
+// special user-ids
+export const SYNC_ALL_TRACKS_ID = "_syncAllTracks";
+export const COLOR_ID = "_color";
+export const COUNT_ID = "_count";
+export const SOLO_ID = "_solo";
+export const MUTE_ID = "_mute";
+export const LOCK_ID = "_lock";
+
 // labels
 export const TOGGLE_LABEL = "_onoff";
-export const COLOR_LABEL = "_color";
-export const COUNT_LABEL = "_count";
-export const SOLO_LABEL = "_solo";
-export const MUTE_LABEL = "_mute";
-export const LOCK_LABEL = "_lock";

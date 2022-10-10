@@ -3,6 +3,7 @@ import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { COMPONENT_DEFAULT_COLOR } from './Globals';
 
 interface Props {
+    className?: string;
     style?: React.CSSProperties;
     defaultColor?: string;
 };
@@ -20,18 +21,24 @@ export class ParameterColorDivC extends React.Component<Props & InjectedProps, S
     } 
     
     render() {
-        const value = this.props.value ? 
+
+        let value = this.props.value ? 
                         (this.props.value as string) : 
                         (this.props.defaultColor ? 
                             this.props.defaultColor : 
                             COMPONENT_DEFAULT_COLOR);
 
+        if (value === "#00000000")
+        {
+            value = COMPONENT_DEFAULT_COLOR;
+        }
+        
         return (
-            <div style={{
-                backgroundColor: value,
-            }}>
+            <div
+                className={this.props.className}
+                style={{ backgroundColor: value }}>
                 <div style={this.props.style}>
-                    {this.props.children}                
+                    {this.props.children}
                 </div>     
                        
             </div>
