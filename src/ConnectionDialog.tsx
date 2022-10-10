@@ -137,7 +137,12 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         return (
             <section>
 
-                <SMHeader></SMHeader>
+                {
+                    this.state.client ?
+                        <SMHeader></SMHeader>
+                    :
+                        ""
+                }
 
                 {
                     this.state.client ?
