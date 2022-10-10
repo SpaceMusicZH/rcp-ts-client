@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dropdown, Button, Slider } from 'carbon-components-react'
 import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
 
-const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSubmitCb }) =>
+export const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSubmitCb }) =>
 {
     const increment = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 10;
     const stepSize = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 200; // 200 is the width of the slider for now
@@ -68,5 +68,3 @@ const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSu
         </div>
     )
 }
-
-export default ParameterDropdownSlider

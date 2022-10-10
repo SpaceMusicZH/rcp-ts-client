@@ -24,9 +24,9 @@ import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
 import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_SWITCH_STR, TOGGLE_LABEL, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
-import ParameterDropdown from './ParameterDropdown';
-import ParameterTrackSelector from './ParameterTrackSelector';
-import ParameterDropdownSlider from './ParameterDropdownSlider';
+import { ParameterDropdown } from './ParameterDropdown';
+import { ParameterTrackSelector } from './ParameterTrackSelector';
+import { ParameterDropdownSlider } from './ParameterDropdownSlider';
 
 interface Props {
     parameter: Parameter;

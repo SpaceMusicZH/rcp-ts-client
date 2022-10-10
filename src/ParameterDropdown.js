@@ -1,9 +1,8 @@
-import React, { Component, useState, PropsWithChildren } from "react";
-import { Dropdown, Button } from 'carbon-components-react'
+import React, { useState } from "react";
+import { Button } from 'carbon-components-react'
 import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
-// import 'carbon-components-react/index.scss'
 
-const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb }) => {
+export const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb }) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -33,6 +32,7 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
             selectedItem: parameter?.enumDefinition?.entries[idx]
         });
     }
+    
     function onNextChild(event)
     {
         event.stopPropagation();
@@ -90,5 +90,3 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
         </div>
     )
 }
-
-export default ParameterDropdown
