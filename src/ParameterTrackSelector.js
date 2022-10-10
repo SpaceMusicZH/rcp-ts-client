@@ -218,7 +218,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             className="in-dropdown-button"
                             classNamePrefix="solo-btn"
                             onSubmitCb={onSubmitCb}
-                            label="Solo"
                             parameter={currentParam?.children.find((e) => e.userid === SOLO_ID)}
                         ></ParameterToggleButtonC>
                         
@@ -226,7 +225,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             className="in-dropdown-button"
                             classNamePrefix="mute-btn"
                             onSubmitCb={onSubmitCb}
-                            label="Mute"
                             parameter={currentParam?.children.find((e) => e.userid === MUTE_ID)}
                         ></ParameterToggleButtonC>
                         
@@ -234,7 +232,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             className="in-dropdown-button"
                             classNamePrefix="lock-btn"
                             onSubmitCb={onSubmitCb}
-                            label="Lock"
                             parameter={currentParam?.children.find((e) => e.userid === LOCK_ID)}
                         ></ParameterToggleButtonC>
                     </div>
@@ -276,7 +273,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                     className="in-dropdown-button"
                                     classNamePrefix="solo-btn"
                                     onSubmitCb={onSubmitCb}
-                                    label="Solo"
                                     parameter={parameter.children.find((e) => e.userid === SOLO_ID)}
                                 ></ParameterToggleButtonC>
                                 
@@ -284,7 +280,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                     className="in-dropdown-button"
                                     classNamePrefix="mute-btn"
                                     onSubmitCb={onSubmitCb}
-                                    label="Mute"
                                     parameter={parameter.children.find((e) => e.userid === MUTE_ID)}
                                 ></ParameterToggleButtonC>
                                 
@@ -292,7 +287,6 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                     className="in-dropdown-button"
                                     classNamePrefix="lock-btn"
                                     onSubmitCb={onSubmitCb}
-                                    label="Lock"
                                     parameter={parameter.children.find((e) => e.userid === LOCK_ID)}
                                 ></ParameterToggleButtonC>
                             </div>
