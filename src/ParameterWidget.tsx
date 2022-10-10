@@ -21,7 +21,7 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_SWITCH_STR, TOGGLE_LABEL, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, TOGGLE_LABEL, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
 import { ParameterDropdown } from './ParameterDropdown';
@@ -141,28 +141,29 @@ export default class ParameterWidget extends React.Component<Props, State> {
         const widget = parameter.widget;
 
         // check for special user-id
-        if (parameter.userid === WIDGET_NOWIDGET_STR)
+        if (parameter.userid === WIDGET_NOWIDGET_STR ||
+            parameter.readonly === true)
         {
             return (
-                <div
-                    className={parameter.userid ? parameter.userid : ""}
-                    style={{
-                    display: "flex",
-                    flexDirection: this.props.vertical ? "column" : "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
-                    marginRight: "1em",
-                }}>
-                    <label className="bx--label">{parameter?.label || ""}</label>
-                    <div className={`${this.props.vertical !== true ? "spacer" : ""}`}/>
-                    <ParameterTextWithLabelC
-                        {...filteredProps}
-                        value={this.state.value}
-                        handleValue={this.handleValueChange}
-                        labelDisabled={true}
-                    />
-                </div>
+                // <div
+                //     className={parameter.userid ? parameter.userid : ""}
+                //     style={{
+                //     display: "flex",
+                //     flexDirection: this.props.vertical ? "column" : "row",
+                //     justifyContent: "center",
+                //     alignItems: "center",
+                //     height: "100%",
+                //     marginRight: "1em",
+                // }}>
+                //     <label className="bx--label">{parameter?.label || ""}</label>
+                //     <div className={`${this.props.vertical !== true ? "spacer" : ""}`}/>
+                // </div>
+                <ParameterTextWithLabelC
+                    {...filteredProps}
+                    value={this.state.value}
+                    handleValue={this.handleValueChange}
+                    labelDisabled={false}
+                />
 
             );            
         }
@@ -327,28 +328,18 @@ export default class ParameterWidget extends React.Component<Props, State> {
             }
             else if (parameter instanceof BooleanParameter)
             {
-                const is_switch = parameter.userid === WIDGET_SWITCH_STR || parameter.label === TOGGLE_LABEL;
-
-                if (is_switch)
-                {
-                    return (
-                        <div>
-                            <ParameterSwitchC
+                // default switch
+                return (
+                    <ParameterSwitchC
                                 {...filteredProps}
                                 value={this.state.value}
                                 handleValue={this.handleValueChange}
                             />
-                        </div>
-                    );
-                }                
-
-                // default ceckbox
-                return (
-                    <ParameterCheckboxC
-                        {...filteredProps}
-                        value={this.state.value}
-                        handleValue={this.handleValueChange}
-                    />
+                    // <ParameterCheckboxC
+                    //     {...filteredProps}
+                    //     value={this.state.value}
+                    //     handleValue={this.handleValueChange}
+                    // />
                 );
             } 
             else if (parameter instanceof RGBAParameter ||

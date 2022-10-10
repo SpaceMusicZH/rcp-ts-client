@@ -4,7 +4,7 @@ export const WIDGET_NOTFOLDABLE_STR = "widget_notfoldable";
 export const WIDGET_EXPANDEDBYDEFAULT_STR = "widget_expandedbydefault";
 export const WIDGET_HORIZONTALLAYOUT_STR = "widget_horizontallayout";
 export const WIDGET_NOWIDGET_STR = "widget_nowidget";
-export const WIDGET_SWITCH_STR = "widget_switch";
+// export const WIDGET_SWITCH_STR = "widget_switch";
 export const WIDGET_CONTENT_SCROLLER = "content_scroller";
 export const WIDGET_TRACK_SELECTOR = "widget_trackselector"
 

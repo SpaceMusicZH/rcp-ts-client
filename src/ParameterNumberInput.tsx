@@ -69,19 +69,31 @@ export class ParameterNumericInputC extends React.Component<Props & InjectedProp
 
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
         
-        return (        
-            <NumberInput
-                id={param?.id.toString() || "number"}
-                label={param?.label}
-                {...filteredProps}
-                value={value}
-                min={min}
-                max={max}
-                step={step}
-                onChange={this.handleChange}
-                disabled={readOnly === true}
-                placeholder={"-"}
-            />      
+        return (
+
+            <div className='sm-row'>
+
+                <div className="dropdown-label dropdown-label-margin-left">
+                    {this.props.parameter?.label}
+                </div>
+
+                <div className="grow" />
+
+                <NumberInput
+                    {...filteredProps}
+                    className='grow dropdown-label-margin-left' 
+                    id={param?.id.toString() || "number"}
+                    label=""
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    onChange={this.handleChange}
+                    disabled={readOnly === true}
+                    placeholder={"-"}
+                />      
+            </div>
+
         );
     }
 };

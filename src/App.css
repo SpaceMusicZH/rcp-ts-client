@@ -122,6 +122,10 @@
 }
 
 
+.sm-margin-auto {
+  margin: auto;
+}
+
 .sm-icon {
   margin: auto;
   margin-left: 1em;

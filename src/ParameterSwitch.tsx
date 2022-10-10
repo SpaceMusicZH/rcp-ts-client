@@ -42,15 +42,26 @@ export class ParameterSwitchC extends React.Component<Props & InjectedProps, Sta
         const { onSubmitCb, handleValue, tabId, selectedTab, labelDisabled, ...filteredProps } = this.props;
 
         return (
-            <Toggle
-                {...filteredProps}
-                id={param?.id.toString() || "toggle"}
-                labelA={this.props.labelDisabled === true ? "" : param ? param.label : ""}
-                labelB=""                
-                toggled={value ? value : false}
-                onChange={this.handleChange}
-                disabled={readOnly === true || filteredProps.disabled === true}
-            />
+
+            <div className={this.props.labelDisabled === true ? "sm-margin-auto" : "sm-row"}>
+                <div hidden={this.props.labelDisabled}
+                    className="dropdown-label dropdown-label-margin-left">
+                    {this.props.parameter?.label}
+                </div>
+
+                <div className="grow" />
+
+                <Toggle
+                    {...filteredProps}
+                    id={param?.id.toString() || "toggle"}
+                    labelText=""
+                    labelA=""
+                    labelB=""
+                    toggled={value ? value : false}
+                    onChange={this.handleChange}
+                    disabled={readOnly === true || filteredProps.disabled === true}
+                />
+            </div>
         );
     }
 };

@@ -18,25 +18,32 @@ export class ParameterTextInputC extends React.Component<Props & InjectedProps, 
         };
     }    
 
-    handleChange = (event: React.FormEvent<HTMLElement>) => {
-
-        if (this.props.handleValue) {
+    handleChange = (event: React.FormEvent<HTMLElement>) =>
+    {
+        if (this.props.handleValue)
+        {
             this.props.handleValue((event.target as HTMLInputElement).value);
         }
     }
     
-    handleSubmit = (event: any) => {
-        
-        if (event && event.preventDefault) {
+    handleSubmit = (event: any) =>
+    {    
+        if (event && event.preventDefault)
+        {
             event.preventDefault();
         }
 
-        if (this.props.parameter instanceof ValueParameter) {
-            if (this.props.parameter.setStringValue(this.props.value)) {
-                if (this.props.onSubmitCb) {
+        if (this.props.parameter instanceof ValueParameter)
+        {
+            if (this.props.parameter.setStringValue(this.props.value))
+            {
+                if (this.props.onSubmitCb)
+                {
                     this.props.onSubmitCb();
                 }
-            } else {
+            }
+            else
+            {
                 console.error("could not set stringvalue...");
             }
         }
@@ -53,17 +60,26 @@ export class ParameterTextInputC extends React.Component<Props & InjectedProps, 
 
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
-        return (     
-            <form onSubmit={this.handleSubmit}>
-                <TextInput
-                    id="ti"
-                    labelText={ param?.label || "no label"}
-                    {...filteredProps}
-                    value={value}
-                    onChange={this.handleChange}
-                    disabled={readOnly === true}
-                />  
-            </form>    
+        return (
+            
+            <div className='sm-row'>
+
+                <div className="dropdown-label dropdown-label-margin-left">
+                    {this.props.parameter?.label}
+                </div>
+
+                <form className='grow dropdown-label-margin-left' onSubmit={this.handleSubmit}>
+                    <TextInput
+                        onBlur={this.handleSubmit}
+                        id={this.props.parameter?.id.toString() || "textinput"}
+                        labelText=""
+                        {...filteredProps}
+                        value={value}
+                        onChange={this.handleChange}
+                        disabled={readOnly === true}
+                    />  
+                </form>    
+            </div>
         );
     }
     
