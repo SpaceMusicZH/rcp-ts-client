@@ -63,9 +63,9 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
                     display: "flex",
                     flexDirection: "row",
                 }}>
-                    <div>{parameter?.label}</div>
-                    <div style={{ flexGrow: 1 }} />
-                    <div>{item}</div>
+                    <div className="dropdown-label">{parameter?.label}</div>
+                    <div className="grow"/>
+                    <div className="dropdown-value">{item}</div>
                     <Button kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="next" onClick={onPreviousChild}></Button>
                     <Button kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="previous" onClick={onNextChild}></Button>
                 </div>

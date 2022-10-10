@@ -58,9 +58,9 @@ const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSu
                     display: "flex",
                     flexDirection: "row"
                 }}>
-                    <div style={{margin: "auto"}}>{item.p.label}</div>
-                    <div style={{ flexGrow: 1 }} />
-                    <div style={{margin: "auto", marginRight: "1em"}}>{item.p.value.toFixed(3)}</div>
+                    <div className="dropdown-label">{item.p.label}</div>
+                    <div className="grow" />
+                    <div className="dropdown-value">{item.p.value.toFixed(3)}</div>
                     <Button kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
                     <Button kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="step up" onClick={stepUp}></Button>
                 </div>
@@ -74,7 +74,23 @@ const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSu
                     max={item.p.typeDefinition.maximum}
                     value={item.p.value || 0}
                     step={0.01}
-                    // onChange={({ value }) => item.f(value)}
+                    // onChange={({ value }) => {
+                    //     // debugger;
+
+                    //     var t = this._this;
+
+                    //     if (handleValue) {
+                    //         handleValue(value);
+                    //     }
+                    //     // console.log("item: " + item.p.value + ": " + value);
+                    //     // item.p.value = value;
+                
+                    //     if (onSubmitCb) {
+                    //         onSubmitCb();
+                    //     }
+
+                    //     this._this = t;
+                    // }}
                     // onRelease={() => handleChange}
                 >
                 </Slider>
