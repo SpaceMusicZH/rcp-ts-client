@@ -5,11 +5,10 @@ import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
 
 const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb }) => {
 
-    // var [value, setValue] = useState("dos");
+    const [isOpen, setIsOpen] = useState(false);
 
     function handleChange(data) {
         // console.log("data: " + data.selectedItem);
-        // setValue(data.selectedItem);
 
         if (handleValue) {
             handleValue(data.selectedItem);
@@ -49,29 +48,46 @@ const ParameterDropdown = ({ children, parameter, value, handleValue, onSubmitCb
         });
     }
 
+    function setEntry(e)
+    {
+        handleChange({
+            selectedItem: e
+        });
+
+        setIsOpen(!isOpen);
+    }
+
     return (
-        <Dropdown
-            id={parameter?.id.toString() || "dropdown"}
-            label=""
-            hideLabel={true}
-            onChange={handleChange}
-            disabled={parameter?.readonly === true}
-            items={parameter?.enumDefinition?.entries || []}
-            selectedItem={value || ""}
-            renderSelectedItem={(item) =>
-                <div style={{
-                    display: "flex",
-                    flexDirection: "row",
-                }}>
-                    <div className="dropdown-label">{parameter?.label}</div>
-                    <div className="grow"/>
-                    <div className="dropdown-value">{item}</div>
-                    <Button kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="next" onClick={onPreviousChild}></Button>
-                    <Button kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="previous" onClick={onNextChild}></Button>
-                </div>
-            }
-        >
-        </Dropdown>
+
+        <div>
+            <div className="sm-row"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <div className="dropdown-label dropdown-label-margin-left">{parameter?.label}</div>
+                <div className="grow" />
+                <div className="dropdown-value">{value}</div>
+                <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="next" onClick={onPreviousChild}></Button>
+                <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="previous" onClick={onNextChild}></Button>
+            </div>
+
+            <div hidden={isOpen !== true}>
+                {
+                    parameter?.enumDefinition?.entries.map(e => {
+                        return (
+                            <div
+                                key={e}
+                                className="sm-row sm-lighter"
+                                onClick={() => setEntry(e)}
+                            >
+                                <div className="dropdown-label-margin-left">
+                                {e}
+                                </div>
+                            </div>
+                        );
+                    })
+                }
+            </div>
+        </div>
     )
 }
 
