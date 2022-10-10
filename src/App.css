@@ -47,10 +47,10 @@
 }
 
 .solo-btn-on {
-  background-color: #39B552;
+  background-color: #42BE65;
 }
 .solo-btn-on:hover {
-  background-color: #39B552;
+  background-color: #42BE65;
 }
 .solo-btn-off {
   background-color: #2B2B2B;
@@ -60,10 +60,10 @@
 }
 
 .mute-btn-on {
-  background-color: #FC6B76;
+  background-color: #FF8389;
 }
 .mute-btn-on:hover {
-  background-color: #FC6B76;
+  background-color: #FF8389;
 }
 .mute-btn-off {
   background-color: #2B2B2B;
@@ -73,10 +73,10 @@
 }
 
 .lock-btn-on {
-  background-color: #ECB717;
+  background-color: #F1C21B;
 }
 .lock-btn-on:hover {
-  background-color: #ECB717;
+  background-color: #F1C21B;
 }
 .lock-btn-off {
   background-color: #2B2B2B;
