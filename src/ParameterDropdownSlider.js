@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown, Button, Slider } from 'carbon-components-react'
 import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
 
-const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSubmitCb }) => {
-
-    // var [value, setValue] = useState("dos");
+const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSubmitCb }) =>
+{
+    const increment = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 10;
+    const stepSize = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 200; // 200 is the width of the slider for now
+    const [isOpen, setIsOpen] = useState(false);
 
     function handleChange(data) {
         // console.log("data: " + data.value);
@@ -23,80 +25,47 @@ const ParameterDropdownSlider = ({ children, parameter, value, handleValue, onSu
         event.stopPropagation();
 
         handleChange({
-            value: parameter?.value - 0.01
+            value: parameter?.value - increment
         });
     }
+
     function stepUp(event)
     {
         event.stopPropagation();
 
         handleChange({
-            value: parameter?.value + 0.01
+            value: parameter?.value + increment
         });
     }
 
-    function onSliderValueChanged(value)
-    {
-        console.log(value);
-        // event.stopPropagation();
-    }
-
-    // NOTE: calling function from inner Slider looses _this
-    const elm = { p: parameter, f: handleChange.bind(ParameterDropdownSlider) };
-
     return (
-        <Dropdown
-            className="dropdown-slider"
-            id={parameter?.id.toString() || "dropdown"}
-            label=""
-            hideLabel={true}
-            disabled={parameter?.readonly === true}
-            items={[elm]}
-            selectedItem={elm}
-            renderSelectedItem={(item) =>
-                <div style={{
-                    display: "flex",
-                    flexDirection: "row"
-                }}>
-                    <div className="dropdown-label">{item.p.label}</div>
+        <div>
+            <div
+                className="sm-row"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                    <div className="dropdown-label dropdown-label-margin-left">{parameter.label}</div>
                     <div className="grow" />
-                    <div className="dropdown-value">{item.p.value.toFixed(3)}</div>
-                    <Button kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
-                    <Button kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="step up" onClick={stepUp}></Button>
+                    <div className="dropdown-value">{value.toFixed(3)}</div>
+                    <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
+                    <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="step up" onClick={stepUp}></Button>
+            </div>
+            
+            <div hidden={isOpen !== true}>
+                <div className="sm-row sm-lighter">
+                    <Slider
+                        className="dropdown-slider-slider"
+                        id={parameter.id.toString() || "value-slider"}
+                        min={parameter.typeDefinition.minimum}
+                        max={parameter.typeDefinition.maximum}
+                        value={value}
+                        step={stepSize}
+                        onChange={handleChange}
+                    >
+                    </Slider>
                 </div>
-            }
-            itemToString={(item) => item.p.label}
-            itemToElement={(item) =>
-                <Slider
-                    className="dropdown-slider-slider"
-                    id={item.p.id.toString() || "value-slider"}
-                    min={item.p.typeDefinition.minimum}
-                    max={item.p.typeDefinition.maximum}
-                    value={item.p.value || 0}
-                    step={0.01}
-                    // onChange={({ value }) => {
-                    //     // debugger;
-
-                    //     var t = this._this;
-
-                    //     if (handleValue) {
-                    //         handleValue(value);
-                    //     }
-                    //     // console.log("item: " + item.p.value + ": " + value);
-                    //     // item.p.value = value;
-                
-                    //     if (onSubmitCb) {
-                    //         onSubmitCb();
-                    //     }
-
-                    //     this._this = t;
-                    // }}
-                    // onRelease={() => handleChange}
-                >
-                </Slider>
-            }
-        >
-        </Dropdown>
+            </div>
+        </div>
     )
 }
 

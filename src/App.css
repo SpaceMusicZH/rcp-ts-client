@@ -46,6 +46,20 @@
   flex-grow: 10;
 }
 
+.button-dark {
+  background-color: #393939;
+  border-left: 1px solid #525252;
+}
+.button-dark:focus {
+  background-color: #393939;
+  outline: none !important;
+  border: none !important;
+  border-width: 0px;
+}
+.bx--btn__icon:focus {
+  outline: none !important;
+}
+
 .solo-btn-on {
   background-color: #42BE65;
 }
@@ -86,6 +100,19 @@
 }
 
 
+.sm-row {
+  min-height: 48px;
+  display: flex;
+  flex-direction: row;
+  background-color: #393939;
+  border-top: 1px solid #525252;
+}
+
+.sm-lighter{
+  background-color: #424242;
+}
+
+
 /* track selector */
 .colorCircle {
   min-height: 24px;
@@ -104,6 +131,9 @@
 
 .dropdown-label {
   margin: auto;
+}
+.dropdown-label-margin-left {
+  margin-left: 1em;
 }
 
 .dropdown-value {
