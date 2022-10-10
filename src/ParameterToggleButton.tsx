@@ -48,14 +48,14 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
 
     render() {
         const value = this.props.value as boolean || false;
-        let readOnly:boolean|undefined;
+        let readOnly = false;
 
 
         const param = this.props.parameter;
         if (param) {
             console.log("param: " + param.label);
             
-            readOnly = param.readonly;        
+            readOnly = param.readonly || false;
         }
         else {
             console.log("no param");            
@@ -70,8 +70,10 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
             <Button
                 className="in-dropdown-button"
                 size="sm"
-                kind={this.props.parameter.value ? "primary" : "secondary"}
-                onClick={this.onClicked}>
+                kind={this.props.parameter?.value ? "primary" : "secondary"}
+                onClick={this.onClicked}
+                disabled={this.props.parameter === undefined || readOnly}
+            >
             {this.props.label ? this.props.label : param?.label}
             </Button>
         );
