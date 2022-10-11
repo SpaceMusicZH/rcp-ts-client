@@ -44,11 +44,15 @@ export const ParameterDropdownSlider = ({ children, value, parameter, handleValu
                 className="sm-row"
                 onClick={() => setIsOpen(!isOpen)}
             >
-                    <div className="dropdown-label dropdown-label-margin-left">{parameter.label}</div>
-                    <div className="grow" />
-                    <div className="dropdown-value">{value.toFixed(3)}</div>
-                    <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
-                    <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="step up" onClick={stepUp}></Button>
+                <div className="dropdown-label dropdown-label-margin-left">{parameter.label}</div>
+                <div className="grow" />
+                <div className="dropdown-value">
+                    {
+                        value.toFixed(3) + " " + (parameter.typeDefinition.unit || "")
+                    }
+                </div>
+                <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
+                <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronRight32} iconDescription="step up" onClick={stepUp}></Button>
             </div>
             
             <div hidden={isOpen !== true}>
