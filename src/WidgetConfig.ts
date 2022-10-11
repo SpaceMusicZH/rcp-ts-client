@@ -6,7 +6,8 @@ export const WIDGET_HORIZONTALLAYOUT_STR = "widget_horizontallayout";
 export const WIDGET_NOWIDGET_STR = "widget_nowidget";
 // export const WIDGET_SWITCH_STR = "widget_switch";
 export const WIDGET_CONTENT_SCROLLER = "content_scroller";
-export const WIDGET_TRACK_SELECTOR = "widget_trackselector"
+export const WIDGET_TRACK_SELECTOR = "widget_trackselector";
+export const WIDGET_SETTINGS_STRING = "widget_settings";
 
 // special user-ids
 export const SYNC_ALL_TRACKS_ID = "_syncAllTracks";

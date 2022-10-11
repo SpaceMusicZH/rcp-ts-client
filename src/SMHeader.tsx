@@ -1,13 +1,24 @@
+import { GroupParameter } from 'rabbitcontrol';
 import * as React from 'react';
-import ToggleButton from './ToggleButton';
+import { InjectedProps, parameterWrapped } from './ElementWrapper';
+import { SettingsToggleButtonC } from './SettingsToggleButton';
 
 interface Props {
+    parameter?: GroupParameter
 };
 
 interface State {
 };
 
-export default class SMHeader extends React.Component<Props, State> {
+export default class SMHeaderC extends React.Component<Props & InjectedProps, State>
+{
+
+    constructor(props: Props & InjectedProps) {
+        super(props);
+    
+        this.state = {
+        };
+    }
 
     render() {
 
@@ -21,10 +32,17 @@ export default class SMHeader extends React.Component<Props, State> {
                     <img src='smlogo.svg' />
                     <label className='smlogofont'>SpaceMusic</label>
                     <div className='grow'></div>
-                    <ToggleButton offsrc='/smsettings.svg' onsrc='/smsettings-on.svg'></ToggleButton>
+
+                    <SettingsToggleButtonC
+                        {...this.props}
+                        offsrc='/smsettings.svg'
+                        onsrc='/smsettings-on.svg'>                        
+                    </SettingsToggleButtonC>
                 </div>
 
             </div>
         );
     }
 }
+
+export const SMHeader = parameterWrapped({ignoreReadonly: true})(SMHeaderC);

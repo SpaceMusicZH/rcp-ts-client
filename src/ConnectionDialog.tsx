@@ -5,6 +5,7 @@ import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
 import App from './App';
 import { Checkbox, Modal, NumberInput, TextInput } from 'carbon-components-react';
 import SMHeader from './SMHeader';
+import { WIDGET_SETTINGS_STRING } from './WidgetConfig';
 
 
 type Props = {
@@ -20,14 +21,18 @@ type State = {
     serverVersion: string;
     serverApplicationId: string;
     rootWithTabs: boolean;
+    settingsParameter?: GroupParameter;
 };
 
 export default class ConnectionDialog extends React.Component<Props, State> {
     
     private addTimer?: number;
+    private headerRef: React.RefObject<SMHeader>;
 
     constructor(props: Props) {
         super(props);
+
+        this.headerRef = React.createRef();
 
         this.state = {
             isConnected: false,
@@ -139,7 +144,11 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
                 {
                     this.state.client ?
-                        <SMHeader></SMHeader>
+                        <SMHeader
+                            parameter={this.state.settingsParameter}
+                            value={false}
+                            onSubmitCb={this.updateClient}
+                        ></SMHeader>
                     :
                         ""
                 }
@@ -410,6 +419,14 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             this.addTimer = undefined;
         }
 
+        if (parameter.userid === WIDGET_SETTINGS_STRING &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                settingsParameter: parameter as GroupParameter
+            });
+        }
+
         this.addTimer = window.setTimeout(() => {
             if (this.state.client)
             {
@@ -426,6 +443,14 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         parameter.removeFromParent();
 
         parameter.removeChangedListener(this.parameterChangeListener);        
+
+        if (parameter.userid === WIDGET_SETTINGS_STRING &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                settingsParameter: undefined
+            });
+        }
 
         if (this.state.client)
         {

@@ -44,7 +44,7 @@ export default class ContentContainer extends React.Component<Props, State> {
             // console.log(this.props.parameter.userid + ": " + this.props.parameter.label);
             // console.log("TOP: " + top + " : " + window.innerHeight);
             // console.log("TOP2: " + top2);
-            // console.log("HEIGHT: " + h);
+            // console.log(this.props.parameter.label + " - HEIGHT: " + h);
             // console.log();
             
             this.setState({ height: h })
@@ -76,7 +76,7 @@ export default class ContentContainer extends React.Component<Props, State> {
     createChildWidgets(parameter: GroupParameter) 
     {
         if (parameter.widget instanceof TabsWidget) 
-        {
+        {            
             return (
                 <ParameterTabsGroupC                    
                     key={"_" + parameter.id}
@@ -91,7 +91,7 @@ export default class ContentContainer extends React.Component<Props, State> {
 
 
         return parameter.children
-        .filter(param => 
+        .filter((param) => 
         {
             const is_group = (param instanceof GroupParameter);
             var is_tabs = false;
@@ -143,7 +143,8 @@ export default class ContentContainer extends React.Component<Props, State> {
     }
 
     render() {
-        if (this.props.parameter.userid === WIDGET_CONTENT_SCROLLER) {
+        if (this.props.parameter.userid === WIDGET_CONTENT_SCROLLER)
+        {
             return (
                 <div className={(this.props.parameter.userid ? this.props.parameter.userid : "tab_group inner") + " " + (this.props.className || "")}
                     id={this.props.parameter.label ? this.props.parameter.label : "no_label"}

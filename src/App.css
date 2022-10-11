@@ -42,6 +42,16 @@
 }
 
 
+.settings-modal {
+  position: fixed;
+  top: 148px;
+  left: 0px;
+  background-color: #2B2B2B;
+  padding-left: 4px;
+  padding-right: 4px;
+  z-index: 1000;
+}
+
 .grow {
   flex-grow: 10;
 }
@@ -58,6 +68,31 @@
 }
 .bx--btn__icon:focus {
   outline: none !important;
+}
+
+.settings-on {
+  background-color: #AD3436;
+  color: white;
+  outline: none;
+  border: none;
+}
+.settings-on:hover {
+  background-color: #AD3436;
+  color: white;
+  outline: none;
+  border: none;
+}
+.settings-off {
+  background-color: #393939;
+  color: white;
+  outline: none;
+  border: none;
+}
+.settings-off:hover {
+  background-color: #393939;
+  color: white;
+  outline: none;
+  border: none;
 }
 
 .solo-btn-on {
@@ -144,6 +179,7 @@
 }
 
 
+
 /* track selector */
 .colorCircle {
   min-height: 24px;
@@ -172,6 +208,7 @@
 }
 
 .dropdown-value {
+  white-space: nowrap;
   margin: auto;
   margin-right: 1em;
 }
@@ -325,6 +362,19 @@
 .content_scroller {
   /* height: 300px; */
   overflow: auto;
+}
+
+.widget_settings {
+  /* height: 300px; */
+  overflow: auto;
+}
+
+.settings-modal {
+  overflow: auto;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 /* gui styles */
