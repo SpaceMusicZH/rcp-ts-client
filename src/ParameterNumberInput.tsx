@@ -81,7 +81,7 @@ export class ParameterNumericInputC extends React.Component<Props & InjectedProp
 
                 <NumberInput
                     {...filteredProps}
-                    className='grow dropdown-label-margin-left' 
+                    className='' 
                     id={param?.id.toString() || "number"}
                     label=""
                     value={value}
