@@ -146,6 +146,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <Icon
+                            description=""
                             className="sm-icon"
                             icon={iconChevronUp}
                             fill="white"
@@ -198,6 +199,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         <Icon
+                            description=""
                             className="sm-icon"
                             icon={iconChevronDown}
                             fill="white"
