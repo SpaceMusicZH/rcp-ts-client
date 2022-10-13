@@ -464,6 +464,16 @@
   flex-grow: 10;
 }
 
+
+.radio-option-container {
+  display: flex;
+  flex-flow: wrap;
+}
+.radio-option-item {
+  flex-grow: 10;
+  white-space: nowrap;
+}
+
 /* .rootgroup-wrapper {
   padding: 5px;
   padding-top: 0px;

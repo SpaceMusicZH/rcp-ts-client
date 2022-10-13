@@ -4,7 +4,8 @@ import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { SettingsToggleButtonC } from './SettingsToggleButton';
 
 interface Props {
-    parameter?: GroupParameter
+    settingsParameter?: GroupParameter
+    threeDViewParameter?: GroupParameter
 };
 
 interface State {
@@ -28,15 +29,22 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                 <div className="header-empty">                    
                 </div>
 
-                <div className="header-line grow">                    
-                    <img src='smlogo.svg' />
-                    <label className='smlogofont'>SpaceMusic</label>
+                <div className="header-line grow">
+                    
+                    <SettingsToggleButtonC
+                        {...this.props}
+                        parameter={this.props.threeDViewParameter}
+                        offsrc='/sm_logo_off.png'
+                        onsrc='/sm_logo_on.png'>                        
+                    </SettingsToggleButtonC>
+                    
                     <div className='grow'></div>
 
                     <SettingsToggleButtonC
                         {...this.props}
+                        parameter={this.props.settingsParameter}
                         offsrc='/smsettings.svg'
-                        onsrc='/smsettings-on.svg'>                        
+                        onsrc='/smsettings-on.svg'>
                     </SettingsToggleButtonC>
                 </div>
 

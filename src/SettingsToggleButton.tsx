@@ -7,8 +7,8 @@ import ParameterWidget from './ParameterWidget';
 import ContentContainer from './ContentContainer';
 
 interface Props {
-    offsrc: string;
-    onsrc: string;
+    offsrc?: string;
+    onsrc?: string;
     parameter?: GroupParameter;
 };
 
@@ -21,7 +21,7 @@ interface State {
 
 export class SettingsToggleButtonC extends React.Component<Props & InjectedProps, State>
 {
-    private ref: React.RefObject<HTMLButtonElement>;
+    private ref: React.RefObject<HTMLDivElement>;
 
 
     constructor(props: Props & InjectedProps)
@@ -87,15 +87,23 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
 
     render() {
         return (
-            <Button
-                ref={this.ref}
-                className={"settings-" + (this.state.on ? "on" : "off")}
-                hasIconOnly
-                iconDescription="Settings"
-                renderIcon={this.state.on ? Close16 : Settings16}
-                onClick={this.toggle}
-                disabled={this.props.parameter === undefined}
+            // <Button
+            //     ref={this.ref}
+            //     className={"settings-" + (this.state.on ? "on" : "off")}
+            //     hasIconOnly
+            //     iconDescription="Settings"
+            //     renderIcon={(this.props.offsrc && this.props.onsrc) ?  undefined : (this.state.on ? Close16 : Settings16)}
+            //     onClick={this.toggle}
+            //     disabled={this.props.parameter === undefined}
+            // >
+            // </Button>
+            <div
+            ref={this.ref}
             >
+                <a onClick={this.toggle}>
+                    <img src={this.state.on ? this.props.onsrc : this.props.offsrc}>                    
+                    </img>
+                </a>
                 <div
                     onClick={(event) => {
                         event.stopPropagation();
@@ -125,13 +133,7 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
 
                     {this.renderChildren()}
                 </div>
-            </Button>
-            // <div>
-            //     <a onClick={this.toggle}>
-            //         <img src={this.state.on ? this.props.onsrc : this.props.offsrc}>                    
-            //         </img>
-            //     </a>
-            // </div>
+            </div>
         );
     }
 }

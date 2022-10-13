@@ -5,7 +5,7 @@ import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
 import App from './App';
 import { Checkbox, Modal, NumberInput, TextInput } from 'carbon-components-react';
 import SMHeader from './SMHeader';
-import { WIDGET_SETTINGS_STRING } from './WidgetConfig';
+import { WIDGET_3D_VIEW, WIDGET_SETTINGS_STRING } from './WidgetConfig';
 
 
 type Props = {
@@ -22,6 +22,7 @@ type State = {
     serverApplicationId: string;
     rootWithTabs: boolean;
     settingsParameter?: GroupParameter;
+    threeDViewParameter?: GroupParameter;
 };
 
 export default class ConnectionDialog extends React.Component<Props, State> {
@@ -145,7 +146,8 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 {
                     this.state.client ?
                         <SMHeader
-                            parameter={this.state.settingsParameter}
+                            settingsParameter={this.state.settingsParameter}
+                            threeDViewParameter={this.state.threeDViewParameter}
                             value={false}
                             onSubmitCb={this.updateClient}
                         ></SMHeader>
@@ -426,6 +428,13 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 settingsParameter: parameter as GroupParameter
             });
         }
+        else if (parameter.userid === WIDGET_3D_VIEW &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                threeDViewParameter: parameter as GroupParameter
+            });
+        }
 
         this.addTimer = window.setTimeout(() => {
             if (this.state.client)
@@ -449,6 +458,13 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         {
             this.setState({
                 settingsParameter: undefined
+            });
+        }
+        else if (parameter.userid === WIDGET_3D_VIEW &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                threeDViewParameter: undefined
             });
         }
 
