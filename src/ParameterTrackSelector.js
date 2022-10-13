@@ -219,21 +219,21 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             className="in-dropdown-button"
                             classNamePrefix="solo-btn"
                             onSubmitCb={onSubmitCb}
-                            parameter={currentParam?.children.find((e) => e.userid.includes(SOLO_ID))}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(SOLO_ID))}
                         ></ParameterToggleButtonC>
                         
                         <ParameterToggleButtonC
                             className="in-dropdown-button"
                             classNamePrefix="mute-btn"
                             onSubmitCb={onSubmitCb}
-                            parameter={currentParam?.children.find((e) => e.userid.includes(MUTE_ID))}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(MUTE_ID))}
                         ></ParameterToggleButtonC>
                         
                         <ParameterToggleButtonC
                             className="in-dropdown-button"
                             classNamePrefix="lock-btn"
                             onSubmitCb={onSubmitCb}
-                            parameter={currentParam?.children.find((e) => e.userid.includes(LOCK_ID))}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(LOCK_ID))}
                         ></ParameterToggleButtonC>
                     </div>
             }
@@ -265,7 +265,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                 
                                 <div className="dropdown-value">
                                     {
-                                        parameter.children.find((e) => e.userid.includes(COUNT_ID)?.value?.toString()
+                                        parameter.children.find((e) => e.userid && e.userid.includes(COUNT_ID))?.value?.toString()
                                     }
                                 </div>
 
@@ -273,21 +273,21 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                     className="in-dropdown-button"
                                     classNamePrefix="solo-btn"
                                     onSubmitCb={onSubmitCb}
-                                    parameter={parameter.children.find((e) => e.userid.includes(SOLO_ID))}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(SOLO_ID))}
                                 ></ParameterToggleButtonC>
                                 
                                 <ParameterToggleButtonC
                                     className="in-dropdown-button"
                                     classNamePrefix="mute-btn"
                                     onSubmitCb={onSubmitCb}
-                                    parameter={parameter.children.find((e) => e.userid.includes(MUTE_ID))}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(MUTE_ID))}
                                 ></ParameterToggleButtonC>
                                 
                                 <ParameterToggleButtonC
                                     className="in-dropdown-button"
                                     classNamePrefix="lock-btn"
                                     onSubmitCb={onSubmitCb}
-                                    parameter={parameter.children.find((e) => e.userid.includes(LOCK_ID))}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(LOCK_ID))}
                                 ></ParameterToggleButtonC>
                             </div>
 
