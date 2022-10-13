@@ -21,7 +21,7 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
 import { ParameterDropdown } from './ParameterDropdown';
@@ -355,9 +355,10 @@ export default class ParameterWidget extends React.Component<Props, State> {
             } 
             else if (parameter instanceof EnumParameter)
             {
-                if (parameter.widget instanceof RadiobuttonWidget)
+                if (parameter.widget instanceof RadiobuttonWidget ||
+                    parameter.userid?.includes(WIDGET_RADIO))
                 {
-                    return (    
+                    return (
                         <ParameterRadioC
                             {...filteredProps}
                             value={this.state.value}
