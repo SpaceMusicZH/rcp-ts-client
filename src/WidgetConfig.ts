@@ -11,7 +11,6 @@ export const WIDGET_SETTINGS_STRING = "widget_settings";
 
 // special user-ids
 export const SYNC_ALL_TRACKS_ID = "_syncAllTracks";
-export const COLOR_ID = "_color";
 export const COUNT_ID = "_count";
 export const SOLO_ID = "_solo";
 export const MUTE_ID = "_mute";

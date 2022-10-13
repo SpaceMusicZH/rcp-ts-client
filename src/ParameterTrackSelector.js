@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from 'carbon-components-react'
 import { iconChevronDown, iconChevronUp } from 'carbon-icons'
-import { COLOR_ID, COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig'; 
+import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig'; 
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
 import { ParameterToggleButtonC } from './ParameterToggleButton'
 import { ParameterColorDivC } from "./ParameterColorDiv";
@@ -205,10 +205,9 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             fill="white"
                         ></Icon>
 
-                        <ParameterColorDivC
-                            className="colorCircle"
-                            parameter={currentParam?.children.find((e) => e.userid === COLOR_ID)}
-                        ></ParameterColorDivC>
+                        <div
+                            className={"color-circle color-circle-" + currentChild}>                            
+                        </div>
 
                         <div className="dropdown-label dropdown-label-margin-left">{currentParam?.label || "no"}</div>
                         
@@ -245,7 +244,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                 {
                     groupChildren
                         .filter(((parammeter) => parammeter.typeDefinition.datatype === 40))
-                        .map(parameter => {
+                        .map((parameter, idx) => {
                         return (
 
                             <div
@@ -254,11 +253,10 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                                 onClick={() => changedTrack(parameter)}
                             >
 
-                                <ParameterColorDivC
-                                    className="colorCircle"
-                                    parameter={parameter.children.find((e) => e.userid === COLOR_ID)}
-                                ></ParameterColorDivC>
-
+                                <div
+                                    className={"color-circle color-circle-" + idx}>                            
+                                </div>
+                                
                                 <div className="dropdown-label dropdown-label-margin-left">
                                     {parameter.label}
                                 </div>

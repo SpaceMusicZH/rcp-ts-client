@@ -181,7 +181,7 @@
 
 
 /* track selector */
-.colorCircle {
+.color-circle {
   min-height: 24px;
   min-width: 24px;
   max-height: 24px;
@@ -190,7 +190,57 @@
   margin-left: 1em;
   margin-top: auto;
   margin-bottom: auto;
+  background-color: #42BE65;
 }
+.color-circle-0 {
+  background-color: #F4F4F4;
+}
+.color-circle-1 {
+  background-color: #AD3436;
+}
+.color-circle-2 {
+  background-color: #F1C21B;
+}
+.color-circle-3 {
+  background-color: #5C7080;
+}
+.color-circle-4 {
+  background-color: #5C7080;
+}
+.color-circle-5 {
+  background-color: #5C7080;
+}
+.color-circle-6 {
+  background-color: #5C7080;
+}
+.color-circle-7 {
+  background-color: #5C7080;
+}
+.color-circle-8 {
+  background-color: #5C7080;
+}
+.color-circle-9 {
+  background-color: #5C7080;
+}
+.color-circle-10 {
+  background-color: #5C7080;
+}
+.color-circle-11 {
+  background-color: #5C7080;
+}
+.color-circle-12 {
+  background-color: #5C7080;
+}
+.color-circle-13 {
+  background-color: #5C7080;
+}
+.color-circle-14 {
+  background-color: #5C7080;
+}
+.color-circle-15 {
+  background-color: red;
+}
+
 .track-note-count {
   margin-right: 16px;
 }
