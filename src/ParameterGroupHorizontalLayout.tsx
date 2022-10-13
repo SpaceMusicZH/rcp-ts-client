@@ -53,7 +53,7 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
             map( (p) => { 
                 return (
                     <ParameterWidget
-                        className="h_element"
+                        className="h-element grow"
                         key={p.id}
                         parameter={p}
                         onSubmitCb={this.onSubmit}
@@ -76,11 +76,8 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
         return (
             <div style={this.props.style}>
                 <div
-                    className={ "horizontallayout " + (param?.userid ? param.userid : "")}
-                    style={{
-                    display: "flex",
-                    flexDirection: "row",
-                }}>
+                    className={"flex-h horizontallayout " + (param?.userid ? param.userid : "")}
+                >
                     {this.renderChildren()}
                 </div>
             </div>
