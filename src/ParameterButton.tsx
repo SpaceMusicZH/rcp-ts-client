@@ -81,8 +81,10 @@ export class ParameterButtonC extends React.Component<Props & InjectedProps, Sta
 
                             :
 
-                            <Button style={{whiteSpace: "nowrap", }}
+                            <Button
                                 {...filteredProps}
+                                className="no-wrap"
+                                kind="secondary"
                                 onClick={this.handleClick}
                             >
                                 {ld ? "" : label}
