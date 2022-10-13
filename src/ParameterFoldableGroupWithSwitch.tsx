@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { BooleanParameter, GroupParameter, Parameter } from 'rabbitcontrol';
 import ParameterWidget from './ParameterWidget';
-import { TOGGLE_LABEL } from './WidgetConfig';
+import { ONOFF_TOGGLE_ID } from './WidgetConfig';
 import { ParameterSwitchC } from './ParameterSwitch';
 import { Accordion, AccordionItem } from 'carbon-components-react';
 
@@ -47,7 +47,7 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
         return (parameter as GroupParameter).children
             .filter( (p) => 
             {
-                return !(p instanceof BooleanParameter) && p.label !== TOGGLE_LABEL;
+                return !(p instanceof BooleanParameter) && p.userid !== ONOFF_TOGGLE_ID;
             })
             .sort((a: Parameter, b: Parameter): number => 
             {
@@ -73,7 +73,7 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
             (param as GroupParameter).children.forEach(element =>
             {
                 if (element instanceof BooleanParameter &&
-                    element.label === TOGGLE_LABEL)
+                    element.userid === ONOFF_TOGGLE_ID)
                 {
                     if (this.state.switchParameter != element)
                     {

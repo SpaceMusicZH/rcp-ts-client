@@ -15,6 +15,4 @@ export const COUNT_ID = "_count";
 export const SOLO_ID = "_solo";
 export const MUTE_ID = "_mute";
 export const LOCK_ID = "_lock";
-
-// labels
-export const TOGGLE_LABEL = "_onoff";
+export const ONOFF_TOGGLE_ID = "_onoff";
