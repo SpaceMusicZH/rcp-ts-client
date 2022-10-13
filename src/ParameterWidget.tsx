@@ -142,7 +142,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
 
         // check for special user-id
         if ((parameter.userid?.includes(WIDGET_NOWIDGET_STR)) ||
-            parameter.readonly === true)
+            (parameter.readonly === true && !(parameter instanceof ImageParameter)))
         {
             return (
                 // <div

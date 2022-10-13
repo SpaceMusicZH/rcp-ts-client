@@ -447,6 +447,22 @@
   min-height: 46px;
 }
 
+.image-title {
+  background-color: #39393999;
+  position: absolute;
+  min-height: 48px;
+  width: 100%;
+  bottom: 0px;
+}
+.image-title-item {
+  margin-left: 1em;
+}
+.parameter-image {
+  max-width:100%;
+  width: auto;
+  height: auto;
+  flex-grow: 10;
+}
 
 /* .rootgroup-wrapper {
   padding: 5px;
@@ -497,6 +513,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.flex-h-only {
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
 
 .horizontallayout {
