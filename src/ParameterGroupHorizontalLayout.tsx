@@ -20,7 +20,7 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
         let is_open = false;
         if (props.parameter)
         {
-            is_open = props.parameter.userid === WIDGET_EXPANDEDBYDEFAULT_STR;
+            is_open = props.parameter.userid?.includes(WIDGET_EXPANDEDBYDEFAULT_STR) || false;
         }
     
         this.state = {

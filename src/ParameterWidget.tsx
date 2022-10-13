@@ -141,7 +141,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
         const widget = parameter.widget;
 
         // check for special user-id
-        if (parameter.userid === WIDGET_NOWIDGET_STR ||
+        if ((parameter.userid?.includes(WIDGET_NOWIDGET_STR)) ||
             parameter.readonly === true)
         {
             return (
@@ -465,12 +465,12 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     is_tab_switcher = parameter.widget.uuid.compare("01299e6c-58f3-4c70-a0a5-3472ccb9ef0b");
                     is_group_with_switch = parameter.widget.uuid.compare("ec373dce-9489-4ecf-bf5b-29d83e07e1a2");
                 }
-                else
+                else if (parameter.userid !== undefined)
                 {
-                    is_tab_switcher = parameter.userid === WIDGET_TABSWITCHER_STR;
-                    is_group_with_switch = parameter.userid === WIDGET_GROUPWITHSWITCH_STR;
-                    is_horizontal_layout = parameter.userid === WIDGET_HORIZONTALLAYOUT_STR;
-                    is_track_selector = parameter.userid === WIDGET_TRACK_SELECTOR;
+                    is_tab_switcher = parameter.userid.includes(WIDGET_TABSWITCHER_STR);
+                    is_group_with_switch = parameter.userid.includes(WIDGET_GROUPWITHSWITCH_STR);
+                    is_horizontal_layout = parameter.userid.includes(WIDGET_HORIZONTALLAYOUT_STR);
+                    is_track_selector = parameter.userid.includes(WIDGET_TRACK_SELECTOR);
                 }
 
                 // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);

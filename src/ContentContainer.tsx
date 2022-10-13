@@ -143,7 +143,7 @@ export default class ContentContainer extends React.Component<Props, State> {
     }
 
     render() {
-        if (this.props.parameter.userid === WIDGET_CONTENT_SCROLLER)
+        if (this.props.parameter.userid?.includes(WIDGET_CONTENT_SCROLLER))
         {
             return (
                 <div className={(this.props.parameter.userid ? this.props.parameter.userid : "tab_group inner") + " " + (this.props.className || "")}
