@@ -32,7 +32,7 @@ export class ParameterImageC extends React.Component<Props & InjectedProps, Stat
             <div className='flex-h-only'>
                 <img className='parameter-image' src={url} alt={label || "image"}/>
                 <div className='image-title flex-h'>
-                    <div className='image-title-item'>
+                    <div className='margin-left'>
                     {label}
                     </div>
                 </div>

@@ -50,7 +50,7 @@ export class ParameterRadioC extends React.Component<Props & InjectedProps, Stat
         return (       
             <div>
                 <div className='sm-row flex-h'>
-                    <div className='image-title-item'>
+                    <div className='margin-left'>
                         {param?.label || ""}
                     </div>
                 </div>
