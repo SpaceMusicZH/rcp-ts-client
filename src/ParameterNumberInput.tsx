@@ -81,7 +81,7 @@ export class ParameterNumericInputC extends React.Component<Props & InjectedProp
 
                 <NumberInput
                     {...filteredProps}
-                    className='' 
+                    className=''
                     id={param?.id.toString() || "number"}
                     label=""
                     value={value}
@@ -91,7 +91,9 @@ export class ParameterNumericInputC extends React.Component<Props & InjectedProp
                     onChange={this.handleChange}
                     disabled={readOnly === true}
                     placeholder={"-"}
-                />      
+                />    
+                
+                <div className="margin-right" />
             </div>
 
         );
