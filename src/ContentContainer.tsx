@@ -3,7 +3,8 @@ import { GroupParameter } from 'rabbitcontrol';
 import { Parameter, TabsWidget } from 'rabbitcontrol';
 import ParameterWidget from './ParameterWidget';
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
-import { WIDGET_CONTENT_SCROLLER } from './WidgetConfig';
+import { WIDGET_CONTENT_SCROLLER, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
+import { ParameterTrackSelector } from './ParameterTrackSelector';
 
 interface Props {
     parameter: GroupParameter;
@@ -86,6 +87,23 @@ export default class ContentContainer extends React.Component<Props, State> {
                     tabId={this.props.tabId}
                     selectedTab={this.props.selectedTab}
                 />
+            );
+        }
+
+        // handle trackselector directly
+        if (parameter.userid?.includes(WIDGET_TRACK_SELECTOR))
+        {
+            return (
+                <ParameterTrackSelector
+                    parameter={parameter}
+                    value={undefined}
+                    handleValue={(value: any) => { }}
+                    onSubmitCb={this.props.onSubmitCb}
+                    tabId={this.props.tabId}
+                    selectedTab={this.props.selectedTab}
+                >
+
+                </ParameterTrackSelector>
             );
         }
 
