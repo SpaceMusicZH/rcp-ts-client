@@ -112,6 +112,20 @@ ul.bx--tabs--scrollable__nav {
   border-bottom: 1px solid var(--cds-ui-03,#535353);
 }
 
+.bx--tabs--scrollable .bx--tabs--scrollable__nav-link:active, .bx--tabs--scrollable .bx--tabs--scrollable__nav-link:focus {
+  outline: none !important;
+}
+
+.bx--tabs--scrollable.bx--tabs--scrollable--container .bx--tabs--scrollable__nav-item {
+    background-color: #e0e0e0;
+    background-color: var(--cds-ui-03,#e0e0e0);
+    border: 1px solid var(--cds-ui-background,#262626);
+}
+
+.bx--tabs--scrollable.bx--tabs--scrollable--container .bx--tabs--scrollable__nav-item+.bx--tabs--scrollable__nav-item {
+    box-shadow: none !important;
+}
+
 
 /* Indent items till we have the new style */
 
@@ -139,6 +153,10 @@ ul.bx--tabs--scrollable__nav {
 
 .bx--accordion__title {
   font-weight: var(--cds-productive-heading-02-font-weight,600);
+}
+
+.bx--accordion__item:last-child {
+  border-bottom: none !important;
 }
     
 
