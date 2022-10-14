@@ -458,11 +458,18 @@ ul.bx--tabs--scrollable__nav {
   font-weight: var(--cds-productive-heading-02-font-weight,600);
 }
 
+.parameter-wrapper:last-child .bx--accordion__item {
+    border-bottom: 1px solid var(--cds-ui-03,#e0e0e0);
+}
+
 .bx--accordion__item:last-child {
   border-bottom: none !important;
 }
     
-
+.bx--accordion__item--active .bx--accordion__content {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
 
 
 
@@ -476,6 +483,7 @@ ul.bx--tabs--scrollable__nav {
 .content_scroller {
   /* height: 300px; */
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .widget_settings {
