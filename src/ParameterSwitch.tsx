@@ -52,6 +52,7 @@ export class ParameterSwitchC extends React.Component<Props & InjectedProps, Sta
                 <div className="grow" />
 
                 <Toggle
+                    className='bool-switch'
                     {...filteredProps}
                     id={param?.id.toString() || "toggle"}
                     labelText=""
