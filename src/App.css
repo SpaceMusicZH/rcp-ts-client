@@ -15,6 +15,13 @@
   line-height: 16px;
 }
 
+/* On screens that are over 1024px, set the app to a max-width of 500px -> (somewhat) prevents weirdness for tablets (they usually go up to 1024px) */
+@media screen and (min-width: 1024px) {
+  .App {
+    max-width: 500px;
+  }
+}
+
 
 /* Header */
 
