@@ -64,12 +64,13 @@ export class ParameterTextInputC extends React.Component<Props & InjectedProps, 
             
             <div className='sm-row'>
 
-                <div className="dropdown-label dropdown-label-margin-left">
+                {/* <div className="dropdown-label dropdown-label-margin-left">
                     {this.props.parameter?.label}
-                </div>
+                </div> */}
 
-                <form className='grow dropdown-label-margin-left' onSubmit={this.handleSubmit}>
+                <form className='grow dropdown-label-margin-left margin-right' onSubmit={this.handleSubmit}>
                     <TextInput
+                        placeholder={this.props.parameter?.label}
                         onBlur={this.handleSubmit}
                         id={this.props.parameter?.id.toString() || "textinput"}
                         labelText=""
