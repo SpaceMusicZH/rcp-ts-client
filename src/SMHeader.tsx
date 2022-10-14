@@ -1,4 +1,4 @@
-import { GroupParameter } from 'rabbitcontrol';
+import { GroupParameter, StringParameter } from 'rabbitcontrol';
 import * as React from 'react';
 import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { SettingsToggleButtonC } from './SettingsToggleButton';
@@ -6,6 +6,7 @@ import { SettingsToggleButtonC } from './SettingsToggleButton';
 interface Props {
     settingsParameter?: GroupParameter
     threeDViewParameter?: GroupParameter
+    sceneNameParameter?: StringParameter
 };
 
 interface State {
@@ -38,7 +39,9 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         onsrc='/sm_logo_on.png'>                        
                     </SettingsToggleButtonC>
                     
-                    <div className='grow'></div>
+                    <div className='grow scene-name flex-h margin-left'>
+                        {this.props.sceneNameParameter?.value || ""}
+                    </div>
 
                     <SettingsToggleButtonC
                         {...this.props}

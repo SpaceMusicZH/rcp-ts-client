@@ -10,6 +10,7 @@ export const WIDGET_TRACK_SELECTOR = "widget_trackselector";
 export const WIDGET_SETTINGS_STRING = "widget_settings";
 export const WIDGET_3D_VIEW = "widget_3dview";
 export const WIDGET_RADIO = "widget_radio";
+export const WIDGET_SCENE_NAME_STRING = "widget_scenename";
 
 // special user-ids
 export const SYNC_ALL_TRACKS_ID = "_syncAllTracks";
