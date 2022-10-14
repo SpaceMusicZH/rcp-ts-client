@@ -1,9 +1,12 @@
 /* App */
 
+
+
 .App {
   text-align: left;
-  margin: 4px;
+  margin: 0px;
   margin-bottom: -30px;
+  padding-top: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,10 +16,16 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+
+  background-color: var(--cds-ui-background,#262626);
 }
 
 /* On screens that are over 1024px, set the app to a max-width of 500px -> (somewhat) prevents weirdness for tablets (they usually go up to 1024px) */
 @media screen and (min-width: 1024px) {
+  html, body {
+    background: transparent;
+  }
+
   .App {
     max-width: 500px;
   }
@@ -529,7 +538,7 @@ ul.bx--tabs--scrollable__nav {
 }
 
 .bx--accordion__item:last-child {
-  border-bottom: none !important;
+  border-bottom: none;
 }
     
 .bx--accordion__item--active .bx--accordion__content {
