@@ -1,3 +1,5 @@
+/* App */
+
 .App {
   text-align: left;
   margin: 4px;
@@ -13,7 +15,9 @@
   line-height: 16px;
 }
 
-/* header */
+
+/* Header */
+
 .smheader {
   min-height: 80px;
   background-color: #161616;
@@ -42,6 +46,8 @@
 }
 
 
+/* Settings */
+
 .settings-modal {
   position: fixed;
   top: 148px;
@@ -55,6 +61,18 @@
 
 .grow {
   flex-grow: 10;
+}
+
+
+/* Buttons */
+
+.bx--btn {
+    max-width: unset;
+    width: 100%;
+}
+
+.sm-row .bx--btn {
+    width: auto;
 }
 
 .button-dark {
@@ -141,7 +159,6 @@
   background-color: #393939;
 }
 
-
 .sync-all-tracks-on {
   background-color: #8DC6FD;
   color: #2B2B2B;
@@ -157,6 +174,8 @@
   background-color: #2B2B2B;
 }
 
+
+/* Utility */
 
 .sm-margin-auto {
   margin: auto;
@@ -179,9 +198,40 @@
   background-color: #424242;
 }
 
+.margin-right {
+  margin-right: 1em;
+}
+
+/* hide parameter divider */
+.parameter-divider {
+  display: none;
+}
 
 
-/* track selector */
+.content_scroller {
+  /* height: 300px; */
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.widget_settings {
+  /* height: 300px; */
+  overflow: auto;
+}
+
+.settings-modal {
+  overflow: auto;
+  width: 100%;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+
+
+/* Track selector */
+
 .color-circle {
   min-height: 24px;
   min-width: 24px;
@@ -250,10 +300,7 @@
 }
 
 
-.margin-right {
-  margin-right: 1em;
-}
-
+/* Dropdown */
 
 .dropdown-label {
   margin: auto;
@@ -270,12 +317,18 @@
   margin-right: 1em;
 }
 
+
+/* Toggle */
+
 .bx--toggle-input__label {
   margin: auto;
 }
 .bx--toggle__switch {
   margin: 0px !important;
 }
+
+
+/* Slider */
 
 /* dropdown slider */
 .dropdown-slider {
@@ -341,6 +394,9 @@
   height: auto;
 }
 
+
+/* Dropdown */
+
 .bx--dropdown__wrapper {
   min-height: 48px;
 }
@@ -388,6 +444,9 @@
 /* .bx--list-box__menu-item {
   min-height: 48px;
 } */
+
+
+/* Tabs */
 
 .bx--tab-content {
   padding: 0px !important;
@@ -474,33 +533,9 @@ ul.bx--tabs--scrollable__nav {
 
 
 
-/* hide parameter divider */
-.parameter-divider {
-  display: none;
-}
-
-
-.content_scroller {
-  /* height: 300px; */
-  overflow: auto;
-  overflow-x: hidden;
-}
-
-.widget_settings {
-  /* height: 300px; */
-  overflow: auto;
-}
-
-.settings-modal {
-  overflow: auto;
-  width: 100%;
-}
-
-.no-wrap {
-  white-space: nowrap;
-}
 
 /* gui styles */
+
 .parameter-label {
   white-space: nowrap;
   color: gray;
