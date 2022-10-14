@@ -50,6 +50,7 @@
   padding-left: 4px;
   padding-right: 4px;
   z-index: 1000;
+  width: 100% !important;
 }
 
 .grow {
