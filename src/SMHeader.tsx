@@ -43,8 +43,8 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                     <SettingsToggleButtonC
                         {...this.props}
                         parameter={this.props.settingsParameter}
-                        offsrc='/smsettings.svg'
-                        onsrc='/smsettings-on.svg'>
+                        offsrc='/settings_off.png'
+                        onsrc='/settings_on.png'>
                     </SettingsToggleButtonC>
                 </div>
 

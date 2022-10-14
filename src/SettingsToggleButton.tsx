@@ -100,9 +100,13 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             <div
             ref={this.ref}
             >
-                <a onClick={this.toggle}>
-                    <img src={this.state.on ? this.props.onsrc : this.props.offsrc}>                    
-                    </img>
+                <a
+                    onClick={this.toggle}
+                >
+                    <img
+                        className='sm-row-maxheight'
+                        src={this.state.on ? this.props.onsrc : this.props.offsrc}
+                    />
                 </a>
                 <div
                     onClick={(event) => {

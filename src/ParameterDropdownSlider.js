@@ -58,7 +58,7 @@ export const ParameterDropdownSlider = ({ children, value, parameter, handleValu
             <div hidden={isOpen !== true}>
                 <div className="sm-row sm-lighter">
                     <Slider
-                        className="dropdown-slider-slider"
+                        className="sm-row-maxheight"
                         id={parameter.id.toString() || "value-slider"}
                         min={parameter.typeDefinition.minimum}
                         max={parameter.typeDefinition.maximum}
