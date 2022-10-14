@@ -500,6 +500,11 @@ ul.bx--tabs--scrollable__nav {
     border: 1px solid var(--cds-ui-background,#262626);
 }
 
+.bx--tabs--scrollable.bx--tabs--scrollable--container .bx--tabs--scrollable__nav-item--selected, .bx--tabs--scrollable.bx--tabs--scrollable--container .bx--tabs--scrollable__nav-item--selected:hover {
+    background-color: #f4f4f4;
+    background-color: var(--cds-ui-01,#f4f4f4) !important;
+}
+
 .bx--tabs--scrollable.bx--tabs--scrollable--container .bx--tabs--scrollable__nav-item+.bx--tabs--scrollable__nav-item {
     box-shadow: none !important;
 }
