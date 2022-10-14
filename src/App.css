@@ -485,6 +485,7 @@ ul.bx--tabs--scrollable__nav {
 
 .settings-modal {
   overflow: auto;
+  width: 100%;
 }
 
 .no-wrap {

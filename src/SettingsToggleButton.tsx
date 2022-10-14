@@ -114,7 +114,6 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
                     }}
                     className='settings-modal'
                     style={{
-                        width: this.state.width,
                         height: this.state.height,
                         top: this.state.settingY,                        
                         display: this.state.on ? "block" : "none"
