@@ -29,10 +29,13 @@ export class ParameterImageC extends React.Component<Props & InjectedProps, Stat
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
-            <div>
-                <label className="bx--label">{label}</label>
-                <br/>
-                <img src={url} alt={label || "image"} height={200}/>
+            <div className='flex-h-only'>
+                <img className='parameter-image' src={url} alt={label || "image"}/>
+                <div className='image-title flex-h'>
+                    <div className='margin-left'>
+                    {label}
+                    </div>
+                </div>
             </div>
         );
     }

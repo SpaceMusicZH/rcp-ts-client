@@ -1,22 +1,19 @@
-import React, { Component, useState, PropsWithChildren, useEffect } from "react";
-import { Dropdown, Button } from 'carbon-components-react'
-import { COLOR_LABEL, COUNT_LABEL, SOLO_LABEL, MUTE_LABEL, LOCK_LABEL } from './WidgetConfig'; 
+import React, { useState, useEffect } from "react";
+import { Icon } from 'carbon-components-react'
+import { iconChevronDown, iconChevronUp } from 'carbon-icons'
+import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig'; 
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
+import { ParameterToggleButtonC } from './ParameterToggleButton'
+import { ParameterColorDivC } from "./ParameterColorDiv";
 
-const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSubmitCb, tabId, selectedTab }) => {
-
-    var childNames = [];
+export const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSubmitCb, tabId, selectedTab }) =>
+{
     var groupChildren = [];
     var currentParam;
 
+    var [isOpen, setIsOpen] = useState(false);
     var [currentChild, setCurrentChild] = useState(0);
     var [lastSelected, setLastSelected] = useState(-1);
-
-    var [colorParam, setColorParam] = useState({});
-    var [noteCountParam, setNoteCountParam] = useState({});
-    var [soloParam, setSoloParam] = useState({});
-    var [muteParam, setMuteParam] = useState({});
-    var [lockParam, setLockParam] = useState({});
 
     useEffect(() => {
         if (selectedTab !== tabId) {
@@ -25,44 +22,14 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
     }, []);
 
     useEffect(() => {
-        console.log("ParameterTrackSelector current child changed!!");
-
         if (currentChild >= 0 &&
             currentChild < groupChildren.length)
         {
             currentParam = groupChildren[currentChild];
-
-            currentParam.children.forEach(element => {
-                if (element.label === COLOR_LABEL)
-                {
-                    console.log("found color param!");
-                    setColorParam(element);
-                }
-                else if (element.label === COUNT_LABEL)
-                {
-                    console.log("found count param!");
-                    setNoteCountParam(element);
-                }
-                else if (element.label === SOLO_LABEL)
-                {
-                    console.log("found solo param!");
-                    setSoloParam(element);
-                }
-                else if (element.label === MUTE_LABEL)
-                {
-                    console.log("found mute param!");
-                    setMuteParam(element);
-                }
-                else if (element.label === LOCK_LABEL)
-                {
-                    console.log("found lock param!");
-                    setLockParam(element);
-                }
-            });
         }
         else
         {
-            // ?
+            currentParam = undefined;
         }
 
     }, [currentChild]);
@@ -90,18 +57,6 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
     }, [tabId, selectedTab]);
 
 
-    function handleChange(data)
-    {
-        setCurrentChild(groupChildren.indexOf(data.selectedItem));
-        // if (handleValue) {
-        //     handleValue(data.selectedItem);
-        // }
-
-        // if (onSubmitCb) {
-        //     onSubmitCb();
-        // }
-    }
-
     function renderCurrentChildGroups()
     {
         if (currentChild >= 0)
@@ -110,8 +65,10 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
     
             if (child !== undefined)
             {
-                // check for widget-type somehow??
-                if (child.widget &&
+                // check for group
+                // check for special widget
+                if (child.typeDefinition.datatype === 40 &&
+                    child.widget &&
                     child.widget.widgetType === 32770)
                 {                        
                     return (
@@ -125,6 +82,8 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
                     );
                 }
     
+                // don't render anything else!
+
                 // else
                 // return parameter.children
                 // .filter(param => param instanceof GroupParameter)
@@ -147,83 +106,199 @@ const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSub
         return ("");
     }
 
-    if (parameter)
+    function changedTrack(track)
     {
-        var current_name = "";
-        
-        groupChildren = parameter.children            
-            .sort((a, b) => ((a.order || 0) - (b.order || 0)));
-    
-        childNames = groupChildren
-            .map((param, index) => {
-                const l = param.label !== undefined ? param.label : "";
-                if (index === currentChild) {
-                    current_name = l
-                }
-                return l;
-            });
+        if (groupChildren.indexOf(track) > -1)
+        {
+            setCurrentChild(groupChildren.indexOf(track));
+        }
+
+        setIsOpen(false);
     }
 
+
+    if (parameter)
+    {
+        groupChildren = parameter.children
+            .filter((e) => e.typeDefinition.datatype === 40)
+            .sort((a, b) => ((a.order || 0) - (b.order || 0)));
+        
+        if (currentChild >= 0)
+        {
+            currentParam = groupChildren[currentChild];
+        }
+        else
+        {
+            currentParam = undefined;
+        }
+    }
+
+
     return (
+
         <div>
 
-            <Dropdown
-                className="track-selector"
-                id={parameter?.id.toString() || "dropdown"}
-                label=""
-                hideLabel={true}
-                onChange={handleChange}
-                disabled={parameter?.readonly === true}
-                items={groupChildren}
-                selectedItem={groupChildren[currentChild]}
-                itemToString={(item) => item?.label}
-                itemToElement={(item) => 
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        minHeight: "48px"
-                    }}>
-                        <div className="colorCircle" style={{
-                            backgroundColor: "#F7F383",
-                        }}></div>                    
-                        <div>{
-                            item.label || item._label || "no"
-                        }</div>
-                        <div className="grow"/>
-                        <div className="track-note-count">{
-                            item.children.find((e) => e.label === COUNT_LABEL)?.value?.toString()
-                        }</div>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Solo</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Mute</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Lock</Button>
+            {/* header */}
+            {
+                isOpen === true ?
+
+                    <div className="sm-row"
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <Icon
+                            description=""
+                            className="sm-icon"
+                            icon={iconChevronUp}
+                            fill="white"
+                        ></Icon>
+                        
+                        <div
+                            className="dropdown-label dropdown-label-margin-left">
+                            All Tracks
+                        </div>
+                        
+                        <div className="grow" />
+
+                        {/* sum of notes */}
+                        <div className="dropdown-value">
+                            {
+                            groupChildren.reduce((total, current) => {
+                                var count_param = current.children.find((e) => e.userid && e.userid.includes(COUNT_ID));
+                                if (count_param !== undefined &&
+                                    count_param.value !== undefined) {
+                                    if (typeof (count_param.value) === "number") {
+                                        return total + count_param.value;
+                                    }
+                                    else {
+                                        var num = parseInt(count_param.value);
+                                        if (!Number.isNaN(num)) {
+                                            // parse ok - add
+                                            return total + num;
+                                        }
+
+                                        console.log("string is not a number: " + count_param.value);
+                                        // parsing not ok
+                                    }
+                                }
+                                return total;
+                            }, 0)
+                            }
+                        </div>
+
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="sync-all-tracks"
+                            onSubmitCb={onSubmitCb}
+                            parameter={parameter?.children?.find((e) => e.userid.includes(SYNC_ALL_TRACKS_ID))}
+                        ></ParameterToggleButtonC>
                     </div>
-                }
-                renderSelectedItem={(item) =>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "row",
-                    }}>
-                        <div className="colorCircle" style={{
-                            width: 20,
-                            borderRadius: "50%",
-                            backgroundColor: "#F7F383",
-                            marginRight: "1em"
-                        }}></div>
-                        <div>{item.label}</div>
-                        <div className="grow"/>
-                        <div className="track-note-count">{ noteCountParam?.value }</div>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Solo</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Mute</Button>
-                        <Button className="in-dropdown-button" size="sm" kind="secondary">Lock</Button>
+
+                :
+
+                    <div className="sm-row"
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <Icon
+                            description=""
+                            className="sm-icon"
+                            icon={iconChevronDown}
+                            fill="white"
+                        ></Icon>
+
+                        <div
+                            className={"color-circle color-circle-" + currentChild}>                            
+                        </div>
+
+                        <div className="dropdown-label dropdown-label-margin-left">{currentParam?.label || "no"}</div>
+                        
+                        <div className="grow" />
+                        
+                        <div className="dropdown-value">{currentParam?.children.find((e) => e.userid && e.userid.includes(COUNT_ID))?.value}</div>
+                        
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="solo-btn"
+                            onSubmitCb={onSubmitCb}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(SOLO_ID))}
+                        ></ParameterToggleButtonC>
+                        
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="mute-btn"
+                            onSubmitCb={onSubmitCb}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(MUTE_ID))}
+                        ></ParameterToggleButtonC>
+                        
+                        <ParameterToggleButtonC
+                            className="in-dropdown-button"
+                            classNamePrefix="lock-btn"
+                            onSubmitCb={onSubmitCb}
+                            parameter={currentParam?.children.find((e) => e.userid && e.userid.includes(LOCK_ID))}
+                        ></ParameterToggleButtonC>
                     </div>
+            }
+
+        
+            {/* all tracks */}
+            <div hidden={isOpen !== true}>
+                {
+                    groupChildren
+                        .filter(((parammeter) => parammeter.typeDefinition.datatype === 40))
+                        .map((parameter, idx) => {
+                        return (
+
+                            <div
+                                key={parameter.id}
+                                className="sm-row sm-lighter"
+                                onClick={() => changedTrack(parameter)}
+                            >
+
+                                <div
+                                    className={"color-circle color-circle-" + idx}>                            
+                                </div>
+                                
+                                <div className="dropdown-label dropdown-label-margin-left">
+                                    {parameter.label}
+                                </div>
+                                
+                                <div className="grow" />
+                                
+                                <div className="dropdown-value">
+                                    {
+                                        parameter.children.find((e) => e.userid && e.userid.includes(COUNT_ID))?.value?.toString()
+                                    }
+                                </div>
+
+                                <ParameterToggleButtonC
+                                    className="in-dropdown-button"
+                                    classNamePrefix="solo-btn"
+                                    onSubmitCb={onSubmitCb}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(SOLO_ID))}
+                                ></ParameterToggleButtonC>
+                                
+                                <ParameterToggleButtonC
+                                    className="in-dropdown-button"
+                                    classNamePrefix="mute-btn"
+                                    onSubmitCb={onSubmitCb}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(MUTE_ID))}
+                                ></ParameterToggleButtonC>
+                                
+                                <ParameterToggleButtonC
+                                    className="in-dropdown-button"
+                                    classNamePrefix="lock-btn"
+                                    onSubmitCb={onSubmitCb}
+                                    parameter={parameter.children.find((e) => e.userid && e.userid.includes(LOCK_ID))}
+                                ></ParameterToggleButtonC>
+                            </div>
+
+                        );
+                    })
                 }
-            >
-            </Dropdown>
+
+            </div>
 
             {/* group parameter */}
             {renderCurrentChildGroups()}
         </div>
     )
 }
-
-export default ParameterTrackSelector

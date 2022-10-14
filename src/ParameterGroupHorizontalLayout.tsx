@@ -20,7 +20,7 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
         let is_open = false;
         if (props.parameter)
         {
-            is_open = props.parameter.userid === WIDGET_EXPANDEDBYDEFAULT_STR;
+            is_open = props.parameter.userid?.includes(WIDGET_EXPANDEDBYDEFAULT_STR) || false;
         }
     
         this.state = {
@@ -53,7 +53,7 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
             map( (p) => { 
                 return (
                     <ParameterWidget
-                        className="h_element"
+                        className="h-element grow"
                         key={p.id}
                         parameter={p}
                         onSubmitCb={this.onSubmit}
@@ -76,11 +76,8 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
         return (
             <div style={this.props.style}>
                 <div
-                    className={ "horizontallayout " + (param?.userid ? param.userid : "")}
-                    style={{
-                    display: "flex",
-                    flexDirection: "row",
-                }}>
+                    className={"flex-h horizontallayout " + (param?.userid ? param.userid : "")}
+                >
                     {this.renderChildren()}
                 </div>
             </div>

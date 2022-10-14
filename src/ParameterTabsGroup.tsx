@@ -4,6 +4,7 @@ import { Parameter, GroupParameter } from 'rabbitcontrol';
 import ParameterWidget from './ParameterWidget';
 import ContentContainer from './ContentContainer';
 import { Tab, Tabs } from 'carbon-components-react';
+import { WIDGET_3D_VIEW, WIDGET_SETTINGS_STRING } from './WidgetConfig';
 
 interface Props {
     style?: React.CSSProperties;
@@ -86,7 +87,7 @@ export class ParameterTabsGroupC extends React.Component<Props & InjectedProps, 
         // each group-parameter gets a tab
 
         return parameters
-        .filter(param => param instanceof GroupParameter)
+        .filter(param => param instanceof GroupParameter && param.userid !== WIDGET_SETTINGS_STRING && param.userid !== WIDGET_3D_VIEW)
         .sort((a: Parameter, b: Parameter): number => ((a.order || 0) - (b.order || 0)))
         .map((param, index) => 
         {

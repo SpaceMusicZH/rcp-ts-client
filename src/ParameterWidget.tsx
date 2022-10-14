@@ -21,11 +21,12 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_SWITCH_STR, TOGGLE_LABEL, WIDGET_TRACK_SELECTOR } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
-import ParameterDropdown from './ParameterDropdown';
-import ParameterTrackSelector from './ParameterTrackSelector';
+import { ParameterDropdown } from './ParameterDropdown';
+import { ParameterTrackSelector } from './ParameterTrackSelector';
+import { ParameterDropdownSlider } from './ParameterDropdownSlider';
 
 interface Props {
     parameter: Parameter;
@@ -140,28 +141,29 @@ export default class ParameterWidget extends React.Component<Props, State> {
         const widget = parameter.widget;
 
         // check for special user-id
-        if (parameter.userid === WIDGET_NOWIDGET_STR)
+        if ((parameter.userid?.includes(WIDGET_NOWIDGET_STR)) ||
+            (parameter.readonly === true && !(parameter instanceof ImageParameter)))
         {
             return (
-                <div
-                    className={parameter.userid ? parameter.userid : ""}
-                    style={{
-                    display: "flex",
-                    flexDirection: this.props.vertical ? "column" : "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100%",
-                    marginRight: "1em",
-                }}>
-                    <label className="bx--label">{parameter?.label || ""}</label>
-                    <div className={`${this.props.vertical !== true ? "spacer" : ""}`}/>
-                    <ParameterTextWithLabelC
-                        {...filteredProps}
-                        value={this.state.value}
-                        handleValue={this.handleValueChange}
-                        labelDisabled={true}
-                    />
-                </div>
+                // <div
+                //     className={parameter.userid ? parameter.userid : ""}
+                //     style={{
+                //     display: "flex",
+                //     flexDirection: this.props.vertical ? "column" : "row",
+                //     justifyContent: "center",
+                //     alignItems: "center",
+                //     height: "100%",
+                //     marginRight: "1em",
+                // }}>
+                //     <label className="bx--label">{parameter?.label || ""}</label>
+                //     <div className={`${this.props.vertical !== true ? "spacer" : ""}`}/>
+                // </div>
+                <ParameterTextWithLabelC
+                    {...filteredProps}
+                    value={this.state.value}
+                    handleValue={this.handleValueChange}
+                    labelDisabled={false}
+                />
 
             );            
         }
@@ -180,12 +182,19 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     if (numdef.minimum < numdef.maximum) {
 
                         return ( 
-                            <ParameterSliderC
-                                {...filteredProps}
+                            <ParameterDropdownSlider
+                                parameter={this.props.parameter}
                                 value={this.state.value}
                                 handleValue={this.handleValueChange}
-                                continuous={true}
-                            />
+                                onSubmitCb={this.props.onSubmitCb}
+                            >
+                            </ParameterDropdownSlider>
+                            // <ParameterSliderC
+                            //     {...filteredProps}
+                            //     value={this.state.value}
+                            //     handleValue={this.handleValueChange}
+                            //     continuous={true}
+                            // />
                         );
                     }
                     else
@@ -319,28 +328,18 @@ export default class ParameterWidget extends React.Component<Props, State> {
             }
             else if (parameter instanceof BooleanParameter)
             {
-                const is_switch = parameter.userid === WIDGET_SWITCH_STR || parameter.label === TOGGLE_LABEL;
-
-                if (is_switch)
-                {
-                    return (
-                        <div>
-                            <ParameterSwitchC
+                // default switch
+                return (
+                    <ParameterSwitchC
                                 {...filteredProps}
                                 value={this.state.value}
                                 handleValue={this.handleValueChange}
                             />
-                        </div>
-                    );
-                }                
-
-                // default ceckbox
-                return (
-                    <ParameterCheckboxC
-                        {...filteredProps}
-                        value={this.state.value}
-                        handleValue={this.handleValueChange}
-                    />
+                    // <ParameterCheckboxC
+                    //     {...filteredProps}
+                    //     value={this.state.value}
+                    //     handleValue={this.handleValueChange}
+                    // />
                 );
             } 
             else if (parameter instanceof RGBAParameter ||
@@ -356,9 +355,10 @@ export default class ParameterWidget extends React.Component<Props, State> {
             } 
             else if (parameter instanceof EnumParameter)
             {
-                if (parameter.widget instanceof RadiobuttonWidget)
+                if (parameter.widget instanceof RadiobuttonWidget ||
+                    parameter.userid?.includes(WIDGET_RADIO))
                 {
-                    return (    
+                    return (
                         <ParameterRadioC
                             {...filteredProps}
                             value={this.state.value}
@@ -376,7 +376,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                             onSubmitCb={this.props.onSubmitCb}
                         >
                         </ParameterDropdown>
-                        
+
                         // <ParameterHTMLSelectC
                         //     {...filteredProps}
                         //     value={this.state.value}
@@ -466,12 +466,12 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     is_tab_switcher = parameter.widget.uuid.compare("01299e6c-58f3-4c70-a0a5-3472ccb9ef0b");
                     is_group_with_switch = parameter.widget.uuid.compare("ec373dce-9489-4ecf-bf5b-29d83e07e1a2");
                 }
-                else
+                else if (parameter.userid !== undefined)
                 {
-                    is_tab_switcher = parameter.userid === WIDGET_TABSWITCHER_STR;
-                    is_group_with_switch = parameter.userid === WIDGET_GROUPWITHSWITCH_STR;
-                    is_horizontal_layout = parameter.userid === WIDGET_HORIZONTALLAYOUT_STR;
-                    is_track_selector = parameter.userid === WIDGET_TRACK_SELECTOR;
+                    is_tab_switcher = parameter.userid.includes(WIDGET_TABSWITCHER_STR);
+                    is_group_with_switch = parameter.userid.includes(WIDGET_GROUPWITHSWITCH_STR);
+                    is_horizontal_layout = parameter.userid.includes(WIDGET_HORIZONTALLAYOUT_STR);
+                    is_track_selector = parameter.userid.includes(WIDGET_TRACK_SELECTOR);
                 }
 
                 // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);

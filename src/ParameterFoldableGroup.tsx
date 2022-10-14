@@ -19,9 +19,10 @@ export class ParameterFoldableGroupC extends React.Component<Props & InjectedPro
         super(props);
 
         let is_open = false;
-        if (props.parameter)
+        if (props.parameter &&
+            props.parameter.userid !== undefined)
         {
-            is_open = props.parameter.userid === WIDGET_EXPANDEDBYDEFAULT_STR;
+            is_open = props.parameter.userid.includes(WIDGET_EXPANDEDBYDEFAULT_STR);
         }
     
         this.state = {

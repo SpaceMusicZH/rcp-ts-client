@@ -1,10 +1,12 @@
 import * as React from 'react';
 import ParameterWidget from './ParameterWidget'
-import { Parameter, Client, WebSocketClientTransporter, GroupParameter, TabsWidget } from 'rabbitcontrol';
+import { Parameter, Client, WebSocketClientTransporter, GroupParameter, TabsWidget, StringParameter } from 'rabbitcontrol';
 import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
 import App from './App';
 import { Checkbox, Modal, NumberInput, TextInput } from 'carbon-components-react';
 import SMHeader from './SMHeader';
+import { WIDGET_3D_VIEW, WIDGET_SCENE_NAME_STRING, WIDGET_SETTINGS_STRING } from './WidgetConfig';
+import { ParameterTabsGroup } from './ParameterTabsGroup';
 
 
 type Props = {
@@ -20,14 +22,20 @@ type State = {
     serverVersion: string;
     serverApplicationId: string;
     rootWithTabs: boolean;
+    settingsParameter?: GroupParameter;
+    threeDViewParameter?: GroupParameter;
+    sceneNameParameter?: StringParameter;
 };
 
 export default class ConnectionDialog extends React.Component<Props, State> {
     
     private addTimer?: number;
+    private headerRef: React.RefObject<SMHeader>;
 
     constructor(props: Props) {
         super(props);
+
+        this.headerRef = React.createRef();
 
         this.state = {
             isConnected: false,
@@ -137,7 +145,18 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         return (
             <section>
 
-                <SMHeader></SMHeader>
+                {
+                    this.state.client ?
+                        <SMHeader
+                            settingsParameter={this.state.settingsParameter}
+                            threeDViewParameter={this.state.threeDViewParameter}
+                            sceneNameParameter={this.state.sceneNameParameter}
+                            value={false}
+                            onSubmitCb={this.updateClient}
+                        ></SMHeader>
+                    :
+                        ""
+                }
 
                 {
                     this.state.client ?
@@ -405,6 +424,28 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             this.addTimer = undefined;
         }
 
+        if (parameter.userid === WIDGET_SETTINGS_STRING &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                settingsParameter: parameter as GroupParameter
+            });
+        }
+        else if (parameter.userid === WIDGET_3D_VIEW &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                threeDViewParameter: parameter as GroupParameter
+            });
+        }
+        else if (parameter.userid === WIDGET_SCENE_NAME_STRING &&
+            parameter instanceof StringParameter)
+        {
+            this.setState({
+                sceneNameParameter: parameter as StringParameter
+            })
+        }
+
         this.addTimer = window.setTimeout(() => {
             if (this.state.client)
             {
@@ -421,6 +462,28 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         parameter.removeFromParent();
 
         parameter.removeChangedListener(this.parameterChangeListener);        
+
+        if (parameter.userid === WIDGET_SETTINGS_STRING &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                settingsParameter: undefined
+            });
+        }
+        else if (parameter.userid === WIDGET_3D_VIEW &&
+            parameter instanceof GroupParameter)
+        {
+            this.setState({
+                threeDViewParameter: undefined
+            });
+        }
+        else if (parameter.userid === WIDGET_SCENE_NAME_STRING &&
+            parameter instanceof StringParameter)
+        {
+            this.setState({
+                sceneNameParameter: undefined
+            })
+        }
 
         if (this.state.client)
         {
