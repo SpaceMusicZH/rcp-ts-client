@@ -76,20 +76,6 @@ export default class ContentContainer extends React.Component<Props, State> {
 
     createChildWidgets(parameter: GroupParameter) 
     {
-        if (parameter.widget instanceof TabsWidget) 
-        {            
-            return (
-                <ParameterTabsGroupC                    
-                    key={"_" + parameter.id}
-                    parameter={parameter}
-                    value={undefined}
-                    onSubmitCb={this.onSubmit}
-                    tabId={this.props.tabId}
-                    selectedTab={this.props.selectedTab}
-                />
-            );
-        }
-
         // handle trackselector directly
         if (parameter.userid?.includes(WIDGET_TRACK_SELECTOR))
         {
@@ -107,6 +93,19 @@ export default class ContentContainer extends React.Component<Props, State> {
             );
         }
 
+        if (parameter.widget instanceof TabsWidget)
+        {            
+            return (
+                <ParameterTabsGroupC                    
+                    key={"_" + parameter.id}
+                    parameter={parameter}
+                    value={undefined}
+                    onSubmitCb={this.onSubmit}
+                    tabId={this.props.tabId}
+                    selectedTab={this.props.selectedTab}
+                />
+            );
+        }
 
         return parameter.children
         .filter((param) => 
