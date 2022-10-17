@@ -5,7 +5,7 @@ import { Button } from 'carbon-components-react';
 
 interface Props {
     label?: string;
-    parameter: BooleanParameter;
+    parameter?: BooleanParameter;
     className?: string;
     classNamePrefix?: string;
 };
@@ -20,7 +20,7 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
         super(props);
     
         this.state = { 
-            checked: this.props.parameter.value
+            checked: this.props.parameter?.value || false
         };
     }
     
@@ -57,7 +57,10 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
     onClicked = (event: any) => {
         event.stopPropagation();
 
-        this.props.parameter.value = !this.props.parameter.value;
+        if (this.props.parameter)
+        {            
+            this.props.parameter.value = !this.props.parameter.value;
+        }
 
         if (this.props.onSubmitCb)
         {
