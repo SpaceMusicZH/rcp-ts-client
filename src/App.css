@@ -554,6 +554,15 @@ ul.bx--tabs--scrollable__nav {
 
 
 
+/* ImageButton */
+
+.parameter-wrapper.selected {
+    border: 5px solid #ffffff;
+    opacity: 0.7;
+}
+
+
+
 
 /* gui styles */
 
