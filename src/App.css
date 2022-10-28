@@ -590,6 +590,18 @@ ul.bx--tabs--scrollable__nav {
   height: auto;
   flex-grow: 10;
 }
+.parameter-imagebutton-inactive {
+  filter: grayscale(100%) opacity(40%);
+  -webkit-filter: grayscale(100%) opacity(40%);  
+}
+.parameter-imagebutton-inactive {
+  filter: grayscale(100%) opacity(40%);
+  -webkit-filter: grayscale(100%) opacity(40%);  
+}
+.imagebutton-pressed {
+  filter: opacity(60%);
+  -webkit-filter: opacity(60%);  
+}
 
 
 .radio-option-container {

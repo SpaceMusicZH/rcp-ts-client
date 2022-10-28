@@ -21,12 +21,13 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO, WIDGET_IMAGEBUTTON } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
 import { ParameterDropdown } from './ParameterDropdown';
 import { ParameterTrackSelector } from './ParameterTrackSelector';
 import { ParameterDropdownSlider } from './ParameterDropdownSlider';
+import { ParameterImageButtonC } from './ParameterImageButton';
 
 interface Props {
     parameter: Parameter;
@@ -459,6 +460,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 var is_group_with_switch = false;
                 var is_horizontal_layout = false;
                 var is_track_selector = false;
+                var is_image_button = false;
 
                 if (parameter.widget instanceof CustomWidget
                     && parameter.widget.uuid != undefined)
@@ -472,6 +474,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                     is_group_with_switch = parameter.userid.includes(WIDGET_GROUPWITHSWITCH_STR);
                     is_horizontal_layout = parameter.userid.includes(WIDGET_HORIZONTALLAYOUT_STR);
                     is_track_selector = parameter.userid.includes(WIDGET_TRACK_SELECTOR);
+                    is_image_button = parameter.userid.includes(WIDGET_IMAGEBUTTON);
                 }
 
                 // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);
@@ -516,14 +519,31 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 {
                     return (
                         <ParameterTrackSelector                            
-                            parameter={this.props.parameter}
-                            value={this.state.value}
-                            handleValue={this.handleValueChange}
-                            onSubmitCb={this.props.onSubmitCb}
-                            tabId={this.props.tabId}
-                            selectedTab={this.props.selectedTab}
+                        parameter={this.props.parameter}
+                        value={this.state.value}
+                        handleValue={this.handleValueChange}
+                        onSubmitCb={this.props.onSubmitCb}
+                        tabId={this.props.tabId}
+                        selectedTab={this.props.selectedTab}
                         >
                         </ParameterTrackSelector>
+                    );
+                }
+                else if (is_image_button)
+                {
+                    // get image parameter
+                    const ip = parameter.children.find(e => e instanceof ImageParameter) as ImageParameter || undefined;
+                    const bp = parameter.children.find(e => e instanceof BangParameter) as BangParameter || undefined;
+                    
+                    return (
+                        <ParameterImageButtonC                            
+                            {...filteredProps}
+                            imageParameter={ip}
+                            bangParameter={bp}                            
+                            value={this.state.value}
+                            handleValue={this.handleValueChange}
+                        >
+                        </ParameterImageButtonC>
                     );
                 }
             }
