@@ -1,15 +1,14 @@
-import { Button, Modal } from 'carbon-components-react';
 import { GroupParameter, Parameter } from 'rabbitcontrol';
 import * as React from 'react';
 import { InjectedProps, parameterWrapped } from './ElementWrapper';
-import { Settings16, Close16 } from '@carbon/icons-react';
 import ParameterWidget from './ParameterWidget';
-import ContentContainer from './ContentContainer';
 
 interface Props {
     offsrc?: string;
     onsrc?: string;
     parameter?: GroupParameter;
+    onOpenChanged?: (open: boolean) => void;
+    forceOff?: boolean;
 };
 
 interface State {
@@ -48,8 +47,21 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
         })
     }
 
+    componentDidUpdate(prevProps: Readonly<Props & InjectedProps>, prevState: Readonly<State>, snapshot?: any): void {
+        if (prevProps.forceOff !== this.props.forceOff &&
+            this.props.forceOff === true)
+        {
+            this.setState({ on: false });
+        }
+    }
+
     toggle = () => {
         this.setState({ on: !this.state.on });
+
+        if (this.props.onOpenChanged)
+        {
+            this.props.onOpenChanged(this.state.on !== true);
+        }
     }
 
     onSubmit = () =>

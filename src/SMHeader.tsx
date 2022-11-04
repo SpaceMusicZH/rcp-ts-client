@@ -10,6 +10,7 @@ interface Props {
 };
 
 interface State {
+    threedViewOn: boolean
 };
 
 export default class SMHeaderC extends React.Component<Props & InjectedProps, State>
@@ -19,6 +20,7 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
         super(props);
     
         this.state = {
+            threedViewOn: false
         };
     }
 
@@ -36,7 +38,11 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         {...this.props}
                         parameter={this.props.threeDViewParameter}
                         offsrc='/sm_logo_off.png'
-                        onsrc='/sm_logo_on.png'>                        
+                        onsrc='/sm_logo_on.png'
+                        onOpenChanged={(open: boolean) => {
+                            this.setState({ threedViewOn: open });
+                        }}
+                    >
                     </SettingsToggleButtonC>
                     
                     <div className='grow scene-name flex-h margin-left'>
@@ -47,7 +53,9 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         {...this.props}
                         parameter={this.props.settingsParameter}
                         offsrc='/settings_off.png'
-                        onsrc='/settings_on.png'>
+                        onsrc='/settings_on.png'
+                        forceOff={this.state.threedViewOn}
+                    >
                     </SettingsToggleButtonC>
                 </div>
 
