@@ -1,4 +1,4 @@
-export const VERSION_STR = "0.1.4-carbon";
+export const VERSION_STR = "1.0.0-spacemusic";
 
 // colors
 export const COMPONENT_DEFAULT_COLOR = "#5C7080";
