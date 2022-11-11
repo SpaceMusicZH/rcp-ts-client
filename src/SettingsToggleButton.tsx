@@ -4,6 +4,7 @@ import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import ParameterWidget from './ParameterWidget';
 
 interface Props {
+    style?: React.CSSProperties;
     offsrc?: string;
     onsrc?: string;
     parameter?: GroupParameter;
@@ -56,11 +57,15 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
     }
 
     toggle = () => {
-        this.setState({ on: !this.state.on });
 
-        if (this.props.onOpenChanged)
-        {
-            this.props.onOpenChanged(this.state.on !== true);
+        if (this.props.parameter)
+        {            
+            this.setState({ on: !this.state.on });
+    
+            if (this.props.onOpenChanged)
+            {
+                this.props.onOpenChanged(this.state.on !== true);
+            }
         }
     }
 
@@ -110,7 +115,8 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             // >
             // </Button>
             <div
-            ref={this.ref}
+                style={this.props.style}
+                ref={this.ref}
             >
                 <a
                     onClick={this.toggle}

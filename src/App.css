@@ -81,6 +81,15 @@
 }
 
 
+.refresh-button {
+  display: flex;
+  margin: auto;
+  min-width: 48px;
+  min-height: 48px;
+  height: 48px;
+}
+
+
 /* Buttons */
 
 .bx--btn {
@@ -206,6 +215,40 @@
 .sm-icon {
   margin: auto;
   margin-left: 1em;
+}
+
+.section-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #393939;
+  height: 48px;  
+}
+
+.connection-panel {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.tunnel-row {  
+  min-height: 48px;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #525252;
+}
+.tunnel-row-child {  
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.tunnel-circle {
+  min-height: 12px;
+  min-width: 12px;
+  max-height: 12px;
+  max-width: 12px;
+  border-radius: 50%;
+  margin-left: 1em;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: #42BE65;
 }
 
 .sm-row {

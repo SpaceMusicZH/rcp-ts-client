@@ -25,7 +25,6 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
     }
 
     render() {
-
         return (
             <div className="smheader">
 
@@ -33,7 +32,7 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                 </div>
 
                 <div className="header-line grow">
-                    
+                                        
                     <SettingsToggleButtonC
                         {...this.props}
                         parameter={this.props.threeDViewParameter}
@@ -42,21 +41,22 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         onOpenChanged={(open: boolean) => {
                             this.setState({ threedViewOn: open });
                         }}
-                    >
-                    </SettingsToggleButtonC>
+                    />
                     
                     <div className='grow scene-name flex-h margin-left'>
                         {this.props.sceneNameParameter?.value || ""}
                     </div>
 
                     <SettingsToggleButtonC
+                        style={{
+                            display: this.props.settingsParameter ? undefined : "none"
+                        }}
                         {...this.props}
                         parameter={this.props.settingsParameter}
                         offsrc='/settings_off.png'
                         onsrc='/settings_on.png'
                         forceOff={this.state.threedViewOn}
-                    >
-                    </SettingsToggleButtonC>
+                    />
                 </div>
 
             </div>

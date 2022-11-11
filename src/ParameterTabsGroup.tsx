@@ -164,16 +164,24 @@ export class ParameterTabsGroupC extends React.Component<Props & InjectedProps, 
         const param = this.props.parameter;
 
         return (
-            <Tabs
-                type="container"
-                id={param?.id.toString() || "navbar"}
-                onSelectionChange={this.handleTabChange}
-                selected={this.state.navbarTabId}
-                style={this.props.style}
-            >
-                {/* {this.props.labelDisabled !== true ? <Tab title={label} disabled={true}></Tab> : <div></div>} */}
-                {this.createTabWidgets((this.props.parameter as GroupParameter).children)}
-            </Tabs>
+            <div>
+
+                <Tabs
+                    type="container"
+                    id={param?.id.toString() || "navbar"}
+                    onSelectionChange={this.handleTabChange}
+                    selected={this.state.navbarTabId}
+                    style={this.props.style}
+                >
+                    {/* {this.props.labelDisabled !== true ? <Tab title={label} disabled={true}></Tab> : <div></div>} */}
+                    {this.createTabWidgets((this.props.parameter as GroupParameter).children)}
+                </Tabs>
+
+                {
+                    // render non-group parameter
+                    this.renderChildren()
+                }
+            </div>
         );
     }
 

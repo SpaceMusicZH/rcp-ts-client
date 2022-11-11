@@ -3,10 +3,9 @@ import ParameterWidget from './ParameterWidget'
 import { Parameter, Client, WebSocketClientTransporter, GroupParameter, TabsWidget, StringParameter } from 'rabbitcontrol';
 import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
 import App from './App';
-import { Checkbox, Modal, NumberInput, TextInput } from 'carbon-components-react';
 import SMHeader from './SMHeader';
 import { WIDGET_3D_VIEW, WIDGET_SCENE_NAME_STRING, WIDGET_SETTINGS_STRING } from './WidgetConfig';
-import { ParameterTabsGroup } from './ParameterTabsGroup';
+import ConnectionList from './ConnectionList';
 
 
 type Props = {
@@ -16,8 +15,6 @@ type State = {
     isConnected: boolean;
     error?: string;
     client?: Client;
-    host: string;
-    port: number;
     parameters: Parameter[];
     serverVersion: string;
     serverApplicationId: string;
@@ -39,14 +36,14 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
         this.state = {
             isConnected: false,
-            host: 'localhost',
-            port: 10000,
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
             rootWithTabs: true,
         };
     }
+
+    
 
     componentDidMount = () => {
         
@@ -105,60 +102,27 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         });
     }
 
-    setHost = (e: any) => {
-        this.setState({
-            host: e.currentTarget.value as string,
-        });
-    }
-
-    setPort = (e: any, direction: any, value: any) => {
-        
-        if (direction !== undefined &&
-            direction.value !== undefined)
-        {        
-            this.setState({
-                port: direction.value,
-            });
-        }
-        else if (value !== undefined &&
-            !isNaN(value))
-        {
-            this.setState({
-                port: value,
-            });
-        }
-        else
-        {
-            console.error("invalid direction from NumberInput");            
-        }
-    }
-
-    setTabsInRoot = (e: boolean) => {        
-        this.setState({
-            rootWithTabs: e
-        });
-    }
-
-
     render() 
     {
         return (
             <section>
 
-                {
-                    this.state.client ?
-                        <SMHeader
-                            settingsParameter={this.state.settingsParameter}
-                            threeDViewParameter={this.state.threeDViewParameter}
-                            sceneNameParameter={this.state.sceneNameParameter}
-                            value={false}
-                            onSubmitCb={this.updateClient}
-                        ></SMHeader>
-                    :
-                        ""
-                }
+                <SMHeader
+                    settingsParameter={this.state.settingsParameter}
+                    threeDViewParameter={this.state.threeDViewParameter}
+                    sceneNameParameter={this.state.sceneNameParameter}
+                    value={false}
+                    onSubmitCb={this.updateClient}
+                />
 
                 {
+                    this.state.isConnected !== true ?
+                        
+                        <ConnectionList
+                            connectCb={this.doConnect}
+                        />                        
+
+                        :
                     this.state.client ?
 
                         this.state.rootWithTabs === true ?
@@ -174,53 +138,6 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                     :
                         ""
                 }
-
-                <Modal
-                    className={"bp3-dark"}
-                    modalLabel="Connect to a RabbitControl server"
-                    open={this.state.isConnected !== true}
-                    primaryButtonText="Connect"
-                    onRequestSubmit={this.handleAlertConfirm}
-                    passiveModal={false}
-                    preventCloseOnClickOutside={true}
-                    size="xs"
-                    shouldSubmitOnEnter={false}
-                    // secondaryButtonText="Cancel"
-                    // onSecondarySubmit={() => { console.log("sec"); }}
-                >
-                    <TextInput
-                        id="host"
-                        labelText="Host"
-                        value={this.state.host}
-                        type="text"
-                        onChange={this.setHost}
-                    />
-                    <br />
-                    
-                    <NumberInput
-                        id="port"
-                        label="Port"
-                        value={this.state.port}
-                        min={1024}
-                        max={65535}
-                        onChange={this.setPort}
-                    />
-
-                    <br/>
-
-                    <Checkbox
-                        id="tir"
-                        labelText="Tabs in Root"
-                        checked={this.state.rootWithTabs}
-                        onChange={this.setTabsInRoot}
-                    />
-
-                    <div>
-                        {this.state.error ? this.state.error : undefined}
-                        {this.returnSSLInfo()}
-                    </div>
-
-                </Modal>
         
             </section>
         );
@@ -247,15 +164,6 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 </div>
             );
         }
-    }
-
-    private handleAlertConfirm = () => {
-
-        this.setState({
-            error: undefined
-        });
-
-        this.doConnect(this.state.host, this.state.port);
     }
 
     private resetUI()
@@ -306,8 +214,6 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
             // set info
             this.setState({
-                host: host,
-                port: port,
                 error: undefined
             });
 
