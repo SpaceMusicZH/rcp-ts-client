@@ -27,12 +27,9 @@ type State = {
 export default class ConnectionDialog extends React.Component<Props, State> {
     
     private addTimer?: number;
-    private headerRef: React.RefObject<SMHeader>;
 
     constructor(props: Props) {
         super(props);
-
-        this.headerRef = React.createRef();
 
         this.state = {
             isConnected: false,
