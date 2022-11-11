@@ -100,10 +100,10 @@ export default class ConnectionList extends React.Component<Props, State> {
                     if (rip !== undefined &&
                         rip === p.remoteip &&
                         p.metadata &&
-                        p.metadata.localip)
+                        p.metadata.local_ip)
                     {
                         // add as local project
-                        const rp = new RemoteProject(p.name, p.metadata.localip, true);
+                        const rp = new RemoteProject(p.name, p.metadata.local_ip, true);
                         arr.push(rp);
                     }
                 }
