@@ -16,14 +16,14 @@ type State = {
 export class RemoteProject {
 
     public name: string;
-    public address: string;
-    public local: boolean;
+    public remoteAddress: string;
+    public localAddress: string;
 
-    constructor(name: string, address: string, local: boolean)
+    constructor(name: string, remote: string, local: string)
     {
         this.name = name;
-        this.address = address;
-        this.local = local;
+        this.remoteAddress = remote;
+        this.localAddress = local;
     }
 }
 
@@ -82,9 +82,9 @@ export default class ConnectionList extends React.Component<Props, State> {
 
 
     parseProjects = (content: string) =>
-    {
+    {        
         const obj = JSON.parse(content);
-        const rip = obj.remoteip;
+        const rip = obj.requestip;
         const arr = new Array<RemoteProject>();
 
         if (obj.projects)
@@ -94,18 +94,17 @@ export default class ConnectionList extends React.Component<Props, State> {
                 if (p.active === true)
                 {
                     // add as remote project
-                    const rp = new RemoteProject(p.name, `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${p.key}`, false);
-                    arr.push(rp);
-
+                    let localAddress: string = "";
                     if (rip !== undefined &&
                         rip === p.remoteip &&
                         p.metadata &&
                         p.metadata.local_ip)
                     {
-                        // add as local project
-                        const rp = new RemoteProject(p.name, p.metadata.local_ip, true);
-                        arr.push(rp);
+                        localAddress = p.metadata.local_ip;
                     }
+
+                    const rp = new RemoteProject(p.name, `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${p.key}`, localAddress);
+                    arr.push(rp);
                 }
             });
         }
@@ -115,10 +114,10 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     projectConnectCb = (project: RemoteProject) =>
     {
-        if (project.local)
+        if (project.localAddress !== undefined && project.localAddress !== "")
         {
             let port = 10000;
-            let parts = project.address.split(":");
+            let parts = project.localAddress.split(":");
             if (parts.length > 0)
             {
                 port = parseInt(parts[1]);
@@ -127,9 +126,14 @@ export default class ConnectionList extends React.Component<Props, State> {
 
             this.props.connectCb(parts[0], port);
         }
+        else if (project.remoteAddress !== undefined && project.remoteAddress !== "")
+        {
+            this.props.connectCb(project.remoteAddress, 443);
+        }
         else
         {
-            this.props.connectCb(project.address, 443);
+            console.error("no valid address");
+            
         }
     }
 

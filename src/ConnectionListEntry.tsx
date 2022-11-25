@@ -39,7 +39,7 @@ export default class ConnectionListEntry extends React.Component<Props, State>
                         margin: "auto",
                         marginRight: "1em"
                     }}
-                    src={this.props.project.local ? "localIcon.png" : "remoteIcon.png"}
+                    src={this.props.project.localAddress !== undefined && this.props.project.localAddress !== "" ? "localIcon.png" : "remoteIcon.png"}
                 />
 
             </div>
