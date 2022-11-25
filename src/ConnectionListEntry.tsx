@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { RemoteProject } from './ConnectionList';
+import { RemoteTunnel } from './ConnectionList';
 import { InjectedProps } from './ElementWrapper';
 
 interface Props {
-    project: RemoteProject;
-    connectCb: (project: RemoteProject) => void;
+    tunnel: RemoteTunnel;
+    connectCb: (tunnel: RemoteTunnel) => void;
 };
 
 interface State {
@@ -21,13 +21,13 @@ export default class ConnectionListEntry extends React.Component<Props, State>
         return (
             <div
                 className='tunnel-row'
-                onClick={() => this.props.connectCb(this.props.project)}
+                onClick={() => this.props.connectCb(this.props.tunnel)}
             >
                 <div className='tunnel-circle'></div>
 
                 <label className='tunnel-row-child'
                     style={{ marginLeft: "10px"}}>
-                    {this.props.project.name}
+                    {this.props.tunnel.name}
                 </label>
 
                 <div className='grow'></div>
@@ -39,7 +39,7 @@ export default class ConnectionListEntry extends React.Component<Props, State>
                         margin: "auto",
                         marginRight: "1em"
                     }}
-                    src={this.props.project.localAddress !== undefined && this.props.project.localAddress !== "" ? "localIcon.png" : "remoteIcon.png"}
+                    src={this.props.tunnel.localAddress !== undefined && this.props.tunnel.localAddress !== "" ? "localIcon.png" : "remoteIcon.png"}
                 />
 
             </div>

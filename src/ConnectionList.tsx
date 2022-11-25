@@ -9,11 +9,11 @@ interface Props {
 type State = {
     host: string;
     port: number;
-    projects?: Array<RemoteProject>;
+    tunnels?: Array<RemoteTunnel>;
     apikey?: string;
 };
 
-export class RemoteProject {
+export class RemoteTunnel {
 
     public name: string;
     public remoteAddress: string;
@@ -48,17 +48,17 @@ export default class ConnectionList extends React.Component<Props, State> {
             if (params.has("apikey"))
             {
                 const apikey = params.get("apikey") || undefined;
-                this.getProjects(apikey);
+                this.getTunnels(apikey);
                 this.setState({ apikey: apikey });
             }
         }
     }
 
-    getProjects = (apikey?: string) =>
+    getTunnels = (apikey?: string) =>
     {       
         if (apikey === undefined || apikey === "") return;
 
-        const resultCb = this.parseProjects;
+        const resultCb = this.parseTunnels;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://rabbithole.rabbitcontrol.cc/api/v1/projects');
@@ -81,43 +81,43 @@ export default class ConnectionList extends React.Component<Props, State> {
     }
 
 
-    parseProjects = (content: string) =>
+    parseTunnels = (content: string) =>
     {        
         const obj = JSON.parse(content);
         const rip = obj.requestip;
-        const arr = new Array<RemoteProject>();
+        const arr = new Array<RemoteTunnel>();
 
         if (obj.projects)
         {
-            obj.projects.forEach((p: any) =>
+            obj.projects.forEach((tunnel: any) =>
             {
-                if (p.active === true)
+                if (tunnel.active === true)
                 {
-                    // add as remote project
+                    // add as remote tunnel
                     let localAddress: string = "";
                     if (rip !== undefined &&
-                        rip === p.remoteip &&
-                        p.metadata &&
-                        p.metadata.local_ip)
+                        rip === tunnel.remoteip &&
+                        tunnel.metadata &&
+                        tunnel.metadata.local_ip)
                     {
-                        localAddress = p.metadata.local_ip;
+                        localAddress = tunnel.metadata.local_ip;
                     }
 
-                    const rp = new RemoteProject(p.name, `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${p.key}`, localAddress);
+                    const rp = new RemoteTunnel(tunnel.name, `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${tunnel.key}`, localAddress);
                     arr.push(rp);
                 }
             });
         }
 
-        this.setState({ projects: arr.length > 0 ? arr : undefined });
+        this.setState({ tunnels: arr.length > 0 ? arr : undefined });
     }
 
-    projectConnectCb = (project: RemoteProject) =>
+    tunnelConnectCb = (tunnel: RemoteTunnel) =>
     {
-        if (project.localAddress !== undefined && project.localAddress !== "")
+        if (tunnel.localAddress !== undefined && tunnel.localAddress !== "")
         {
             let port = 10000;
-            let parts = project.localAddress.split(":");
+            let parts = tunnel.localAddress.split(":");
             if (parts.length > 0)
             {
                 port = parseInt(parts[1]);
@@ -126,9 +126,9 @@ export default class ConnectionList extends React.Component<Props, State> {
 
             this.props.connectCb(parts[0], port);
         }
-        else if (project.remoteAddress !== undefined && project.remoteAddress !== "")
+        else if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
         {
-            this.props.connectCb(project.remoteAddress, 443);
+            this.props.connectCb(tunnel.remoteAddress, 443);
         }
         else
         {
@@ -137,15 +137,15 @@ export default class ConnectionList extends React.Component<Props, State> {
         }
     }
 
-    renderProjects()
+    renderRemoteTunnels()
     {
-        if (this.state.projects)
+        if (this.state.tunnels)
         {
-            return this.state.projects.map((p, index) => {
+            return this.state.tunnels.map((tunnel, index) => {
                 return <ConnectionListEntry
                     key={index}
-                    project={p}
-                    connectCb={this.projectConnectCb}
+                    tunnel={tunnel}
+                    connectCb={this.tunnelConnectCb}
                 />
             })
         }
@@ -221,7 +221,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                 <div style={{ marginTop: "3em" }} className='connection-panel'>
                     {
-                        this.state.projects !== undefined ?
+                        this.state.tunnels !== undefined ?
                             <div>
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
@@ -230,7 +230,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                                 </div>
 
                                 <div style={{ marginTop: "3em" }}>
-                                    {this.renderProjects()}
+                                    {this.renderRemoteTunnels()}
                                 </div>
                             </div>
 
@@ -258,7 +258,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                         }}
                     >
                         <a className='sm-margin-auto'
-                            onClick={() => this.getProjects(this.state.apikey)}
+                            onClick={() => this.getTunnels(this.state.apikey)}
                         >
                             <img
                                 className='sm-row-maxheight'
