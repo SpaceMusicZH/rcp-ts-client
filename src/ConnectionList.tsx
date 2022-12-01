@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { Button, TextInput } from 'carbon-components-react';
+import { Button, Link, Modal, TextInput } from 'carbon-components-react';
 import ConnectionListEntry from './ConnectionListEntry';
+import validate from 'uuid-validate';
+import { Buffer } from 'buffer';
+import { Cookie } from './Cookie';
+
+
+// @ts-ignore
+window.Buffer = Buffer;
 
 interface Props {
     connectCb: (host: string, port: number) => void;
+    failed: boolean;
 };
 
 type State = {
@@ -11,6 +19,9 @@ type State = {
     port: number;
     tunnels?: Array<RemoteTunnel>;
     apikey?: string;
+    cookieAlertOpen: boolean;
+    currentTunnel?: RemoteTunnel;
+    autoconnect: boolean;
 };
 
 export class RemoteTunnel {
@@ -30,28 +41,47 @@ export class RemoteTunnel {
 
 export default class ConnectionList extends React.Component<Props, State> {
 
+    static readonly API_KEY = "apikey";
+    static readonly COOKIE_OK_KEY = "storecookieok";
+    static readonly AUTOCONNECT_KEY = "autoconnect";
+
+    private failedOnce = false;
+
     constructor(props: Props) {
         super(props);
     
         this.state = {
             host: "",
-            port: 10000
+            port: 10000,
+            cookieAlertOpen: false,
+            autoconnect: false
         };
     }
     
-    componentDidMount(): void {
-        
+    componentDidMount(): void
+    {
         if (window.location.search !== "") {
             const params = new URLSearchParams(window.location.search);
 
             // apikey
-            if (params.has("apikey"))
+            if (params.has(ConnectionList.AUTOCONNECT_KEY))
             {
-                const apikey = params.get("apikey") || undefined;
-                this.getTunnels(apikey);
-                this.setState({ apikey: apikey });
+                const auto = params.get(ConnectionList.AUTOCONNECT_KEY) || undefined;
+                if (auto === "1")
+                {
+                    this.setState({ autoconnect: true });
+                }
             }
         }
+
+
+        // get stored abi key    
+        const apikey = Cookie.getCookie(ConnectionList.API_KEY);        
+        if (apikey)
+        {
+            this.getTunnels(apikey);
+            this.setState({ apikey: apikey });
+        }        
     }
 
     getTunnels = (apikey?: string) =>
@@ -109,13 +139,31 @@ export default class ConnectionList extends React.Component<Props, State> {
             });
         }
 
-        this.setState({ tunnels: arr.length > 0 ? arr : undefined });
+        this.failedOnce = false;
+
+        this.setState({ currentTunnel: undefined});
+
+        if (this.state.autoconnect &&
+            arr.length === 1)
+        {
+            this.tunnelConnectCb(arr[0]);
+        }
+        else
+        {            
+            this.setState({ tunnels: arr.length > 0 ? arr : undefined });
+        }
     }
 
     tunnelConnectCb = (tunnel: RemoteTunnel) =>
-    {
-        if (tunnel.localAddress !== undefined && tunnel.localAddress !== "")
+    {        
+        this.setState({ currentTunnel: tunnel});
+
+        if (!this.failedOnce &&
+            tunnel.localAddress !== undefined &&
+            tunnel.localAddress !== "")
         {
+            console.log("connect to local rcp");
+
             let port = 10000;
             let parts = tunnel.localAddress.split(":");
             if (parts.length > 0)
@@ -128,12 +176,13 @@ export default class ConnectionList extends React.Component<Props, State> {
         }
         else if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
         {
+            console.log("connect to remote tunnel");
+            
             this.props.connectCb(tunnel.remoteAddress, 443);
         }
         else
         {
-            console.error("no valid address");
-            
+            console.error("no valid address");            
         }
     }
 
@@ -211,6 +260,47 @@ export default class ConnectionList extends React.Component<Props, State> {
         this.props.connectCb(host, port);
     }
 
+
+    handleApikeyChange = (event: React.FormEvent<HTMLElement>) =>
+    {
+        //10c8fc48-682b-4c88-b0d2-a40080d0ebd9
+        const apikey = (event.target as HTMLInputElement).value;
+        if (validate(apikey))
+        {
+            this.setState({ apikey: apikey });
+
+            const ok = Cookie.getCookie(ConnectionList.COOKIE_OK_KEY);
+            if (ok !== undefined)
+            {
+                // cookies ok
+                Cookie.setCookie(ConnectionList.API_KEY, apikey);
+                this.getTunnels(apikey);                
+            }
+            else
+            {
+                // show popup
+                this.setState({ cookieAlertOpen: true });
+            }
+        }
+    }
+
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        
+        if (prevProps.failed !== true && this.props.failed === true)
+        {
+            if (!this.failedOnce)
+            {                
+                this.failedOnce = true;
+
+                if (this.state.currentTunnel)
+                {                    
+                    this.tunnelConnectCb(this.state.currentTunnel);
+                }
+            }
+        }
+    }
+
     render() {
         return (
             <div>
@@ -237,6 +327,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                             :
 
                             this.state.apikey !== undefined ?
+                                
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
                                         No clients are available. Please refresh or connect manually.
@@ -244,10 +335,18 @@ export default class ConnectionList extends React.Component<Props, State> {
                                 </div>
                                 :
 
-                                <div className='flex-h'>
+                                <div >
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
-                                        No Api-Key provided.
+                                        No Api-Key provided. Please enter a <Link href="https://rabbithole.rabbitcontrol.cc" target="#">Rabbithole</Link> Api-Key.
                                     </label>
+                                    <br />
+                                    <br/>
+
+                                    <TextInput
+                                        id={'apikeyinput'}
+                                        labelText={'Api-Key'}
+                                        onChange={this.handleApikeyChange}
+                                    ></TextInput>
                                 </div>
                     }
 
@@ -276,7 +375,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                 <div className='connection-panel'>
                     <TextInput style={{ marginTop: "2em" }}
-                        placeholder='Enter IP Adress or Tunnel URL'
+                        placeholder='Enter IP Adress or Rabbithole Tunnel URL'
                         id={'connectioninput'}
                         labelText={''}
                         value={this.state.host}
@@ -293,9 +392,36 @@ export default class ConnectionList extends React.Component<Props, State> {
                     </Button>
                 </div>
 
+                <Modal
+                    open={this.state.cookieAlertOpen}
+                    modalHeading="Ok to store some cookies?"
+                    modalLabel="Cookie Alarm"
+                    primaryButtonText="Yes"
+                    secondaryButtonText="No"
+                    onRequestSubmit={this.handleCookiesYes}
+                    onSecondarySubmit={this.handleCookiesNo}
+                />
 
             </div>
         );
+    }
 
+    handleCookiesYes = () =>
+    {
+        this.setState({ cookieAlertOpen: false });
+
+        Cookie.setCookie(ConnectionList.COOKIE_OK_KEY, "ok");
+        if (this.state.apikey)
+        {            
+            Cookie.setCookie(ConnectionList.API_KEY, this.state.apikey);
+        }
+
+        this.getTunnels(this.state.apikey);
+    }
+
+    handleCookiesNo = () =>
+    {
+        this.setState({ cookieAlertOpen: false });
+        this.getTunnels(this.state.apikey);
     }
 };

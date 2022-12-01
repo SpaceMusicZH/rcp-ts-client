@@ -117,6 +117,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                         
                         <ConnectionList
                             connectCb={this.doConnect}
+                            failed={this.state.error !== undefined}
                         />                        
 
                         :
@@ -264,13 +265,19 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
     private onError = (error: any) => {
 
-        if (error instanceof Error) {
+        if (error instanceof Error)
+        {
             console.error(error.message);
-        } else {
+            this.setState({
+                error: error.message,
+            });
+        }
+        else
+        {
             this.setState({
                 error: error.toString(),
             });
-            this.resetUI();
+            // this.resetUI();
         }
 
     }
