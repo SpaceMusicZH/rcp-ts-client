@@ -40,12 +40,19 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
 
     componentDidMount(): void {
 
+        this.calcOffset();
+    }
+
+    calcOffset = () =>
+    {
+        console.log("calc offset");
+        
         const top = ((this.ref.current?.offsetTop || 0) + (this.ref.current?.offsetHeight || 0));
         this.setState({
             settingY: top,
             width: window.innerWidth,
             height: window.innerHeight - top
-        })
+        });
     }
 
     componentDidUpdate(prevProps: Readonly<Props & InjectedProps>, prevState: Readonly<State>, snapshot?: any): void {
@@ -53,6 +60,12 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             this.props.forceOff === true)
         {
             this.setState({ on: false });
+        }
+
+        if (prevProps.parameter === undefined &&
+            this.props.parameter !== undefined)
+        {
+            this.calcOffset();
         }
     }
 
