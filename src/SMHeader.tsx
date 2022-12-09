@@ -11,6 +11,7 @@ interface Props {
 
 interface State {
     threedViewOn: boolean
+    settingsViewOn: boolean
 };
 
 export default class SMHeaderC extends React.Component<Props & InjectedProps, State>
@@ -20,7 +21,8 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
         super(props);
     
         this.state = {
-            threedViewOn: false
+            threedViewOn: false,
+            settingsViewOn: false
         };
     }
 
@@ -38,6 +40,7 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         parameter={this.props.threeDViewParameter}
                         offsrc='/sm_logo_off.png'
                         onsrc='/sm_logo_on.png'
+                        forceOff={this.state.settingsViewOn}
                         onOpenChanged={(open: boolean) => {
                             this.setState({ threedViewOn: open });
                         }}
@@ -56,6 +59,9 @@ export default class SMHeaderC extends React.Component<Props & InjectedProps, St
                         offsrc='/settings_off.png'
                         onsrc='/settings_on.png'
                         forceOff={this.state.threedViewOn}
+                        onOpenChanged={(open: boolean) => {
+                            this.setState({ settingsViewOn: open });
+                        }}
                     />
                 </div>
 
