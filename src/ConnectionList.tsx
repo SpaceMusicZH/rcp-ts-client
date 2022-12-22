@@ -44,6 +44,9 @@ export default class ConnectionList extends React.Component<Props, State> {
     static readonly API_KEY = "apikey";
     static readonly COOKIE_OK_KEY = "storecookieok";
     static readonly AUTOCONNECT_KEY = "autoconnect";
+    static readonly DEFAULT_RCP_PORT = 10000;
+    static readonly SSL_PORT = 443;
+    static readonly HTTP_PORT = 80;
 
     private failedOnce = false;
 
@@ -52,7 +55,7 @@ export default class ConnectionList extends React.Component<Props, State> {
     
         this.state = {
             host: "",
-            port: 10000,
+            port: ConnectionList.DEFAULT_RCP_PORT,
             cookieAlertOpen: false,
             autoconnect: false
         };
@@ -60,7 +63,8 @@ export default class ConnectionList extends React.Component<Props, State> {
     
     componentDidMount(): void
     {
-        if (window.location.search !== "") {
+        if (window.location.search !== "")
+        {
             const params = new URLSearchParams(window.location.search);
 
             // apikey
@@ -92,7 +96,6 @@ export default class ConnectionList extends React.Component<Props, State> {
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://rabbithole.rabbitcontrol.cc/api/v1/projects');
-        // xhr.setRequestHeader('x-real-ip', 'test');
         xhr.setRequestHeader('rcp-key', apikey);
         xhr.responseType = 'text';
         xhr.onload = function () {
@@ -162,23 +165,19 @@ export default class ConnectionList extends React.Component<Props, State> {
             tunnel.localAddress !== undefined &&
             tunnel.localAddress !== "")
         {
-            console.log("connect to local rcp");
-
-            let port = 10000;
+            let port = ConnectionList.DEFAULT_RCP_PORT;
             let parts = tunnel.localAddress.split(":");
             if (parts.length > 0)
             {
                 port = parseInt(parts[1]);
-                if (port === 0) port = 10000;
+                if (port === 0) port = ConnectionList.DEFAULT_RCP_PORT;
             }
 
             this.props.connectCb(parts[0], port);
         }
         else if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
-        {
-            console.log("connect to remote tunnel");
-            
-            this.props.connectCb(tunnel.remoteAddress, 443);
+        {           
+            this.props.connectCb(tunnel.remoteAddress, ConnectionList.SSL_PORT);
         }
         else
         {
@@ -230,16 +229,16 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     doManualConnect = () =>
     {
-        let port = 10000;
+        let port = ConnectionList.DEFAULT_RCP_PORT;
         if (this.state.host.startsWith("wss") ||
             this.state.host.startsWith("https"))
         {
-            port = 443;
+            port = ConnectionList.SSL_PORT;
         }
         else if (this.state.host.startsWith("ws") ||
                  this.state.host.startsWith("http"))
         {
-            port = 80;
+            port = ConnectionList.HTTP_PORT;
         }
 
         let host = this.state.host;
@@ -263,7 +262,6 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     handleApikeyChange = (event: React.FormEvent<HTMLElement>) =>
     {
-        //10c8fc48-682b-4c88-b0d2-a40080d0ebd9
         const apikey = (event.target as HTMLInputElement).value;
         if (validate(apikey))
         {
