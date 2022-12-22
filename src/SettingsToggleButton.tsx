@@ -45,8 +45,6 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
 
     calcOffset = () =>
     {
-        console.log("calc offset");
-        
         const top = ((this.ref.current?.offsetTop || 0) + (this.ref.current?.offsetHeight || 0));
         this.setState({
             settingY: top,
