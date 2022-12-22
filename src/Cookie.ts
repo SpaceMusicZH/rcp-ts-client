@@ -1,6 +1,6 @@
 export class Cookie
 {
-    static setCookie(cName: string, cValue: string, expDays?: number)
+    static setCookie(cName: string, cValue: string, expDays?: number, hostname?: string)
     {
         let expires = "";
     
@@ -11,7 +11,15 @@ export class Cookie
             expires = "expires=" + date.toUTCString();
         }
     
-        document.cookie = cName + "=" + cValue + "; " + expires + "; domain=" + window.location.hostname + "; path=/";
+        if (hostname !== undefined)
+        {
+            document.cookie = cName + "=" + cValue + "; " + expires + "; domain=" + hostname + "; path=/";
+        }
+        else
+        {
+            
+            document.cookie = cName + "=" + cValue + "; " + expires + "; domain=" + window.location.hostname + "; path=/";
+        }
     }
     
     static getCookie(cName: string)

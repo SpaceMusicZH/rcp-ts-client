@@ -79,7 +79,7 @@ export default class ConnectionList extends React.Component<Props, State> {
         }
 
 
-        // get stored abi key    
+        // get stored apikey    
         const apikey = Cookie.getCookie(ConnectionList.API_KEY);        
         if (apikey)
         {
@@ -259,6 +259,13 @@ export default class ConnectionList extends React.Component<Props, State> {
         this.props.connectCb(host, port);
     }
 
+    getHost = () => {
+        var parts = window.location.hostname.split(".");
+        while (parts.length > 2) {
+            parts.shift();
+        }
+        return parts.join(".");
+    }
 
     handleApikeyChange = (event: React.FormEvent<HTMLElement>) =>
     {
@@ -271,7 +278,7 @@ export default class ConnectionList extends React.Component<Props, State> {
             if (ok !== undefined)
             {
                 // cookies ok
-                Cookie.setCookie(ConnectionList.API_KEY, apikey);
+                this.setApiCookie();
                 this.getTunnels(apikey);                
             }
             else
@@ -404,15 +411,20 @@ export default class ConnectionList extends React.Component<Props, State> {
         );
     }
 
+    setApiCookie = () =>
+    {
+        if (this.state.apikey)
+        {
+            Cookie.setCookie(ConnectionList.API_KEY, this.state.apikey, undefined, this.getHost());
+        }
+    }
+
     handleCookiesYes = () =>
     {
         this.setState({ cookieAlertOpen: false });
 
         Cookie.setCookie(ConnectionList.COOKIE_OK_KEY, "ok");
-        if (this.state.apikey)
-        {            
-            Cookie.setCookie(ConnectionList.API_KEY, this.state.apikey);
-        }
+        this.setApiCookie();
 
         this.getTunnels(this.state.apikey);
     }
