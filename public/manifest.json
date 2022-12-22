@@ -1,6 +1,6 @@
 {
-  "short_name": "RCP Web Client",
-  "name": "RabbitControl Web Client - Space Music",
+  "short_name": "RCP Space Music Control",
+  "name": "Space Music Control using RabbitControl - http://rabbitcontrol.cc",
   "icons": [
     {
       "src": "favicon.ico",
