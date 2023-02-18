@@ -21,24 +21,22 @@ export default class ConnectionListEntry extends React.Component<Props, State>
         return (
             <div
                 className='tunnel-row'
-                onClick={() => this.props.connectCb(this.props.tunnel)}
+                onClick={() => {
+                    if (this.props.tunnel.active)
+                    {
+                        this.props.connectCb(this.props.tunnel)
+                    }                    
+                }}
             >
-                <div className='tunnel-circle'></div>
+                <div className={`tunnel-circle${this.props.tunnel.active ? "" : " offline"}`}></div>
 
-                <label className='tunnel-row-child'
-                    style={{ marginLeft: "10px"}}>
+                <label className={`tunnel-row-child${this.props.tunnel.active ? "" : " offline"}`}>
                     {this.props.tunnel.name}
                 </label>
 
                 <div className='grow'></div>
 
-                <img
-                    style={{
-                        width: "auto",
-                        height: "auto",
-                        margin: "auto",
-                        marginRight: "1em"
-                    }}
+                <img className={`tunnel-icon${this.props.tunnel.active ? "" : " offline"}`}
                     src={this.props.tunnel.localAddress !== undefined && this.props.tunnel.localAddress !== "" ? "localIcon.png" : "remoteIcon.png"}
                 />
 

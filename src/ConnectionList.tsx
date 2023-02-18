@@ -29,12 +29,14 @@ export class RemoteTunnel {
     public name: string;
     public remoteAddress: string;
     public localAddress: string;
+    public active: boolean;
 
-    constructor(name: string, remote: string, local: string)
+    constructor(name: string, remote: string, local: string, active: boolean)
     {
         this.name = name;
         this.remoteAddress = remote;
         this.localAddress = local;
+        this.active = active;
     }
 }
 
@@ -44,6 +46,7 @@ export default class ConnectionList extends React.Component<Props, State> {
     static readonly API_KEY = "apikey";
     static readonly COOKIE_OK_KEY = "storecookieok";
     static readonly AUTOCONNECT_KEY = "autoconnect";
+    // static readonly TUNNEL_KEY = "tunnel";
     static readonly DEFAULT_RCP_PORT = 10000;
     static readonly SSL_PORT = 443;
     static readonly HTTP_PORT = 80;
@@ -76,6 +79,16 @@ export default class ConnectionList extends React.Component<Props, State> {
                     this.setState({ autoconnect: true });
                 }
             }
+
+            // NOTE: disabled until needed
+            // if necessary provide a url-encoded rabbithole-client-url as hash-parameter
+            // use encodeURIComponent() or similar
+
+            // if (params.has(ConnectionList.TUNNEL_KEY))
+            // {
+            //     const tunnel = params.get(ConnectionList.TUNNEL_KEY) || undefined;
+            //     this.setState({ autoTunnel: tunnel });
+            // }
         }
 
 
@@ -83,8 +96,8 @@ export default class ConnectionList extends React.Component<Props, State> {
         const apikey = Cookie.getCookie(ConnectionList.API_KEY);        
         if (apikey)
         {
-            this.getTunnels(apikey);
             this.setState({ apikey: apikey });
+            this.getTunnels(apikey);
         }        
     }
 
@@ -93,6 +106,7 @@ export default class ConnectionList extends React.Component<Props, State> {
         if (apikey === undefined || apikey === "") return;
 
         const resultCb = this.parseTunnels;
+        const self = this;
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://rabbithole.rabbitcontrol.cc/api/v1/projects');
@@ -103,6 +117,10 @@ export default class ConnectionList extends React.Component<Props, State> {
                 if (resultCb) resultCb(xhr.response);
             } else {
                 console.error("error code: " + xhr.status);
+                self.setState({
+                    apikey: undefined,
+                    tunnels: undefined
+                })
             }
         };
 
@@ -124,21 +142,24 @@ export default class ConnectionList extends React.Component<Props, State> {
         {
             obj.projects.forEach((tunnel: any) =>
             {
-                if (tunnel.active === true)
+                // add as remote tunnel
+                let localAddress: string = "";
+                if (rip !== undefined &&
+                    rip === tunnel.remoteip &&
+                    tunnel.metadata &&
+                    tunnel.metadata.local_ip)
                 {
-                    // add as remote tunnel
-                    let localAddress: string = "";
-                    if (rip !== undefined &&
-                        rip === tunnel.remoteip &&
-                        tunnel.metadata &&
-                        tunnel.metadata.local_ip)
-                    {
-                        localAddress = tunnel.metadata.local_ip;
-                    }
-
-                    const rp = new RemoteTunnel(tunnel.name, `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${tunnel.key}`, localAddress);
-                    arr.push(rp);
+                    localAddress = tunnel.metadata.local_ip;
                 }
+
+                const rp = new RemoteTunnel(
+                    tunnel.name,
+                    `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${tunnel.key}`,
+                    localAddress,
+                    tunnel.active === true
+                );
+                
+                arr.push(rp);
             });
         }
 
@@ -146,15 +167,38 @@ export default class ConnectionList extends React.Component<Props, State> {
 
         this.setState({ currentTunnel: undefined});
 
-        if (this.state.autoconnect &&
-            arr.length === 1)
+        if (this.state.autoconnect)
         {
-            this.tunnelConnectCb(arr[0]);
+            // if (this.state.autoTunnel !== undefined &&
+            //     this.state.autoTunnel !== "")
+            // {
+            //     // search for tunnel with name
+            //     const auto_tunnel = arr.find(tunnel => tunnel.name === this.state.autoTunnel)
+            //     if (auto_tunnel !== undefined &&
+            //         auto_tunnel.active === true)
+            //     {
+            //         this.tunnelConnectCb(auto_tunnel);
+            //         return;
+            //     }
+            //     else if (auto_tunnel)
+            //     {
+            //         console.log("tunnel is offline:" + auto_tunnel.name);                    
+            //     }
+            //     else
+            //     {
+            //         console.log("tunnel not found: " + this.state.autoTunnel);                    
+            //     }
+            // }
+
+            if (arr.length === 1 &&
+                arr[0].active === true)
+            {                
+                this.tunnelConnectCb(arr[0]);
+                return;
+            }
         }
-        else
-        {            
-            this.setState({ tunnels: arr.length > 0 ? arr : undefined });
-        }
+        
+        this.setState({ tunnels: arr.length > 0 ? arr : undefined });
     }
 
     tunnelConnectCb = (tunnel: RemoteTunnel) =>
@@ -229,34 +273,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     doManualConnect = () =>
     {
-        let port = ConnectionList.DEFAULT_RCP_PORT;
-        if (this.state.host.startsWith("wss") ||
-            this.state.host.startsWith("https"))
-        {
-            port = ConnectionList.SSL_PORT;
-        }
-        else if (this.state.host.startsWith("ws") ||
-                 this.state.host.startsWith("http"))
-        {
-            port = ConnectionList.HTTP_PORT;
-        }
-
-        let host = this.state.host;
-
-        if (host.startsWith("https://rabbithole.rabbitcontrol.cc") &&
-            host.includes("client/index.html"))
-        {
-            if (host.includes("mode=private#"))
-            {
-                host = host.replace("client/index.html?mode=private#", "rcpclient/connect?key=");
-            }
-            else
-            {
-                host = host.replace("client/index.html#", "public/rcpclient/connect?key=");
-            }
-        }
-
-        this.props.connectCb(host, port);
+        this.props.connectCb(this.state.host, ConnectionList.DEFAULT_RCP_PORT);
     }
 
     getHost = () => {
@@ -317,6 +334,9 @@ export default class ConnectionList extends React.Component<Props, State> {
                 <div style={{ marginTop: "3em" }} className='connection-panel'>
                     {
                         this.state.tunnels !== undefined ?
+                            
+                            // we got some tunnels
+                            
                             <div>
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
@@ -331,14 +351,21 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                             :
 
+                            // no tunnels
+
                             this.state.apikey !== undefined ?
+                                
+                                // no tunnels but valid api-key
                                 
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
                                         No clients are available. Please refresh or connect manually.
                                     </label>
                                 </div>
+
                                 :
+
+                                // no tunnels, no api-key
 
                                 <div >
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>

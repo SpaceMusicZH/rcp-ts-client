@@ -36,7 +36,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
-            rootWithTabs: true,
+            rootWithTabs: true
         };
     }
 
@@ -60,14 +60,16 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             }
         }
 
-         // autoconnect
-         if (window.location.hash !== '') {
+        // autoconnect
+        if (window.location.hash !== '')
+        {
             const [host, port] = window.location.hash.replace('#', '').split(':');
-            const portAsInt = parseInt(port, 10);
+
+            const portAsInt = parseInt(port, 10) || ConnectionList.DEFAULT_RCP_PORT;
 
             if (Client.VERBOSE) console.log("autoconnect: " + host + ":" + portAsInt);
-            this.doConnect(host, portAsInt);
-         }
+            this.doConnect(decodeURIComponent(host), portAsInt);
+        }
     }
 
     updateClient = () => {
@@ -113,28 +115,50 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 />
 
                 {
-                    this.state.isConnected !== true ?
-                        
+                    this.state.isConnected === false
+
+                        ?
+
+                        // not connected
+
                         <ConnectionList
-                            connectCb={this.doConnect}
-                            failed={this.state.error !== undefined}
-                        />                        
-
-                        :
-                    this.state.client ?
-
-                        this.state.rootWithTabs === true ?
-
-                            <ParameterWidget
-                                key={0}
-                                parameter={this.state.client.getRootGroup()}
-                                onSubmitCb={this.updateClient}
+                                connectCb={this.doConnect}
+                                failed={this.state.error !== undefined}
                             />
-                        :
-                            this.createWidgets(this.state.parameters)
 
-                    :
-                        ""
+                        :
+
+                        // connected - check client
+
+                        this.state.client
+                            
+                            ?
+
+                            // connected - has client
+
+                            this.state.rootWithTabs === true
+                                
+                                ?
+
+                                // root with tabs
+
+                                <ParameterWidget
+                                    key={0}
+                                    parameter={this.state.client.getRootGroup()}
+                                    onSubmitCb={this.updateClient}
+                                />
+
+                                :
+
+                                // no root with tabs
+
+                                this.createWidgets(this.state.parameters)
+
+                            :
+
+                            // connected - but no client
+
+                            ""
                 }
         
             </section>
@@ -205,6 +229,36 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             host !== "" &&
             !isNaN(port))
         {
+            //------------------------------
+            // transform rabbithole url
+            
+            if (host.startsWith("wss") ||
+                host.startsWith("https"))
+            {
+                port = ConnectionList.SSL_PORT;
+            }
+            else if (host.startsWith("ws") ||
+                host.startsWith("http"))
+            {
+                port = ConnectionList.HTTP_PORT;
+            }
+
+            if (host.startsWith("https://rabbithole.rabbitcontrol.cc") &&
+                host.includes("client/index.html"))
+            {
+                if (host.includes("mode=private#"))
+                {
+                    host = host.replace("client/index.html?mode=private#", "rcpclient/connect?key=");
+                }
+                else
+                {
+                    host = host.replace("client/index.html#", "public/rcpclient/connect?key=");
+                }
+            }
+
+            //------------------------------
+            // try to connect
+
             console.log(`trying to connect: ${host}:${port}`);            
 
             // disconnect first
@@ -214,7 +268,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             this.setState({
                 error: undefined
             });
-
+            
             const client = new Client(new WebSocketClientTransporter())
 
             // NOTE: needed??
