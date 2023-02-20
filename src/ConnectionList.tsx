@@ -4,6 +4,7 @@ import ConnectionListEntry from './ConnectionListEntry';
 import validate from 'uuid-validate';
 import { Buffer } from 'buffer';
 import { Cookie } from './Cookie';
+import { DEFAULT_RCP_PORT, SSL_PORT } from './Globals';
 
 
 // @ts-ignore
@@ -46,10 +47,7 @@ export default class ConnectionList extends React.Component<Props, State> {
     static readonly API_KEY = "apikey";
     static readonly COOKIE_OK_KEY = "storecookieok";
     static readonly AUTOCONNECT_KEY = "autoconnect";
-    // static readonly TUNNEL_KEY = "tunnel";
-    static readonly DEFAULT_RCP_PORT = 10000;
-    static readonly SSL_PORT = 443;
-    static readonly HTTP_PORT = 80;
+    // static readonly TUNNEL_KEY = "tunnel";    
 
     private failedOnce = false;
 
@@ -58,7 +56,7 @@ export default class ConnectionList extends React.Component<Props, State> {
     
         this.state = {
             host: "",
-            port: ConnectionList.DEFAULT_RCP_PORT,
+            port: DEFAULT_RCP_PORT,
             cookieAlertOpen: false,
             autoconnect: false
         };
@@ -209,19 +207,19 @@ export default class ConnectionList extends React.Component<Props, State> {
             tunnel.localAddress !== undefined &&
             tunnel.localAddress !== "")
         {
-            let port = ConnectionList.DEFAULT_RCP_PORT;
+            let port = DEFAULT_RCP_PORT;
             let parts = tunnel.localAddress.split(":");
             if (parts.length > 0)
             {
                 port = parseInt(parts[1]);
-                if (port === 0) port = ConnectionList.DEFAULT_RCP_PORT;
+                if (port === 0) port = DEFAULT_RCP_PORT;
             }
 
             this.props.connectCb(parts[0], port);
         }
         else if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
         {           
-            this.props.connectCb(tunnel.remoteAddress, ConnectionList.SSL_PORT);
+            this.props.connectCb(tunnel.remoteAddress, SSL_PORT);
         }
         else
         {
@@ -273,7 +271,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     doManualConnect = () =>
     {
-        this.props.connectCb(this.state.host, ConnectionList.DEFAULT_RCP_PORT);
+        this.props.connectCb(this.state.host, DEFAULT_RCP_PORT);
     }
 
     getHost = () => {

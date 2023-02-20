@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ParameterWidget from './ParameterWidget'
 import { Parameter, Client, WebSocketClientTransporter, GroupParameter, TabsWidget, StringParameter } from 'rabbitcontrol';
-import { SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX } from './Globals';
+import { DEFAULT_RCP_PORT, HTTP_PORT, SSL_INFO_TEXT, SSL_INFO_TEXT_FIREFOX, SSL_PORT } from './Globals';
 import App from './App';
 import SMHeader from './SMHeader';
 import { WIDGET_3D_VIEW, WIDGET_SCENE_NAME_STRING, WIDGET_SETTINGS_STRING } from './WidgetConfig';
@@ -65,7 +65,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         {
             const [host, port] = window.location.hash.replace('#', '').split(':');
 
-            const portAsInt = parseInt(port, 10) || ConnectionList.DEFAULT_RCP_PORT;
+            const portAsInt = parseInt(port, 10) || DEFAULT_RCP_PORT;
 
             if (Client.VERBOSE) console.log("autoconnect: " + host + ":" + portAsInt);
             this.doConnect(decodeURIComponent(host), portAsInt);
@@ -235,12 +235,12 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             if (host.startsWith("wss") ||
                 host.startsWith("https"))
             {
-                port = ConnectionList.SSL_PORT;
+                port = SSL_PORT;
             }
             else if (host.startsWith("ws") ||
                 host.startsWith("http"))
             {
-                port = ConnectionList.HTTP_PORT;
+                port = HTTP_PORT;
             }
 
             if (host.startsWith("https://rabbithole.rabbitcontrol.cc") &&
