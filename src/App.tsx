@@ -90,7 +90,7 @@ class App extends React.Component<Props, State>
     return (
       <div className="App"
         style={{
-          minHeight: this.state.height - 40
+          minHeight: this.state.height
         }}>
 
         <ConnectionDialog />
