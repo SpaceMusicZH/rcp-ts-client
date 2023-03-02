@@ -22,6 +22,7 @@ type State = {
     settingsParameter?: GroupParameter;
     threeDViewParameter?: GroupParameter;
     sceneNameParameter?: StringParameter;
+    autoConnect: boolean;
 };
 
 export default class ConnectionDialog extends React.Component<Props, State> {
@@ -36,7 +37,8 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
-            rootWithTabs: true
+            rootWithTabs: true,
+            autoConnect: false
         };
     }
 
@@ -68,6 +70,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             const portAsInt = parseInt(port, 10) || DEFAULT_RCP_PORT;
 
             if (Client.VERBOSE) console.log("autoconnect: " + host + ":" + portAsInt);
+
+            this.setState({ autoConnect: true });
+
             this.doConnect(decodeURIComponent(host), portAsInt);
         }
     }
@@ -121,10 +126,22 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
                         // not connected
 
-                        <ConnectionList
-                                connectCb={this.doConnect}
-                                failed={this.state.error !== undefined}
-                            />
+                        this.state.autoConnect
+
+                            ?
+                            
+                            // autoconnect
+
+                            ""
+
+                            :
+
+                            // no autoconnect
+
+                            <ConnectionList
+                                    connectCb={this.doConnect}
+                                    failed={this.state.error !== undefined}
+                                />
 
                         :
 
@@ -259,7 +276,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             //------------------------------
             // try to connect
 
-            console.log(`trying to connect: ${host}:${port}`);            
+            console.log(`trying to connect: ${host}:${port}`);
 
             // disconnect first
             this.doDisconnect();
