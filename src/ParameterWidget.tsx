@@ -442,6 +442,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                         handleValue={this.handleValueChange}
                         tabId={this.props.tabId || 0}
                         selectedTab={this.props.selectedTab || 0}
+                        onSubmitCb={this.props.onSubmitCb}
                     />
                 );
             }

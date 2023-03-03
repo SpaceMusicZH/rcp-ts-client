@@ -141,6 +141,7 @@ export class ParameterTabsSwitcherC extends React.Component<Props & InjectedProp
                             value={undefined}
                             selectedTab={this.state.currentChild}
                             tabId={this.state.currentChild}
+                            onSubmitCb={this.props.onSubmitCb}
                         >
                         </ParameterTabsGroupC>
                     );
