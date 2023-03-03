@@ -405,29 +405,45 @@ export default class ConnectionList extends React.Component<Props, State> {
                 </div>
 
 
+                {
+                    window.location.protocol.startsWith("https")
 
-                {/* <div className='section-title' style={{ marginTop: "4em" }}>
-                    <label className='grouplabel'>Connect Manually</label>
-                </div>
+                        ?
 
-                <div className='connection-panel'>
-                    <TextInput style={{ marginTop: "2em" }}
-                        placeholder='Enter IP Adress or Rabbithole Tunnel URL'
-                        id={'connectioninput'}
-                        labelText={''}
-                        value={this.state.host}
-                        onChange={this.setHost}
-                    >
-                    </TextInput>
+                        // https - no connection input
+                        
+                        ""
 
-                    <Button
-                        style={{ marginTop: "1em" }}
-                        kind="ghost"
-                        onClick={this.doManualConnect}
-                    >
-                        Connect
-                    </Button>
-                </div> */}
+                        :
+
+                        // no https - show manual connection field
+
+                        <div>
+                            <div className='section-title' style={{ marginTop: "4em" }}>
+                                <label className='grouplabel'>Connect Manually</label>
+                            </div>
+
+                            <div className='connection-panel'>
+                                <TextInput style={{ marginTop: "2em" }}
+                                    placeholder='Enter IP Adress or Rabbithole Tunnel URL'
+                                    id={'connectioninput'}
+                                    labelText={''}
+                                    value={this.state.host}
+                                    onChange={this.setHost}
+                                >
+                                </TextInput>
+
+                                <Button
+                                    style={{ marginTop: "1em" }}
+                                    kind="ghost"
+                                    onClick={this.doManualConnect}
+                                >
+                                    Connect
+                                </Button>
+                            </div>                            
+                        </div>                
+                }
+
 
                 {/* <Modal
                     open={this.state.cookieAlertOpen}
