@@ -682,10 +682,12 @@ ul.bx--tabs--scrollable__nav {
 .radio-option-container {
   display: flex;
   flex-flow: wrap;
+  flex-direction: row;
 }
 .radio-option-item {
   flex-grow: 10;
   white-space: nowrap;
+  width: auto;
 }
 
 /* .rootgroup-wrapper {
