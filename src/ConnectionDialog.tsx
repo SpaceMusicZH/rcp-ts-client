@@ -28,6 +28,7 @@ type State = {
 export default class ConnectionDialog extends React.Component<Props, State> {
     
     private addTimer?: number;
+    private removeTimer?: number;
 
     constructor(props: Props) {
         super(props);
@@ -227,6 +228,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
+            settingsParameter: undefined,
+            threeDViewParameter: undefined,
+            sceneNameParameter: undefined
         });
     }
 
@@ -406,14 +410,10 @@ export default class ConnectionDialog extends React.Component<Props, State> {
      */
     private parameterAdded = (parameter: Parameter) => 
     {
-        parameter.addChangeListener(this.parameterChangeListener);
+        this.stopAddTimer();
 
-        // delay setting parameter
-        // more paramater might arrive in quick succession
-        if (this.addTimer !== undefined) {
-            window.clearTimeout(this.addTimer);
-            this.addTimer = undefined;
-        }
+
+        parameter.addChangeListener(this.parameterChangeListener);
 
         if (parameter.userid === WIDGET_SETTINGS_STRING &&
             parameter instanceof GroupParameter)
@@ -437,18 +437,15 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             })
         }
 
-        this.addTimer = window.setTimeout(() => {
-            if (this.state.client)
-            {
-                this.setState({
-                    parameters: this.state.client.getRootGroup().children,
-                });
-            }
-        }, 100);
+        // delay setting parameter
+        // more paramater might arrive in quick succession
+        this.addTimer = this.setParameterDelayed(100);
     }
 
     private parameterRemoved = (parameter: Parameter) =>
-    {        
+    {
+        this.stopRemoveTimer();
+
         // this.rootParam.removeChild(parameter);
         parameter.removeFromParent();
 
@@ -476,24 +473,51 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             })
         }
 
-        if (this.state.client)
-        {
-            this.setState({
-                parameters: this.state.client.getRootGroup().children,
-            });
-        }
+        // delay removing parameter
+        // more paramater might arrive in quick succession
+        this.removeTimer = this.setParameterDelayed(10);
     }
 
     /**
      * 
      */
-    private stopTimers() {
+    private setParameterDelayed(time: number) : number
+    {
+        return window.setTimeout(() => {
+            if (this.state.client)
+            {
+                this.setState({
+                    parameters: this.state.client.getRootGroup().children,
+                });
+            }
+            else
+            {
+                this.setState({
+                    parameters: []
+                });
+            }
+        }, time);
+    }
 
+    private stopAddTimer()
+    {
         if (this.addTimer !== undefined) {
             window.clearTimeout(this.addTimer);
             this.addTimer = undefined;
         }
+    }
 
+    private stopRemoveTimer()
+    {
+        if (this.removeTimer !== undefined) {
+            window.clearTimeout(this.removeTimer);
+            this.removeTimer = undefined;
+        }
+    }
+
+    private stopTimers() {
+        this.stopAddTimer();
+        this.stopRemoveTimer();
     }
 
 } 
