@@ -60,6 +60,16 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 Client.VERBOSE = (parseInt(params.get("d") || "0") || 0) > 0 || false;
                 App.VERBOSE_LOG = Client.VERBOSE;
             }
+
+            // ds: debug send
+            if (params.has("ds")) {
+                Client.VERBOSE_SEND = (parseInt(params.get("ds") || "0") || 0) > 0 || false;
+            }
+
+            // dr: debug receive
+            if (params.has("dr")) {
+                Client.VERBOSE_RECV = (parseInt(params.get("dr") || "0") || 0) > 0 || false;
+            }
         }
 
         // autoconnect
