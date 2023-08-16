@@ -5,6 +5,7 @@ import validate from 'uuid-validate';
 import { Buffer } from 'buffer';
 import { Cookie } from './Cookie';
 import { DEFAULT_RCP_PORT, SSL_PORT } from './Globals';
+import { isReturnStatement } from 'typescript';
 
 
 // @ts-ignore
@@ -201,30 +202,40 @@ export default class ConnectionList extends React.Component<Props, State> {
 
     tunnelConnectCb = (tunnel: RemoteTunnel) =>
     {        
-        this.setState({ currentTunnel: tunnel});
-
-        if (!this.failedOnce &&
+        this.setState({ currentTunnel: tunnel });
+        
+        if (!window.location.protocol.startsWith("https") &&
+            !this.failedOnce &&
             tunnel.localAddress !== undefined &&
             tunnel.localAddress !== "")
         {
             let port = DEFAULT_RCP_PORT;
             let parts = tunnel.localAddress.split(":");
-            if (parts.length > 0)
-            {
-                port = parseInt(parts[1]);
-                if (port === 0) port = DEFAULT_RCP_PORT;
-            }
 
-            this.props.connectCb(parts[0], port);
+            if (parts[0] !== "")
+            {
+                if (parts.length > 0)
+                {
+                    port = parseInt(parts[1]);
+                    if (port === 0 || isNaN(port)) port = DEFAULT_RCP_PORT;
+                }
+    
+                this.props.connectCb(parts[0], port);
+                return;
+            }
+            else
+            {
+                console.error("no address");                
+            }
         }
-        else if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
+        
+        if (tunnel.remoteAddress !== undefined && tunnel.remoteAddress !== "")
         {           
             this.props.connectCb(tunnel.remoteAddress, SSL_PORT);
+            return;
         }
-        else
-        {
-            console.error("no valid address");            
-        }
+        
+        console.error("no valid address");            
     }
 
     renderRemoteTunnels()
@@ -289,18 +300,14 @@ export default class ConnectionList extends React.Component<Props, State> {
         {
             this.setState({ apikey: apikey });
 
-            const ok = Cookie.getCookie(ConnectionList.COOKIE_OK_KEY);
-            if (ok !== undefined)
-            {
-                // cookies ok
-                this.setApiCookie();
-                this.getTunnels(apikey);                
-            }
-            else
-            {
-                // show popup
-                this.setState({ cookieAlertOpen: true });
-            }
+            Cookie.setCookie(ConnectionList.API_KEY, apikey, undefined, this.getHost());
+            this.getTunnels(apikey);
+        }
+        else
+        {
+            // TODO: check password
+            console.log("password not implemented");
+            
         }
     }
 
@@ -357,7 +364,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                                 
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
-                                        No clients are available. Please refresh or connect manually.
+                                        No clients are available. Please refresh.
                                     </label>
                                 </div>
 
@@ -367,7 +374,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                                 <div >
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
-                                        No Api-Key provided. Please enter a <Link href="https://rabbithole.rabbitcontrol.cc" target="#">Rabbithole</Link> Api-Key.
+                                        No Api-Key provided. Please enter a <Link href="https://rabbithole.rabbitcontrol.cc" target="#">Rabbithole</Link> Api-Key or password.
                                     </label>
                                     <br />
                                     <br/>
@@ -398,31 +405,47 @@ export default class ConnectionList extends React.Component<Props, State> {
                 </div>
 
 
+                {
+                    window.location.protocol.startsWith("https")
 
-                <div className='section-title' style={{ marginTop: "4em" }}>
-                    <label className='grouplabel'>Connect Manually</label>
-                </div>
+                        ?
 
-                <div className='connection-panel'>
-                    <TextInput style={{ marginTop: "2em" }}
-                        placeholder='Enter IP Adress or Rabbithole Tunnel URL'
-                        id={'connectioninput'}
-                        labelText={''}
-                        value={this.state.host}
-                        onChange={this.setHost}
-                    >
-                    </TextInput>
+                        // https - no connection input
+                        
+                        ""
 
-                    <Button
-                        style={{ marginTop: "1em" }}
-                        kind="ghost"
-                        onClick={this.doManualConnect}
-                    >
-                        Connect
-                    </Button>
-                </div>
+                        :
 
-                <Modal
+                        // no https - show manual connection field
+
+                        <div>
+                            <div className='section-title' style={{ marginTop: "4em" }}>
+                                <label className='grouplabel'>Connect Manually</label>
+                            </div>
+
+                            <div className='connection-panel'>
+                                <TextInput style={{ marginTop: "2em" }}
+                                    placeholder='Enter IP Adress or Rabbithole Tunnel URL'
+                                    id={'connectioninput'}
+                                    labelText={''}
+                                    value={this.state.host}
+                                    onChange={this.setHost}
+                                >
+                                </TextInput>
+
+                                <Button
+                                    style={{ marginTop: "1em" }}
+                                    kind="ghost"
+                                    onClick={this.doManualConnect}
+                                >
+                                    Connect
+                                </Button>
+                            </div>                            
+                        </div>                
+                }
+
+
+                {/* <Modal
                     open={this.state.cookieAlertOpen}
                     modalHeading="Ok to store some cookies?"
                     modalLabel="Cookie Alarm"
@@ -430,7 +453,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                     secondaryButtonText="No"
                     onRequestSubmit={this.handleCookiesYes}
                     onSecondarySubmit={this.handleCookiesNo}
-                />
+                /> */}
 
             </div>
         );

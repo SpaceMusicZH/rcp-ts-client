@@ -37,7 +37,7 @@ export default class ConnectionListEntry extends React.Component<Props, State>
                 <div className='grow'></div>
 
                 <img className={`tunnel-icon${this.props.tunnel.active ? "" : " offline"}`}
-                    src={this.props.tunnel.localAddress !== undefined && this.props.tunnel.localAddress !== "" ? "localIcon.png" : "remoteIcon.png"}
+                    src={this.props.tunnel.localAddress !== undefined && this.props.tunnel.localAddress !== "" && !window.location.protocol.startsWith("https") ? "localIcon.png" : "remoteIcon.png"}
                 />
 
             </div>

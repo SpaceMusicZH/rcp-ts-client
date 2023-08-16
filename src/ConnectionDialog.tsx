@@ -22,11 +22,13 @@ type State = {
     settingsParameter?: GroupParameter;
     threeDViewParameter?: GroupParameter;
     sceneNameParameter?: StringParameter;
+    autoConnect: boolean;
 };
 
 export default class ConnectionDialog extends React.Component<Props, State> {
     
     private addTimer?: number;
+    private removeTimer?: number;
 
     constructor(props: Props) {
         super(props);
@@ -36,7 +38,8 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
-            rootWithTabs: true
+            rootWithTabs: true,
+            autoConnect: false
         };
     }
 
@@ -58,6 +61,16 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 Client.VERBOSE = (parseInt(params.get("d") || "0") || 0) > 0 || false;
                 App.VERBOSE_LOG = Client.VERBOSE;
             }
+
+            // ds: debug send
+            if (params.has("ds")) {
+                Client.VERBOSE_SEND = (parseInt(params.get("ds") || "0") || 0) > 0 || false;
+            }
+
+            // dr: debug receive
+            if (params.has("dr")) {
+                Client.VERBOSE_RECV = (parseInt(params.get("dr") || "0") || 0) > 0 || false;
+            }
         }
 
         // autoconnect
@@ -68,6 +81,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             const portAsInt = parseInt(port, 10) || DEFAULT_RCP_PORT;
 
             if (Client.VERBOSE) console.log("autoconnect: " + host + ":" + portAsInt);
+
+            this.setState({ autoConnect: true });
+
             this.doConnect(decodeURIComponent(host), portAsInt);
         }
     }
@@ -121,10 +137,22 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
                         // not connected
 
-                        <ConnectionList
-                                connectCb={this.doConnect}
-                                failed={this.state.error !== undefined}
-                            />
+                        this.state.autoConnect
+
+                            ?
+                            
+                            // autoconnect
+
+                            ""
+
+                            :
+
+                            // no autoconnect
+
+                            <ConnectionList
+                                    connectCb={this.doConnect}
+                                    failed={this.state.error !== undefined}
+                                />
 
                         :
 
@@ -200,6 +228,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             parameters: [],
             serverVersion: "",
             serverApplicationId: "",
+            settingsParameter: undefined,
+            threeDViewParameter: undefined,
+            sceneNameParameter: undefined
         });
     }
 
@@ -259,7 +290,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             //------------------------------
             // try to connect
 
-            console.log(`trying to connect: ${host}:${port}`);            
+            console.log(`trying to connect: ${host}:${port}`);
 
             // disconnect first
             this.doDisconnect();
@@ -379,14 +410,10 @@ export default class ConnectionDialog extends React.Component<Props, State> {
      */
     private parameterAdded = (parameter: Parameter) => 
     {
-        parameter.addChangeListener(this.parameterChangeListener);
+        this.stopAddTimer();
 
-        // delay setting parameter
-        // more paramater might arrive in quick succession
-        if (this.addTimer !== undefined) {
-            window.clearTimeout(this.addTimer);
-            this.addTimer = undefined;
-        }
+
+        parameter.addChangeListener(this.parameterChangeListener);
 
         if (parameter.userid === WIDGET_SETTINGS_STRING &&
             parameter instanceof GroupParameter)
@@ -410,18 +437,15 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             })
         }
 
-        this.addTimer = window.setTimeout(() => {
-            if (this.state.client)
-            {
-                this.setState({
-                    parameters: this.state.client.getRootGroup().children,
-                });
-            }
-        }, 100);
+        // delay setting parameter
+        // more paramater might arrive in quick succession
+        this.addTimer = this.setParameterDelayed(100);
     }
 
     private parameterRemoved = (parameter: Parameter) =>
-    {        
+    {
+        this.stopRemoveTimer();
+
         // this.rootParam.removeChild(parameter);
         parameter.removeFromParent();
 
@@ -449,24 +473,51 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             })
         }
 
-        if (this.state.client)
-        {
-            this.setState({
-                parameters: this.state.client.getRootGroup().children,
-            });
-        }
+        // delay removing parameter
+        // more paramater might arrive in quick succession
+        this.removeTimer = this.setParameterDelayed(10);
     }
 
     /**
      * 
      */
-    private stopTimers() {
+    private setParameterDelayed(time: number) : number
+    {
+        return window.setTimeout(() => {
+            if (this.state.client)
+            {
+                this.setState({
+                    parameters: this.state.client.getRootGroup().children,
+                });
+            }
+            else
+            {
+                this.setState({
+                    parameters: []
+                });
+            }
+        }, time);
+    }
 
+    private stopAddTimer()
+    {
         if (this.addTimer !== undefined) {
             window.clearTimeout(this.addTimer);
             this.addTimer = undefined;
         }
+    }
 
+    private stopRemoveTimer()
+    {
+        if (this.removeTimer !== undefined) {
+            window.clearTimeout(this.removeTimer);
+            this.removeTimer = undefined;
+        }
+    }
+
+    private stopTimers() {
+        this.stopAddTimer();
+        this.stopRemoveTimer();
     }
 
 } 

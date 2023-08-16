@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { BangParameter, BooleanParameter, EnumParameter, GroupParameter, ImageParameter, NumberDefinition, NumberParameter, Parameter, RGBAParameter, RGBParameter, ValueParameter, Vector3F32Parameter, NumberboxWidget, Vector3F32Definition, Vector3I32Parameter, Vector2I32Parameter, Vector2F32Parameter, Vector2F32Definition, Vector4F32Parameter, Vector4I32Parameter, Vector4F32Definition, RangeParameter, TabsWidget, ListWidget, ListPageWidget, RadiobuttonWidget, CustomWidget } from 'rabbitcontrol';
 import { ParameterButtonC } from './ParameterButton';
-import { ParameterCheckboxC } from './ParameterCheckbox';
 import { ParameterColorInputC } from './ParameterColorInput';
 import { ParameterFoldableGroupC } from './ParameterFoldableGroup';
-import { ParameterHTMLSelectC } from './ParameterHTMLSelect';
 import { ParameterNumericInputC } from './ParameterNumberInput';
-import { ParameterSliderC } from './ParameterSlider';
 import { ParameterTextInputC } from './ParameterTextInput';
 import { ParameterTextWithLabelC } from './ParameterTextWithLabel';
 import { ParameterSlider3C } from './ParameterSlider3';
@@ -46,19 +43,24 @@ interface State {
     dimensions: {
         width: -1,
         height: -1
-    };  
+    };
 };
 
-export default class ParameterWidget extends React.Component<Props, State> {
-
-    constructor(props: Props) {
+export default class ParameterWidget extends React.Component<Props, State>
+{
+    constructor(props: Props)
+    {
         super(props);
 
         let value;
+
         if (this.props.parameter instanceof ValueParameter && 
             this.props.parameter.value != null)
         {
-            value = this.props.parameter.valueConstrained();
+            if (!(this.props.parameter instanceof ImageParameter))
+            {
+                value = this.props.parameter.valueConstrained();
+            }
         }
 
         this.state = {
@@ -69,7 +71,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
             dimensions: {
                 width: -1,
                 height: -1
-            }
+            },
         };
     }
 
@@ -78,25 +80,52 @@ export default class ParameterWidget extends React.Component<Props, State> {
         // setup callbacks
         const param = this.props.parameter;
 
-        if (param instanceof ValueParameter) {
-
-            param.addValueChangeListener((p: Parameter) => 
-            {
-                if (p instanceof ValueParameter)
-                {
-                    this.setState({
-                        value: p.valueConstrained()
-                    });
-                }
-            });
+        if (param instanceof ValueParameter)
+        {
+            param.addValueChangeListener(this.parameterValueChanged);
         }
 
-        param.addChangeListener((p: Parameter) => {
-            this.setState({
-                label: p.label,
-                description: p.description,
-            })
+        param.addChangeListener(this.parameterChanged);
+    }
+
+    componentWillUnmount(): void {
+
+        const param = this.props.parameter;
+        
+        if (param instanceof ValueParameter)
+        {
+            param.removeValueChangedListener(this.parameterValueChanged);
+        }
+
+        param.removeChangedListener(this.parameterChanged);
+
+        this.setState({
+            label: undefined,
+            description: undefined,
+            value: undefined
         });
+    }
+
+    // parameter callbacks
+    parameterValueChanged = (p: Parameter) =>
+    {
+        if (p instanceof ValueParameter)
+        {
+            if (!(p instanceof ImageParameter))
+            {
+                this.setState({
+                    value: p.valueConstrained(),
+                });
+            }
+
+        }
+    }
+    parameterChanged = (p: Parameter) =>
+    {
+        this.setState({
+            label: p.label,
+            description: p.description,
+        })
     }
 
     getWidth = () => {
@@ -392,7 +421,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                 return (
                     <ParameterImageC
                         {...filteredProps}
-                        value={parameter.value}
+                        value={this.state.value}
                         handleValue={this.handleValueChange}
                     />
                 );
@@ -442,6 +471,7 @@ export default class ParameterWidget extends React.Component<Props, State> {
                         handleValue={this.handleValueChange}
                         tabId={this.props.tabId || 0}
                         selectedTab={this.props.selectedTab || 0}
+                        onSubmitCb={this.props.onSubmitCb}
                     />
                 );
             }

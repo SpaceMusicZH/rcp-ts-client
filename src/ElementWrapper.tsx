@@ -16,7 +16,7 @@ export interface InjectedProps {
     parameter?: Parameter;
     disabled?: boolean;    
     handleValue?: (value: any) => void;
-    onSubmitCb?: () => void;
+    onSubmitCb: () => void;
     selectedTab?: number;
     tabId?: number;
 }

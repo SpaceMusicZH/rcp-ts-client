@@ -33,7 +33,7 @@ interface State {
 
 class App extends React.Component<Props, State>
 {
-  static PROTOCOL_SWITCH_KEY = "__psw";
+  // static PROTOCOL_SWITCH_KEY = "__psw";
 
   static VERBOSE_LOG = false;
 
@@ -49,27 +49,27 @@ class App extends React.Component<Props, State>
 
   componentDidMount() 
   {
-    if (window.location.protocol.startsWith("https"))
-    {
-      // NOTE: using unsecure websocket connection in secure context (https) is not allowed.
-      // try to switch to http
+    // if (window.location.protocol.startsWith("https"))
+    // {
+    //   // NOTE: using unsecure websocket connection in secure context (https) is not allowed.
+    //   // try to switch to http
 
-      // check if PROTOCOL_SWITCH_KEY is already present
-      // only try once!
-      const params = new URLSearchParams(window.location.search);
-      if (!params.has(App.PROTOCOL_SWITCH_KEY))
-      {
-        // switch protocol
-        params.set(App.PROTOCOL_SWITCH_KEY, "1");
-        window.location.href = "http://" + window.location.host + window.location.pathname + "?" + params.toString() + window.location.hash;
-        return;
-      }
-      else
-      {
-        console.error("Switch to http:// did not succeed. Connections may fail.");
-        alert("Switch to http:// did not succeed. Connections may fail.");
-      }
-    }
+    //   // check if PROTOCOL_SWITCH_KEY is already present
+    //   // only try once!
+    //   const params = new URLSearchParams(window.location.search);
+    //   if (!params.has(App.PROTOCOL_SWITCH_KEY))
+    //   {
+    //     // switch protocol
+    //     params.set(App.PROTOCOL_SWITCH_KEY, "1");
+    //     window.location.href = "http://" + window.location.host + window.location.pathname + "?" + params.toString() + window.location.hash;
+    //     return;
+    //   }
+    //   else
+    //   {
+    //     console.error("Switch to http:// did not succeed. Connections may fail.");
+    //     alert("Switch to http:// did not succeed. Connections may fail.");
+    //   }
+    // }
 
     window.addEventListener('resize', this.onWindowResize);
   }
@@ -90,7 +90,7 @@ class App extends React.Component<Props, State>
     return (
       <div className="App"
         style={{
-          minHeight: this.state.height - 40
+          minHeight: this.state.height
         }}>
 
         <ConnectionDialog />
