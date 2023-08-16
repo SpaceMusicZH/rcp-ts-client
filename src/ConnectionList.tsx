@@ -418,7 +418,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                         // no https - show manual connection field
 
-                        <div>
+                        <div className='manual-connection'>
                             <div className='section-title' style={{ marginTop: "4em" }}>
                                 <label className='grouplabel'>Connect Manually</label>
                             </div>

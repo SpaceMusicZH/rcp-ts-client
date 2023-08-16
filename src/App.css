@@ -220,6 +220,10 @@ html, body {
   margin-left: 1em;
 }
 
+.manual-connection {
+  display: none; /* HIDE THE MANUAL CONNECTION DIALOG */
+}
+
 .section-title {
   display: flex;
   flex-direction: row;
