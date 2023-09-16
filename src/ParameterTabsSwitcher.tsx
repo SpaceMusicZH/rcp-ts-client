@@ -213,7 +213,7 @@ export class ParameterTabsSwitcherC extends React.Component<Props & InjectedProp
                         .map((param, index) => 
                         {
                             const l = param.label !== undefined ? param.label : "";
-                            if (index == this.state.currentChild)
+                            if (index === this.state.currentChild)
                             {
                                 current_name = l
                             }

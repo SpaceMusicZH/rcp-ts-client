@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { parameterWrapped, InjectedProps } from './ElementWrapper';
 import { EnumParameter } from 'rabbitcontrol';
-import { Button, RadioButton, RadioButtonGroup, RadioButtonGroupProps, RadioButtonValue } from 'carbon-components-react';
+import { Button, RadioButtonGroupProps, RadioButtonValue } from 'carbon-components-react';
 
 interface Props {
 };
@@ -9,13 +9,8 @@ interface Props {
 interface State {
 };
 
-export class ParameterRadioC extends React.Component<Props & InjectedProps, State> {
-
-    constructor(props: Props & InjectedProps)
-    {        
-        super(props);    
-    }    
-
+export class ParameterRadioC extends React.Component<Props & InjectedProps, State>
+{
     handleChange = (newSelection: RadioButtonValue, name: RadioButtonGroupProps["name"], event: React.ChangeEvent<HTMLInputElement>) => 
     {
         if (this.props.handleValue) {

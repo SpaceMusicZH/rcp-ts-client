@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { NumberParameter, NumberDefinition } from 'rabbitcontrol';
-import { DARK_GRAY1, GRAY1, LIGHT_GRAY5 } from './Globals';
 
 interface Props {
     style?: React.CSSProperties;

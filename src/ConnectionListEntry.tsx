@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RemoteTunnel } from './ConnectionList';
-import { InjectedProps } from './ElementWrapper';
 
 interface Props {
     tunnel: RemoteTunnel;
@@ -12,10 +11,6 @@ interface State {
 
 export default class ConnectionListEntry extends React.Component<Props, State>
 {
-    constructor(props: Props & InjectedProps) {
-        super(props);
-    }
-
     render() {
 
         return (
@@ -36,8 +31,10 @@ export default class ConnectionListEntry extends React.Component<Props, State>
 
                 <div className='grow'></div>
 
-                <img className={`tunnel-icon${this.props.tunnel.active ? "" : " offline"}`}
+                <img
+                    className={`tunnel-icon${this.props.tunnel.active ? "" : " offline"}`}
                     src={this.props.tunnel.localAddress !== undefined && this.props.tunnel.localAddress !== "" && !window.location.protocol.startsWith("https") ? "localIcon.png" : "remoteIcon.png"}
+                    alt='connection type icon'
                 />
 
             </div>

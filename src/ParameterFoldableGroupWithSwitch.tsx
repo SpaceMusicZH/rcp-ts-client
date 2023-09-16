@@ -82,7 +82,7 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
                 if (element instanceof BooleanParameter &&
                     element.userid?.includes(ONOFF_TOGGLE_ID))
                 {
-                    if (this.state.switchParameter != element)
+                    if (this.state.switchParameter !== element)
                     {
                         this.setState({
                             switchParameterOn: element.value,

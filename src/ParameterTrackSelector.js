@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from 'carbon-components-react'
 import { iconChevronDown, iconChevronUp } from 'carbon-icons'
 import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig'; 

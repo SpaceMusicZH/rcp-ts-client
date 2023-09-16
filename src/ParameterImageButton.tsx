@@ -1,4 +1,4 @@
-import { BangParameter, ImageParameter, Parameter } from 'rabbitcontrol';
+import { BangParameter, ImageParameter } from 'rabbitcontrol';
 import * as React from 'react';
 import { InjectedProps, parameterWrapped } from './ElementWrapper';
 import { ParameterImageC } from './ParameterImage';
