@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BangParameter, BooleanParameter, EnumParameter, GroupParameter, ImageParameter, NumberDefinition, NumberParameter, Parameter, RGBAParameter, RGBParameter, ValueParameter, Vector3F32Parameter, NumberboxWidget, Vector3F32Definition, Vector3I32Parameter, Vector2I32Parameter, Vector2F32Parameter, Vector2F32Definition, Vector4F32Parameter, Vector4I32Parameter, Vector4F32Definition, RangeParameter, TabsWidget, ListWidget, ListPageWidget, RadiobuttonWidget, CustomWidget } from 'rabbitcontrol';
+import { BangParameter, BooleanParameter, EnumParameter, GroupParameter, ImageParameter, NumberDefinition, NumberParameter, Parameter, RGBAParameter, RGBParameter, ValueParameter, Vector3F32Parameter, NumberboxWidget, Vector3F32Definition, Vector3I32Parameter, Vector2I32Parameter, Vector2F32Parameter, Vector2F32Definition, Vector4F32Parameter, Vector4I32Parameter, Vector4F32Definition, RangeParameter, TabsWidget, ListWidget, ListPageWidget, RadiobuttonWidget, CustomWidget, RcpTypes } from 'rabbitcontrol';
 import { ParameterButtonC } from './ParameterButton';
 import { ParameterColorInputC } from './ParameterColorInput';
 import { ParameterFoldableGroupC } from './ParameterFoldableGroup';
@@ -25,6 +25,7 @@ import { ParameterDropdown } from './ParameterDropdown';
 import { ParameterTrackSelector } from './ParameterTrackSelector';
 import { ParameterDropdownSlider } from './ParameterDropdownSlider';
 import { ParameterImageButtonC } from './ParameterImageButton';
+import { DEFAULT_PRECISION } from './Globals';
 
 interface Props {
     parameter: Parameter;
@@ -204,12 +205,25 @@ export default class ParameterWidget extends React.Component<Props, State>
             if (parameter instanceof NumberParameter) {
 
                 const numdef = parameter.typeDefinition as NumberDefinition;
-                if (!(widget instanceof NumberboxWidget) &&
-                    numdef !== undefined && 
+                if (numdef !== undefined && 
                     numdef.minimum !== undefined && 
                     numdef.maximum !== undefined)
                 { 
-                    if (numdef.minimum < numdef.maximum) {
+                    if (numdef.minimum < numdef.maximum)
+                    {
+                        var precision = DEFAULT_PRECISION;
+
+                        if (widget instanceof NumberboxWidget)
+                        {                            
+                            precision = widget.precision !== undefined ? widget.precision : DEFAULT_PRECISION;
+                        }
+
+                        if (parameter.typeDefinition.datatype !== RcpTypes.Datatype.FLOAT32 &&
+                            parameter.typeDefinition.datatype !== RcpTypes.Datatype.FLOAT64)
+                        {
+                            // int-type
+                            precision = 0;
+                        }
 
                         return ( 
                             <ParameterDropdownSlider
@@ -217,6 +231,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                                 value={this.state.value}
                                 handleValue={this.handleValueChange}
                                 onSubmitCb={this.props.onSubmitCb}
+                                precision={precision}
                             >
                             </ParameterDropdownSlider>
                             // <ParameterSliderC
@@ -230,7 +245,14 @@ export default class ParameterWidget extends React.Component<Props, State>
                     else
                     {
                         console.error("ParameterWidget: minimum >= maximum");
-                        return this.defaultWidget();
+                        // numeric input
+                        return (
+                            <ParameterNumericInputC
+                                {...filteredProps}
+                                value={this.state.value}
+                                handleValue={this.handleValueChange}
+                            />
+                        );
                     }
                 }
                 else
@@ -493,7 +515,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                 var is_image_button = false;
 
                 if (parameter.widget instanceof CustomWidget
-                    && parameter.widget.uuid != undefined)
+                    && parameter.widget.uuid !== undefined)
                 {
                     is_tab_switcher = parameter.widget.uuid.compare("01299e6c-58f3-4c70-a0a5-3472ccb9ef0b");
                     is_group_with_switch = parameter.widget.uuid.compare("ec373dce-9489-4ecf-bf5b-29d83e07e1a2");
