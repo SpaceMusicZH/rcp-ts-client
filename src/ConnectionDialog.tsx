@@ -274,7 +274,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 port = HTTP_PORT;
             }
 
-            if (host.startsWith("https://rabbithole.rabbitcontrol.cc") &&
+            // port = 8080;
+
+            if (host.startsWith(`https://${ConnectionList.RABBITHOST}`) &&
                 host.includes("client/index.html"))
             {
                 if (host.includes("mode=private#"))
