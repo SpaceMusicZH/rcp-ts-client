@@ -658,6 +658,16 @@ ul.bx--tabs--scrollable__nav {
 }
 
 
+/* Preview Images */
+#Preview .parameter-image {
+  max-height: unset !important;
+}
+
+#Preview .image-title {
+  display: none;
+}
+
+
 /* gui styles */
 
 .parameter-label {
