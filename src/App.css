@@ -101,7 +101,7 @@ html, body {
 }
 
 .bx--btn--secondary {
-    background-color: #393939;
+    background-color: #424242;
     border-top: 1px solid #525252;
 }
 
@@ -416,6 +416,18 @@ html, body {
 }
 
 
+
+/* Label and Textinput */
+
+.bx--text-input {
+  text-align: right;
+  border-bottom: none !important;
+  font-family: 'IBM Plex Mono', Courier, monospace;
+}
+
+
+
+
 /* Slider */
 
 /* dropdown slider */
@@ -629,11 +641,21 @@ ul.bx--tabs--scrollable__nav {
 /* ImageButton */
 
 .parameter-wrapper.selected {
-    border: 5px solid #ffffff;
-    opacity: 0.7;
+  border: 5px solid #ffffff;
+  opacity: 0.7;
 }
 
+.widget_imagebutton .flex-h-only,
+.parameter-wrapper.selected .flex-h-only {
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  max-height: 300px; /* Maximum height for the container */
+  background-color: #111;
+}
 
+.flex-h-only .flex-h-only .image-title.flex-h {
+  display: none; /* Fix for duplicate image title */
+}
 
 
 /* gui styles */
@@ -667,9 +689,11 @@ ul.bx--tabs--scrollable__nav {
 }
 .parameter-image {
   max-width:100%;
+  max-height: 300px; /* Maximum height for the image */
   width: auto;
   height: auto;
   flex-grow: 10;
+  object-fit: contain; /* Maintain aspect ratio without cropping */
 }
 .parameter-imagebutton-inactive {
   filter: grayscale(100%) opacity(40%);
@@ -694,6 +718,7 @@ ul.bx--tabs--scrollable__nav {
   flex-grow: 10;
   white-space: nowrap;
   width: auto;
+  padding-right: 15px;
 }
 
 /* .rootgroup-wrapper {
