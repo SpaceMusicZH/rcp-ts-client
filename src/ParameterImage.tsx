@@ -69,7 +69,7 @@ export class ParameterImageC extends React.Component<Props & InjectedProps, Stat
         // return url string
         const url = window.URL.createObjectURL(blob);
 
-        let image = new Image;
+        let image = new Image();
         image.onload = () => {               
             URL.revokeObjectURL(url);
         }
@@ -88,7 +88,7 @@ export class ParameterImageC extends React.Component<Props & InjectedProps, Stat
         return (
             <div className='flex-h-only'>
                 {
-                    this.state.image != undefined
+                    this.state.image !== undefined
                         ?
 
                         React.createElement("img", {

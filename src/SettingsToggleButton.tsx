@@ -67,7 +67,7 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             this.calcOffset();
         }
 
-        if (prevState.on != this.state.on)
+        if (prevState.on !== this.state.on)
         {
             if (this.props.onOpenChanged)
             {
@@ -104,8 +104,8 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             .sort((a: Parameter, b: Parameter): number => 
             {
                 return ((a.order || 0) - (b.order || 0));
-            }).
-            map( (p) => { 
+            })
+            .map( (p) => { 
                 return (
                     <ParameterWidget 
                         key={p.id}

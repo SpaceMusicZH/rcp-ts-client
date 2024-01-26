@@ -195,7 +195,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
 
     private returnSSLInfo() {
         const isSSL = window.location ? window.location.toString().startsWith("https") : false;
-        const isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
+        const isFirefox = navigator.userAgent.indexOf("Firefox") !== -1;
 
         if (isSSL && isFirefox) {
             return (
@@ -274,7 +274,9 @@ export default class ConnectionDialog extends React.Component<Props, State> {
                 port = HTTP_PORT;
             }
 
-            if (host.startsWith("https://rabbithole.rabbitcontrol.cc") &&
+            // port = 8080;
+
+            if (host.startsWith(`https://${ConnectionList.RABBITHOST}`) &&
                 host.includes("client/index.html"))
             {
                 if (host.includes("mode=private#"))

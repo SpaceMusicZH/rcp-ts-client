@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Button, Link, Modal, TextInput } from 'carbon-components-react';
+import { Button, Link, TextInput } from 'carbon-components-react';
 import ConnectionListEntry from './ConnectionListEntry';
 import validate from 'uuid-validate';
 import { Buffer } from 'buffer';
 import { Cookie } from './Cookie';
 import { DEFAULT_RCP_PORT, SSL_PORT } from './Globals';
-import { isReturnStatement } from 'typescript';
 
 
 // @ts-ignore
@@ -48,6 +47,10 @@ export default class ConnectionList extends React.Component<Props, State> {
     static readonly API_KEY = "apikey";
     static readonly COOKIE_OK_KEY = "storecookieok";
     static readonly AUTOCONNECT_KEY = "autoconnect";
+    static readonly RABBITHOST = "rabbithole.rabbitcontrol.cc";
+    // static readonly RABBITHOST = "localhost:8080";
+    static readonly RABBITHOST_WS = `wss://${ConnectionList.RABBITHOST}`;
+    static readonly RABBITHOST_HTTP = `https://${ConnectionList.RABBITHOST}`;
     // static readonly TUNNEL_KEY = "tunnel";    
 
     private failedOnce = false;
@@ -108,7 +111,7 @@ export default class ConnectionList extends React.Component<Props, State> {
         const self = this;
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://rabbithole.rabbitcontrol.cc/api/v1/projects');
+        xhr.open('POST', `${ConnectionList.RABBITHOST_HTTP}/api/v1/projects`);
         xhr.setRequestHeader('rcp-key', apikey);
         xhr.responseType = 'text';
         xhr.onload = function () {
@@ -153,7 +156,7 @@ export default class ConnectionList extends React.Component<Props, State> {
 
                 const rp = new RemoteTunnel(
                     tunnel.name,
-                    `wss://rabbithole.rabbitcontrol.cc/rcpclient/connect?key=${tunnel.key}`,
+                    `${ConnectionList.RABBITHOST_WS}/rcpclient/connect?key=${tunnel.key}`,
                     localAddress,
                     tunnel.active === true
                 );
@@ -204,7 +207,7 @@ export default class ConnectionList extends React.Component<Props, State> {
     {        
         this.setState({ currentTunnel: tunnel });
         
-        if (!window.location.protocol.startsWith("https") &&
+        if (!window.location.protocol.startsWith("http") &&
             !this.failedOnce &&
             tunnel.localAddress !== undefined &&
             tunnel.localAddress !== "")
@@ -364,7 +367,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                                 
                                 <div className='flex-h'>
                                     <label className='sm-margin-auto' style={{ color: "#8D8D8D" }}>
-                                        No clients are available. Please refresh.
+                                        No available server. Please refresh.
                                     </label>
                                 </div>
 
@@ -399,6 +402,7 @@ export default class ConnectionList extends React.Component<Props, State> {
                             <img
                                 className='sm-row-maxheight'
                                 src="refresh.png"
+                                alt='refresh'
                             />
                         </a>
                     </div>

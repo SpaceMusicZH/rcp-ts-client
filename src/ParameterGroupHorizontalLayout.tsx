@@ -49,8 +49,8 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
             .sort((a: Parameter, b: Parameter): number => 
             {
                 return ((a.order || 0) - (b.order || 0));
-            }).
-            map( (p) => { 
+            })
+            .map( (p) => { 
                 return (
                     <ParameterWidget
                         className="h-element grow"

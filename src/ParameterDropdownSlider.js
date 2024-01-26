@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Dropdown, Button, Slider } from 'carbon-components-react'
+import { useState } from "react";
+import { Button, Slider } from 'carbon-components-react'
 import { ChevronLeft32, ChevronRight32 } from '@carbon/icons-react';
+import { RcpTypes } from 'rabbitcontrol';
+import { DEFAULT_PRECISION } from "./Globals";
 
-export const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSubmitCb }) =>
+export const ParameterDropdownSlider = ({ children, value, parameter, handleValue, onSubmitCb, precision = DEFAULT_PRECISION }) =>
 {
     const increment = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 10;
-    const stepSize = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 200; // 200 is the width of the slider for now
+    var stepSize = (parameter.typeDefinition.maximum - parameter.typeDefinition.minimum) / 200; // 200 is the width of the slider for now
     const [isOpen, setIsOpen] = useState(false);
 
-    function handleChange(data) {
-        // console.log("data: " + data.value);
+    if (precision === 0 ||
+        (parameter.typeDefinition.datatype !== RcpTypes.Datatype.FLOAT32 &&
+        parameter.typeDefinition.datatype !== RcpTypes.Datatype.FLOAT64))
+    {
+        // int-type
+        stepSize = Math.round(stepSize);
+    }
 
+    function handleChange(data)
+    {
         if (handleValue) {
             handleValue(data.value);
         }
@@ -48,7 +57,7 @@ export const ParameterDropdownSlider = ({ children, value, parameter, handleValu
                 <div className="grow" />
                 <div className="dropdown-value">
                     {
-                        value.toFixed(3) + " " + (parameter.typeDefinition.unit || "")
+                        value.toFixed(precision) + (parameter.typeDefinition.unit !== undefined ? (" " + parameter.typeDefinition.unit) : "")
                     }
                 </div>
                 <Button className="button-dark" kind="secondary" hasIconOnly renderIcon={ChevronLeft32} iconDescription="step down" onClick={stepDown}></Button>
