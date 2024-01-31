@@ -75,7 +75,7 @@ export class ParameterRadioC extends React.Component<Props & InjectedProps, Stat
             return entries.map(e =>
                 <Button
                     className='radio-option-item'
-                    key={e}
+                    key={this.props.parameter?.id + "_" + e}
                     kind={e === sel ? "primary" : "secondary"}
                     onClick={() => this.onChanged(e)}
                 >

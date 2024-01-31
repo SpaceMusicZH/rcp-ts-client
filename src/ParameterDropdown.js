@@ -72,10 +72,10 @@ export const ParameterDropdown = ({ children, parameter, value, handleValue, onS
 
             <div hidden={isOpen !== true}>
                 {
-                    parameter?.enumDefinition?.entries.map(e => {
+                    parameter?.enumDefinition?.entries.map(e => {                    
                         return (
                             <div
-                                key={e}
+                                key={parameter.id + "_" + e}
                                 className="sm-row sm-lighter"
                                 onClick={() => setEntry(e)}
                             >
