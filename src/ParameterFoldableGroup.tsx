@@ -70,6 +70,7 @@ export class ParameterFoldableGroupC extends React.Component<Props & InjectedPro
 
         return (
             <Accordion
+                className='widget_foldablegroup'
                 id={param?.id.toString() || "group"}
             >
                 <AccordionItem

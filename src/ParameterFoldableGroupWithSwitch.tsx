@@ -114,7 +114,7 @@ export class ParameterFoldableGroupSWC extends React.Component<Props & InjectedP
 
         return (
 
-            <div>
+            <div className='widget_foldablegroup_with_switch'>
                 <Accordion
                     id={param?.id.toString() || "group"}
                     title="ParameterFoldableGroupSWC"

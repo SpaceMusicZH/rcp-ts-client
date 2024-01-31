@@ -39,11 +39,14 @@ export class ParameterSwitchC extends React.Component<Props & InjectedProps, Sta
             readOnly = param.readonly;        
         }
 
+        const class_names = ["widget_switch"];
+        class_names.push(this.props.labelDisabled === true ? "sm-margin-auto" : "sm-row");
+
         const { onSubmitCb, handleValue, tabId, selectedTab, labelDisabled, ...filteredProps } = this.props;
 
         return (
 
-            <div className={this.props.labelDisabled === true ? "sm-margin-auto" : "sm-row"}>
+            <div className={class_names.join(" ")}>
                 <div hidden={this.props.labelDisabled}
                     className="dropdown-label dropdown-label-margin-left">
                     {this.props.parameter?.label}

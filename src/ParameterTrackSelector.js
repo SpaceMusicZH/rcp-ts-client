@@ -137,7 +137,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
 
     return (
 
-        <div>
+        <div className="widget_trackselector">
 
             {/* header */}
             {

@@ -67,11 +67,13 @@ export class ParameterNumericInputC extends React.Component<Props & InjectedProp
             }
         }
 
+        const class_names = ["widget_numberinput", "sm-row"];
+
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
         
         return (
 
-            <div className='sm-row'>
+            <div className={class_names.join(" ")}>
 
                 <div className="dropdown-label dropdown-label-margin-left">
                     {this.props.parameter?.label}

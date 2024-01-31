@@ -129,6 +129,7 @@ export class SettingsToggleButtonC extends React.Component<Props & InjectedProps
             // >
             // </Button>
             <div
+                className='widget_settingstoggle'
                 style={this.props.style}
                 ref={this.ref}
             >

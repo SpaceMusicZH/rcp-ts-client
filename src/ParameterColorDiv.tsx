@@ -32,10 +32,12 @@ export class ParameterColorDivC extends React.Component<Props & InjectedProps, S
         {
             value = COMPONENT_DEFAULT_COLOR;
         }
+
+        const class_names = ["widget_colordiv", this.props.className];        
         
         return (
             <div
-                className={this.props.className}
+                className={class_names.join(" ")}
                 style={{ backgroundColor: value }}>
                 <div style={this.props.style}>
                     {this.props.children}

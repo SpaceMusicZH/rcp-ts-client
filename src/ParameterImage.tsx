@@ -86,7 +86,7 @@ export class ParameterImageC extends React.Component<Props & InjectedProps, Stat
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
-            <div className='flex-h-only'>
+            <div className='widget_image flex-h-only'>
                 {
                     this.state.image !== undefined
                         ?

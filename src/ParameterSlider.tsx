@@ -86,7 +86,9 @@ export class ParameterSliderC extends React.Component<Props & InjectedProps, Sta
                 }}
             >
             {({ measureRef }) =>
-                <div ref={measureRef}>
+                    <div
+                        className='widget_slider'
+                        ref={measureRef}>
                     <Slider
                         id={param?.id.toString() || "slider"}
                         labelText={param?.label}

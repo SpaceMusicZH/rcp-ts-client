@@ -52,7 +52,7 @@ export class ParameterSimpleGroupC extends React.Component<Props & InjectedProps
     render()
     {
         return (
-            <div>
+            <div className='widget_simplegroup'>
                 {this.renderChildren()}
             </div>
         );

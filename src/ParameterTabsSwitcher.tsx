@@ -227,7 +227,9 @@ export class ParameterTabsSwitcherC extends React.Component<Props & InjectedProp
         }
 
         return (
-            <div style={this.props.style}>
+            <div
+                className='widget_tabsswitcher'
+                style={this.props.style}>
 
                 <div style={{
                     display: "flex",

@@ -48,7 +48,7 @@ export const ParameterDropdownSlider = ({ children, value, parameter, handleValu
     }
 
     return (
-        <div>
+        <div className="widget_dropdownslider">
             <div
                 className="sm-row"
                 onClick={() => setIsOpen(!isOpen)}

@@ -74,7 +74,10 @@ export class ParameterGroupHorizontalLayoutC extends React.Component<Props & Inj
         }
 
         return (
-            <div style={this.props.style}>
+            <div
+                className='widget_horizontallayout'
+                style={this.props.style}
+            >
                 <div
                     className={"flex-h horizontallayout " + (param?.userid ? param.userid : "")}
                 >

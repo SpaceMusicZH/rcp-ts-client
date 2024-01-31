@@ -45,6 +45,7 @@ export class ParameterHTMLSelectC extends React.Component<Props & InjectedProps,
 
         return (
             <Dropdown
+                className='widget_htmlselect'
                 hideLabel={true}
                 id={param?.id.toString() || "dropdown"}
                 {...filteredProps}

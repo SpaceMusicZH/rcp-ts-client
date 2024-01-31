@@ -70,7 +70,7 @@ export class ParameterColorInputC extends React.Component<Props & InjectedProps,
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
-            <div>
+            <div className='widget_colorinput'>
                 <label className="bx--label">{param?.label}</label>
                 <div className="flex-h">
                     <input className="color-field"

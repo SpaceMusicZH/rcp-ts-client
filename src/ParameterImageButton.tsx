@@ -43,9 +43,15 @@ export class ParameterImageButtonC extends React.Component<Props & InjectedProps
         const { tabId, selectedTab, parameter, ...filteredProps } = this.props;
         const inactive = this.props.bangParameter === undefined;
 
+        const class_names = ["widget_imagebutton", "flex-h-only"];
+        if (this.state.isPressed === true)
+        {
+            class_names.push("imagebutton-pressed");
+        }
+
         return (
             <div
-                className={'flex-h-only' + (this.state.isPressed === true ? " imagebutton-pressed" : "")}
+                className={class_names.join(" ")}
                 onClick={this.handleClick}                
             >
                 <ParameterImageC

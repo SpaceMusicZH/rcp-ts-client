@@ -43,7 +43,7 @@ export class ParameterRadioC extends React.Component<Props & InjectedProps, Stat
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (       
-            <div>
+            <div className='widget_radio'>
                 <div className='sm-row flex-h'>
                     <div className='margin-left'>
                         {param?.label || ""}

@@ -54,7 +54,9 @@ export class ParameterButtonC extends React.Component<Props & InjectedProps, Sta
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
-            <section>
+            <section
+                className="widget_button"
+            >
 
                 {/* deal with special labels "<" and ">" - use icons instead */}
                 {

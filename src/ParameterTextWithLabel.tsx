@@ -58,9 +58,11 @@ export class ParameterTextWithLabelC extends React.Component<Props & InjectedPro
             }            
         }
 
+        const class_names = ["widget_textinput_with_label", "sm-row"];
+
         return (
             
-            <div className='sm-row'>
+            <div className={class_names.join(" ")}>
                 <div className="dropdown-label dropdown-label-margin-left">
                     {this.props.parameter?.label}
                 </div>

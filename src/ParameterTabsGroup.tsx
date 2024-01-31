@@ -165,8 +165,7 @@ export class ParameterTabsGroupC extends React.Component<Props & InjectedProps, 
         const param = this.props.parameter;
 
         return (
-            <div>
-
+            <div className='widget_tabsgroup'>
                 <Tabs
                     type="container"
                     id={param?.id.toString() || "navbar"}

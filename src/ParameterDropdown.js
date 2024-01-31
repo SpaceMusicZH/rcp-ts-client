@@ -59,7 +59,7 @@ export const ParameterDropdown = ({ children, parameter, value, handleValue, onS
 
     return (
 
-        <div>
+        <div className="widget_dropdown">
             <div className="sm-row"
                 onClick={() => setIsOpen(!isOpen)}
             >

@@ -38,11 +38,14 @@ export class ParameterCheckboxC extends React.Component<Props & InjectedProps, S
             readOnly = param.readonly;        
         }
 
+        
+
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
 
             <Checkbox
+                className='widget_checkbox'
                 id={param?.id.toString() || "checkbox"}
                 {...filteredProps}
                 labelText={param?.label || ""}

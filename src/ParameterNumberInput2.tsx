@@ -93,8 +93,8 @@ export class ParameterNumericInput2C extends React.Component<Props & InjectedPro
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
         return (
-            <div>
-                <label className="bx--label">{param?.label || ""}</label>
+            <div className='widget_numberinput_2'>
+                <label className="bx--label"> {param?.label || ""} </label>
                 <NumberInput
                     id={param?.id.toString()+"_1" || "number_1"}
                     {...filteredProps}

@@ -74,9 +74,15 @@ export class ParameterToggleButtonC extends React.Component<Props & InjectedProp
 
         const { onSubmitCb, handleValue, tabId, selectedTab, ...filteredProps } = this.props;
 
+        const class_names = ["widget_togglebutton", this.props.className];
+        if (this.props.classNamePrefix)
+        {
+            class_names.push(this.props.classNamePrefix + (this.state.checked === true ? "-on" : "-off"));
+        }
+
         return (
             <Button
-                className={this.props.className + (this.props.classNamePrefix ? (" " + this.props.classNamePrefix + (this.state.checked === true ? "-on" : "-off")) : "")}
+                className={class_names.join(" ")}
                 size="sm"
                 kind={this.state.checked === true ? "primary" : "secondary"}
                 onClick={this.onClicked}

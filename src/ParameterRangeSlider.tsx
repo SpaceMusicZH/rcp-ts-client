@@ -90,7 +90,9 @@ export class ParameterRangeSliderC extends React.Component<Props & InjectedProps
                 }}
             >
             {({ measureRef }) =>
-                <div ref={measureRef}>
+                    <div
+                        className='widget_rangeslider'
+                        ref={measureRef}>
                     <label className="bx--label">{param?.label || ""}</label>
                         <Slider
                             id={param?.id.toString() || "slider1"}
