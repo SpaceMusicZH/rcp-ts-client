@@ -18,7 +18,7 @@ import { ParameterRadioC } from './ParameterRadio';
 import { ParameterImageC } from './ParameterImage';
 import { ParameterTabsSwitcherC } from './ParameterTabsSwitcher';
 import { ParameterFoldableGroupSWC } from './ParameterFoldableGroupWithSwitch';
-import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO, WIDGET_IMAGEBUTTON } from './WidgetConfig';
+import { WIDGET_GROUPWITHSWITCH_STR, WIDGET_TABSWITCHER_STR, WIDGET_HORIZONTALLAYOUT_STR, WIDGET_NOWIDGET_STR, WIDGET_TRACK_SELECTOR, WIDGET_RADIO, WIDGET_IMAGEBUTTON, WIDGET_SIMPLE_GROUP_STRING } from './WidgetConfig';
 import { ParameterGroupHorizontalLayoutC } from './ParameterGroupHorizontalLayout';
 import { ParameterSwitchC } from './ParameterSwitch';
 import { ParameterDropdown } from './ParameterDropdown';
@@ -26,6 +26,7 @@ import { ParameterTrackSelector } from './ParameterTrackSelector';
 import { ParameterDropdownSlider } from './ParameterDropdownSlider';
 import { ParameterImageButtonC } from './ParameterImageButton';
 import { DEFAULT_PRECISION } from './Globals';
+import { ParameterSimpleGroupC } from './ParameterSimpleGroup';
 
 interface Props {
     parameter: Parameter;
@@ -513,6 +514,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                 var is_horizontal_layout = false;
                 var is_track_selector = false;
                 var is_image_button = false;
+                var is_simple_group = false;
 
                 if (parameter.widget instanceof CustomWidget
                     && parameter.widget.uuid !== undefined)
@@ -527,12 +529,24 @@ export default class ParameterWidget extends React.Component<Props, State>
                     is_horizontal_layout = parameter.userid.includes(WIDGET_HORIZONTALLAYOUT_STR);
                     is_track_selector = parameter.userid.includes(WIDGET_TRACK_SELECTOR);
                     is_image_button = parameter.userid.includes(WIDGET_IMAGEBUTTON);
+                    is_simple_group = parameter.userid.includes(WIDGET_SIMPLE_GROUP_STRING);
                 }
 
                 // console.log(`${parameter.label} (${parameter.userid}) : is_tab_switcher: ${is_tab_switcher}`);
                 
 
-                if (is_tab_switcher)
+                if (is_simple_group)
+                {
+                    return (
+                        <ParameterSimpleGroupC
+                            {...filteredProps}
+                            value={this.state.value}
+                            handleValue={this.handleValueChange}
+                        >
+                        </ParameterSimpleGroupC>
+                    );
+                }
+                else if (is_tab_switcher)
                 {
                     // custom tab-widget - TabSwitcher
                     return (                        
