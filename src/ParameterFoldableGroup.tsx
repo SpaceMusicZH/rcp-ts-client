@@ -64,26 +64,18 @@ export class ParameterFoldableGroupC extends React.Component<Props & InjectedPro
     }
     
     render()
-    {
-        let label = "no label";
-        let foldable = true;
+    {        
         const param = this.props.parameter;
-        if (param) {
-            if (param.label !== undefined)
-            {
-                label = param.label;
-            }
-            foldable = param.userid !== WIDGET_NOTFOLDABLE_STR;
-        }
+        const label = param?.label ?? "no label";
 
         return (
             <Accordion
                 id={param?.id.toString() || "group"}
             >
                 <AccordionItem
-                    className={param?.userid ? param.userid : "foldable_group"}
+                    className={param?.userid ?? "foldable_group"}
                     title={label}
-                    open={this.state.isOpen}                    
+                    open={this.state.isOpen}
                 >
                     {this.renderChildren()}
                 </AccordionItem>
@@ -105,11 +97,12 @@ export class ParameterFoldableGroupC extends React.Component<Props & InjectedPro
         );
     }
 
-    private handleButtonClick = () => {
-        this.setState({
-            isOpen: !this.state.isOpen,
-        });
-    }
+    // private handleButtonClick = () => {
+
+    //     this.setState({
+    //         isOpen: !this.state.isOpen,
+    //     });
+    // }
 };
 
 export const ParameterFoldableGroup = parameterWrapped({ignoreReadonly: true})(ParameterFoldableGroupC);
