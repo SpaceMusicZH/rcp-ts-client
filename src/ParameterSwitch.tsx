@@ -1,6 +1,6 @@
-import Toggle from 'carbon-components-react/lib/components/Toggle';
 import * as React from 'react';
 import { parameterWrapped, InjectedProps } from './ElementWrapper';
+import { Toggle } from 'carbon-components-react';
 
 interface Props {
     labelDisabled?: boolean;

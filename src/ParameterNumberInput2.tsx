@@ -77,7 +77,7 @@ export class ParameterNumericInput2C extends React.Component<Props & InjectedPro
                         max = numdef.maximum;
                     } else {
                         // error on min/max
-                        console.error("NumberInput: minimum >= maximum");               
+                        //console.error("NumberInput: minimum >= maximum");               
                     }
                 }
 

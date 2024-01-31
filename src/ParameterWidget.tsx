@@ -244,7 +244,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                     }
                     else
                     {
-                        console.error("ParameterWidget: minimum >= maximum");
+                        //console.error("ParameterWidget: minimum >= maximum");
                         // numeric input
                         return (
                             <ParameterNumericInputC
@@ -289,7 +289,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                             />
                         );
                     } else {
-                        console.error("ParameterWidget: minimum >= maximum");
+                        //console.error("ParameterWidget: minimum >= maximum");
                         return this.defaultWidget();
                     }
                 } else {
@@ -326,7 +326,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                             />
                         );
                     } else {
-                        console.error("ParameterWidget: minimum >= maximum");
+                        //console.error("ParameterWidget: minimum >= maximum");
                         return this.defaultWidget();
                     }
                 } else {
@@ -364,7 +364,7 @@ export default class ParameterWidget extends React.Component<Props, State>
                             />
                         );
                     } else {
-                        console.error("ParameterWidget: minimum >= maximum");
+                        //console.error("ParameterWidget: minimum >= maximum");
                         return this.defaultWidget();
                     }
                 } else {
