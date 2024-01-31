@@ -30,7 +30,7 @@
     "carbon-components-react": "^7.59.2",
     "carbon-icons": "^7.0.7",
     "normalize.css": "^8.0.1",
-    "rabbitcontrol": "^0.0.45",
+    "rabbitcontrol": "^0.0.46",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-measure": "^2.1.3",
@@ -48,6 +48,7 @@
   "devDependencies": {
     "@types/node": "^16.4.0",
     "bestzip": "^2.1.7",
-    "ftp-deploy": "^2.3.8"
+    "ftp-deploy": "^2.3.8",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0"
   }
 }

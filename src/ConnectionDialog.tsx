@@ -386,7 +386,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
         {
             if (parameter.parent !== undefined)
             {
-                if (Client.VERBOSE) console.log("parameter changed: " +  parameter.parent.label);
+                if (Client.VERBOSE) console.log("parameter changed: " + parameter.parent.label);
             }
             else if (parameter.parentChanged())
             {
@@ -399,7 +399,7 @@ export default class ConnectionDialog extends React.Component<Props, State> {
             }
             else
             {
-                if (Client.VERBOSE) console.log("paraemter changed: no parent");                
+                if (Client.VERBOSE) console.log("parameter changed: no parent");                
             }
             
             //force redraw
