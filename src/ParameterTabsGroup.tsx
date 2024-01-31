@@ -10,6 +10,7 @@ interface Props {
     style?: React.CSSProperties;
     selectedTab: number;
     tabId: number;
+    showNonGroups?: boolean;
 };
 
 interface State {
@@ -178,8 +179,11 @@ export class ParameterTabsGroupC extends React.Component<Props & InjectedProps, 
                 </Tabs>
 
                 {
-                    // render non-group parameter
-                    this.renderChildren()
+                    this.props.showNonGroups === false ?
+                        ""
+                        :
+                        // render non-group parameter
+                        this.renderChildren()
                 }
             </div>
         );

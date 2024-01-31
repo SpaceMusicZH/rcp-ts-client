@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Icon } from 'carbon-components-react'
-import { iconChevronDown, iconChevronUp } from 'carbon-icons'
-import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig'; 
+import { Icon } from 'carbon-components-react';
+import { iconChevronDown, iconChevronUp } from 'carbon-icons';
+import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig';
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
-import { ParameterToggleButtonC } from './ParameterToggleButton'
+import { ParameterToggleButtonC } from './ParameterToggleButton';
 
 export const ParameterTrackSelector = ({ children, parameter, value, handleValue, onSubmitCb, tabId, selectedTab }) =>
 {
@@ -77,6 +77,7 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                             selectedTab={currentChild}
                             tabId={currentChild}
                             onSubmitCb={onSubmitCb}
+                            showNonGroups={false}
                         >
                         </ParameterTabsGroupC>
                     );
