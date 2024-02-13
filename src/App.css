@@ -93,6 +93,28 @@ html, body {
 }
 
 
+
+/* 3D View */
+
+.settings-modal .widget_image .image-title {
+  display: none;
+}
+
+.settings-modal .parameter-image {
+  max-height: calc(100vh - 83px);
+}
+
+.widget_settingstoggle:first-of-type .parameter-wrapper {
+    display: none; 
+}
+
+.widget_settingstoggle:first-of-type .parameter-wrapper:first-of-type {
+    display: block; 
+}
+
+
+
+
 /* Buttons */
 
 .bx--btn {
