@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import ConnectionDialog from './ConnectionDialog';
 import { VERSION_STR } from './Globals';
-import { rcpLogVersion } from 'rabbitcontrol';
+import { RCP_LIBRARY_VERSION, rcpLogVersion } from 'rabbitcontrol';
 
 
 /*
@@ -45,6 +45,7 @@ class App extends React.Component<Props, State>
     };
 
     console.log(`rabbitcontrol web client - version: ${VERSION_STR}`);
+    console.log(`using rcp-ts library version: ${RCP_LIBRARY_VERSION}`);
   }
 
   componentDidMount() 

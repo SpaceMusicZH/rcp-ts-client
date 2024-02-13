@@ -1,6 +1,6 @@
 {
   "name": "rcp-ts-client",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "homepage": "./",
   "private": true,
   "scripts": {
@@ -30,7 +30,7 @@
     "carbon-components-react": "^7.59.2",
     "carbon-icons": "^7.0.7",
     "normalize.css": "^8.0.1",
-    "rabbitcontrol": "^0.0.46",
+    "rabbitcontrol": "^0.0.47",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-measure": "^2.1.3",

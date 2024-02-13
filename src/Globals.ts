@@ -1,4 +1,4 @@
-export const VERSION_STR = "1.0.10-spacemusic";
+export const VERSION_STR = "1.0.12-spacemusic";
 
 // colors
 export const COMPONENT_DEFAULT_COLOR = "#5C7080";

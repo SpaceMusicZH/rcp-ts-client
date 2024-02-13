@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Icon } from 'carbon-components-react';
 import { iconChevronDown, iconChevronUp } from 'carbon-icons';
-import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID } from './WidgetConfig';
+import { COUNT_ID, SOLO_ID, MUTE_ID, LOCK_ID, SYNC_ALL_TRACKS_ID, WIDGET_CONTENT_SCROLLER } from './WidgetConfig';
 import { ParameterTabsGroupC } from './ParameterTabsGroup';
 import { ParameterToggleButtonC } from './ParameterToggleButton';
 
@@ -69,7 +69,28 @@ export const ParameterTrackSelector = ({ children, parameter, value, handleValue
                 if (child.typeDefinition.datatype === 40 &&
                     child.widget &&
                     child.widget.widgetType === 32770)
-                {                        
+                {
+                    // force group-children to have userid "content_scroller"
+
+                    child.children.map((p) => {
+                        if (child.typeDefinition.datatype === 40)
+                        {
+                            if (!p.userid?.includes(WIDGET_CONTENT_SCROLLER))
+                            {
+                                if (p.userid === undefined || p.userid === "")
+                                {                                    
+                                    p.userid = WIDGET_CONTENT_SCROLLER;
+                                }
+                                else {
+                                    // append
+                                    const arr = p.userid.split(";");
+                                    arr.push(WIDGET_CONTENT_SCROLLER);
+                                    p.userid = arr.join(";");
+                                }
+                            }
+                        }
+                    })
+
                     return (
                         <ParameterTabsGroupC
                             parameter={child}
