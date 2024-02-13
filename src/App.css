@@ -102,6 +102,9 @@ html, body {
 
 .settings-modal .parameter-image {
   max-height: calc(100vh - 83px);
+  max-width: calc(100% + 7px);
+  margin-left: -4px;
+  margin-right: -4px;
 }
 
 .widget_settingstoggle:first-of-type .parameter-wrapper {
